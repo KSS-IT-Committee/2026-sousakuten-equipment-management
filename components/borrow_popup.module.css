@@ -22,10 +22,10 @@
   max-height: 85vh;
   overflow-y: auto;
   position: relative;
-  animation: slideIn 0.3s ease-out;
+  animation: slide-in 0.3s ease-out;
 }
 
-@keyframes slideIn {
+@keyframes slide-in {
   from {
     opacity: 0;
     transform: scale(0.95) translateY(-20px);

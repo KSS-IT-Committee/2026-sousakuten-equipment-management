@@ -1,14 +1,14 @@
 "use client";
 
 import BorrowButton from "@/components/borrow_button";
+import type { ClassInfo } from "@/db/queries/classes";
 import { useState } from "react";
 import styles from "./borrow_popup.module.css";
 import ClassBox from "./class_box";
 
 export default function BorrowingPopup({ id, title }: { id: number; title: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedClass, setSelectedClass] = useState<{ grade: number; classId: number; classInfo: any } | null>(null);
-
+  const [selectedClass, setSelectedClass] = useState<{ grade: number; classId: number; classInfo: ClassInfo } | null>(null);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -17,7 +17,7 @@ export default function BorrowingPopup({ id, title }: { id: number; title: strin
     setIsOpen(false);
   };
 
-  const handleClassSelect = (grade: number, classId: number, classInfo: any) => {
+  const handleClassSelect = (grade: number, classId: number, classInfo: ClassInfo) => {
     setSelectedClass({ grade, classId, classInfo });
   };
 

@@ -9,6 +9,8 @@ export async function returnBorrowingAction(
 ) {
   await returnBorrowing(borrowingId, returnDate);
   revalidatePath("/borrowings");
+  revalidatePath("/equipment");
+  revalidatePath("/");
 }
 
 export async function borrowEquipmentAction(
@@ -22,4 +24,5 @@ export async function borrowEquipmentAction(
   });
   revalidatePath("/equipment");
   revalidatePath("/");
+  revalidatePath("/borrowings");
 }
