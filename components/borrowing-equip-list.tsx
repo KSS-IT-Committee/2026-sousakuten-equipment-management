@@ -9,18 +9,32 @@ export default async function BorrowingEquipList({ id }: { id: number }) {
   return (
     <div>
       <div style={{ marginBottom: "20px" }}>
-        <h3 style={{ margin: "0 0 16px 0", fontSize: "18px", fontWeight: "600", color: "#1a1a1a" }}>
-          現在の借出数: <span style={{ color: "#007bff" }}>{borrowings.length}</span>件
+        <h3
+          style={{
+            margin: "0 0 16px 0",
+            fontSize: "18px",
+            fontWeight: "600",
+            color: "#1a1a1a",
+          }}
+        >
+          現在の借出数:{" "}
+          <span style={{ color: "#007bff" }}>{borrowings.length}</span>件
         </h3>
       </div>
       {borrowings.length === 0 ? (
-        <p style={{ color: "#666", fontStyle: "italic" }}>現在、借出中の備品はありません</p>
+        <p style={{ color: "#666", fontStyle: "italic" }}>
+          現在、借出中の備品はありません
+        </p>
       ) : (
-        borrowings.map(borrowing => (
+        borrowings.map((borrowing) => (
           <div key={borrowing.id} className={styles.listItem}>
             <div className={styles.infoGroup}>
-              <span className={styles.class}>クラス: {getClassString(borrowing.class)}</span>
-              <span className={styles.date}>貸出日: {borrowing.borrowedAt.toLocaleDateString()}</span>
+              <span className={styles.class}>
+                クラス: {getClassString(borrowing.class)}
+              </span>
+              <span className={styles.date}>
+                貸出日: {borrowing.borrowedAt.toLocaleDateString()}
+              </span>
             </div>
 
             <div className={styles.actionGroup}>
@@ -30,5 +44,5 @@ export default async function BorrowingEquipList({ id }: { id: number }) {
         ))
       )}
     </div>
-  )
+  );
 }

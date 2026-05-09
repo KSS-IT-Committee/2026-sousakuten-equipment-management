@@ -101,7 +101,9 @@
 
 .progressFill {
   height: 100%;
-  transition: width 0.3s ease, background-color 0.3s ease;
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
   border-radius: 3px;
 }
 
