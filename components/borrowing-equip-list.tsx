@@ -1,14 +1,11 @@
 import ReturnButton from "@/components/ReturnButton";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
-import styles from "./borrowing-equip-list.module.css";
-
 import { getClassString } from "@/lib/class-number";
 
-export default async function BorrowingEquipList({ id, classID }: { id: number; classID?: number }) {
+import styles from "./borrowing-equip-list.module.css";
+
+export default async function BorrowingEquipList({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByID(id);
-  if (classID) {
-    const filteredBorrowings = borrowings.filter(b => b.class === classID);
-  }
   return (
     <div>
       <div style={{ marginBottom: "20px" }}>

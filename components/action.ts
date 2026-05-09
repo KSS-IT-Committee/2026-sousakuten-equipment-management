@@ -1,7 +1,8 @@
 "use server";
 
-import { createBorrowing, returnBorrowing } from "@/db/queries/borrowings";
 import { revalidatePath } from "next/cache";
+
+import { createBorrowing, returnBorrowing } from "@/db/queries/borrowings";
 
 export async function returnBorrowingAction(
   borrowingId: number,

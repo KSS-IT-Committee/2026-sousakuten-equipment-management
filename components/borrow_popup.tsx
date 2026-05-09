@@ -1,14 +1,25 @@
 "use client";
 
-import BorrowButton from "@/components/borrow_button";
-import type { ClassInfo } from "@/db/queries/classes";
 import { useState } from "react";
+
+import BorrowButton from "@/components/borrow_button";
+
 import styles from "./borrow_popup.module.css";
 import ClassBox from "./class_box";
 
-export default function BorrowingPopup({ id, title }: { id: number; title: string }) {
+export default function BorrowingPopup({
+  id,
+  title,
+}: {
+  id: number;
+  title: string;
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedClass, setSelectedClass] = useState<{ grade: number; classId: number; classInfo: ClassInfo } | null>(null);
+  const [selectedClass, setSelectedClass] = useState<{
+    grade: number;
+    classId: number;
+    classInfo: string;
+  } | null>(null);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -17,19 +28,29 @@ export default function BorrowingPopup({ id, title }: { id: number; title: strin
     setIsOpen(false);
   };
 
-  const handleClassSelect = (grade: number, classId: number, classInfo: ClassInfo) => {
+  const handleClassSelect = (
+    grade: number,
+    classId: number,
+    classInfo: string,
+  ) => {
     setSelectedClass({ grade, classId, classInfo });
   };
 
   return (
     <div>
-      <button onClick={togglePopup} className={styles.popupButton + " " + styles.primaryButton}>
+      <button
+        onClick={togglePopup}
+        className={styles.popupButton + " " + styles.primaryButton}
+      >
         Open Popup
       </button>
       {isOpen && (
-        <div className={styles.popupOverlay} onClick={(e) => {
-          if (e.target === e.currentTarget) closePopup();
-        }}>
+        <div
+          className={styles.popupOverlay}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closePopup();
+          }}
+        >
           <div className={styles.popupContent}>
             <div className={styles.popupHeader}>
               <h2 className={styles.popupTitle}>{title}</h2>
@@ -48,7 +69,11 @@ export default function BorrowingPopup({ id, title }: { id: number; title: strin
                 Cancel
               </button>
               {selectedClass && (
-                <BorrowButton equipmentId={id} classNumber={selectedClass.grade * 10 + selectedClass.classId} onBorrow={closePopup} />
+                <BorrowButton
+                  equipmentId={id}
+                  classNumber={selectedClass.grade * 10 + selectedClass.classId}
+                  onBorrow={closePopup}
+                />
               )}
             </div>
           </div>
