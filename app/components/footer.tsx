@@ -1,6 +1,6 @@
 import styles from "./footer.module.css";
 
-export function defaultFooter() {
+export function DefaultFooter() {
   return (
     <footer className={styles.footer}>
       <h1 className={styles.footerTheme}>行事週間2026 青、薫る</h1>
