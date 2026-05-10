@@ -15,6 +15,13 @@
       "when": 1778331548399,
       "tag": "0001_low_freak",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778389386596,
+      "tag": "0002_stale_raza",
+      "breakpoints": true
     }
   ]
 }
