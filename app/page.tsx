@@ -18,6 +18,11 @@ export default async function Home() {
         ))}
       </div>
       <DefaultFooter />
+    <main className="flex-1 flex items-center justify-center">
+      <h1 className="text-4xl font-bold">創作展　貸出備品管理サイト</h1>
+      <a href="/add-equipment" className="mt-4 text-blue-500 hover:underline">
+        新しい機器を追加
+      </a>
     </main>
   );
 }
