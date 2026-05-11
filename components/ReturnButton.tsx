@@ -2,9 +2,9 @@
 
 import { returnBorrowingAction } from "@/components/action";
 
-import styles from "./ReturnButton.module.css";
+import styles from "@/styles/ReturnButton.module.css";
 
-export default function ReturnButton({ borrowingId }: { borrowingId: number }) {
+export function ReturnButton({ borrowingId }: { borrowingId: number }) {
   const handleReturn = async () => {
     try {
       console.log(`Processing return for: ${borrowingId}`);

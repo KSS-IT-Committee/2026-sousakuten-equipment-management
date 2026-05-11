@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 
-import BorrowButton from "@/components/borrow_button";
+import { BorrowButton } from "@/components/borrow_button";
 
-import styles from "./borrow_popup.module.css";
-import ClassBox from "./class_box";
+import { ClassBox } from "@/components/class_box";
+import styles from "@/styles/borrow_popup.module.css";
 
-export default function BorrowingPopup({
+export function BorrowingPopup({
   id,
   title,
 }: {

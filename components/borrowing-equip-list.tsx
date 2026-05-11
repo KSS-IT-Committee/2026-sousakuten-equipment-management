@@ -1,10 +1,10 @@
-import ReturnButton from "@/components/ReturnButton";
+import { ReturnButton } from "@/components/ReturnButton";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getClassString } from "@/lib/class-number";
 
-import styles from "./borrowing-equip-list.module.css";
+import styles from "@/styles/borrowing-equip-list.module.css";
 
-export default async function BorrowingEquipList({ id }: { id: number }) {
+export async function BorrowingEquipList({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByID(id);
   return (
     <div>

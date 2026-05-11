@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import styles from "./home_button.module.css";
+import styles from "@/styles/home_button.module.css";
 
-export default function HomeButton() {
+export function HomeButton() {
   return (
     <Link href="/" className={styles.homeButton}>
       ← ホームに戻る

@@ -4,13 +4,13 @@ import { useState } from "react";
 
 import classData from "@/assets/class.json";
 
-import styles from "./class_box.module.css";
+import styles from "@/styles/class_box.module.css";
 
 interface ClassBoxProps {
   onSelect?: (grade: number, classId: number, className: string) => void;
 }
 
-export default function ClassBox({ onSelect }: ClassBoxProps) {
+export function ClassBox({ onSelect }: ClassBoxProps) {
   const [selectedGrade, setSelectedGrade] = useState<number | "">(0);
   const [selectedClassId, setSelectedClassId] = useState<number | "">(0);
 

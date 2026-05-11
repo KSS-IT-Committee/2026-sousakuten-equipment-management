@@ -2,7 +2,7 @@
 
 import { borrowEquipmentAction } from "@/components/action";
 
-export default function BorrowButton({
+export function BorrowButton({
   equipmentId,
   classNumber,
   onBorrow,

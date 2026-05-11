@@ -1,5 +1,5 @@
-import BorrowingEquipList from "@/components/borrowing-equip-list";
-import EquipmentCell from "@/components/equipment";
+import { BorrowingEquipList } from "@/components/borrowing-equip-list";
+import { EquipmentCell } from "@/components/equipment";
 
 import styles from "./base.module.css";
 
