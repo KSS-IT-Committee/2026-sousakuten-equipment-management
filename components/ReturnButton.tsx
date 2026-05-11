@@ -1,7 +1,6 @@
 "use client";
 
 import { returnBorrowingAction } from "@/components/action";
-
 import styles from "@/styles/ReturnButton.module.css";
 
 export function ReturnButton({ borrowingId }: { borrowingId: number }) {

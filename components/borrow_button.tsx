@@ -4,16 +4,15 @@ import { borrowEquipmentAction } from "@/components/action";
 
 export function BorrowButton({
   equipmentId,
-  classNumber,
+  classCode,
   onBorrow,
 }: {
   equipmentId: number;
-  classNumber: number;
+  classCode: string;
   onBorrow?: () => void;
 }) {
   const handleBorrow = async () => {
-    await borrowEquipmentAction(equipmentId, classNumber);
-    // alert("Borrowed successfully!");
+    await borrowEquipmentAction(equipmentId, classCode);
     if (onBorrow) {
       onBorrow();
     }

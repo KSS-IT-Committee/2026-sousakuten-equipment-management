@@ -3,22 +3,15 @@
 import { useState } from "react";
 
 import { BorrowButton } from "@/components/borrow_button";
-
 import { ClassBox } from "@/components/class_box";
+import { getClassLabel } from "@/lib/class-number";
 import styles from "@/styles/borrow_popup.module.css";
 
-export function BorrowingPopup({
-  id,
-  title,
-}: {
-  id: number;
-  title: string;
-}) {
+export function BorrowingPopup({ id, title }: { id: number; title: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<{
-    grade: number;
-    classId: number;
-    classInfo: string;
+    code: string;
+    label: string;
   } | null>(null);
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -28,12 +21,8 @@ export function BorrowingPopup({
     setIsOpen(false);
   };
 
-  const handleClassSelect = (
-    grade: number,
-    classId: number,
-    classInfo: string,
-  ) => {
-    setSelectedClass({ grade, classId, classInfo });
+  const handleClassSelect = (classCode: string) => {
+    setSelectedClass({ code: classCode, label: getClassLabel(classCode) });
   };
 
   return (
@@ -71,7 +60,7 @@ export function BorrowingPopup({
               {selectedClass && (
                 <BorrowButton
                   equipmentId={id}
-                  classNumber={selectedClass.grade * 10 + selectedClass.classId}
+                  classCode={selectedClass.code}
                   onBorrow={closePopup}
                 />
               )}

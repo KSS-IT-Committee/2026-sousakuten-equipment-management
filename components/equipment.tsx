@@ -4,7 +4,6 @@ import Link from "next/link";
 import { BorrowingPopup } from "@/components/borrow_popup";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
-
 import styles from "@/styles/equipment.module.css";
 
 export async function EquipmentCell({ id }: { id: number }) {

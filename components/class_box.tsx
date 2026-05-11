@@ -2,33 +2,23 @@
 
 import { useState } from "react";
 
-import classData from "@/assets/class.json";
-
+import { ClassCode, makeClassCode } from "@/lib/class-number";
 import styles from "@/styles/class_box.module.css";
 
 interface ClassBoxProps {
-  onSelect?: (grade: number, classId: number, className: string) => void;
+  onSelect?: (classCode: ClassCode) => void;
 }
 
 export function ClassBox({ onSelect }: ClassBoxProps) {
   const [selectedGrade, setSelectedGrade] = useState<number | "">(0);
   const [selectedClassId, setSelectedClassId] = useState<number | "">(0);
 
-  // Get unique grades from class data
-  const grades = [...new Set(classData.class.map((cls) => cls.grade))].sort(
-    (a, b) => a - b,
-  );
-
-  // Get class IDs for selected grade
-  const classesForGrade = selectedGrade
-    ? classData.class
-        .filter((cls) => cls.grade === selectedGrade)
-        .map((cls) => cls.id)
-    : [];
+  const grades = [1, 2, 3, 4, 5, 6];
+  const classIds = [1, 2, 3, 4];
 
   const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGrade(e.target.value ? Number(e.target.value) : "");
-    setSelectedClassId(""); // Reset class selection when grade changes
+    setSelectedClassId("");
   };
 
   const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -36,12 +26,8 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
     setSelectedClassId(newClassId);
 
     if (onSelect && selectedGrade && newClassId) {
-      const classInfo = classData.class.find(
-        (cls) => cls.grade === selectedGrade && cls.id === newClassId,
-      );
-      if (classInfo) {
-        onSelect(selectedGrade as number, newClassId, classInfo.name);
-      }
+      const code = makeClassCode(selectedGrade as number, newClassId as number);
+      if (code) onSelect(code);
     }
   };
 
@@ -78,7 +64,7 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
           className={styles.select}
         >
           <option value="">Select a class</option>
-          {classesForGrade.map((id) => (
+          {classIds.map((id) => (
             <option key={id} value={id}>
               {String.fromCharCode(64 + id)}組
             </option>

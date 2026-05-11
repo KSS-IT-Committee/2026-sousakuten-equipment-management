@@ -16,11 +16,11 @@ export async function returnBorrowingAction(
 
 export async function borrowEquipmentAction(
   equipmentId: number,
-  classNumber: number,
+  classCode: string,
 ) {
   await createBorrowing({
     equipmentId,
-    class: classNumber,
+    class: classCode,
     borrowDate: new Date(),
   });
   revalidatePath("/equipment");

@@ -22,11 +22,11 @@ export async function getBorrowingsByEquipmentId(equipmentId: number) {
     .where(eq(Borrowings.equipmentId, equipmentId));
 }
 
-export async function getBorrowingsByClass(classNumber: number) {
+export async function getBorrowingsByClass(classCode: string) {
   return await db
     .select()
     .from(Borrowings)
-    .where(eq(Borrowings.class, classNumber));
+    .where(eq(Borrowings.class, classCode));
 }
 
 export async function getActiveBorrowings() {
@@ -50,7 +50,7 @@ export async function getActiveBorrowingsByID(equipmentId: number) {
 
 export async function createBorrowing(data: {
   equipmentId: number;
-  class: number;
+  class: string;
   borrowDate: Date;
   returnDate?: Date;
 }) {

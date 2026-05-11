@@ -1,7 +1,6 @@
 import { ReturnButton } from "@/components/ReturnButton";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
-import { getClassString } from "@/lib/class-number";
-
+import { getClassLabel } from "@/lib/class-number";
 import styles from "@/styles/borrowing-equip-list.module.css";
 
 export async function BorrowingEquipList({ id }: { id: number }) {
@@ -30,7 +29,7 @@ export async function BorrowingEquipList({ id }: { id: number }) {
           <div key={borrowing.id} className={styles.listItem}>
             <div className={styles.infoGroup}>
               <span className={styles.class}>
-                クラス: {getClassString(borrowing.class)}
+                クラス: {getClassLabel(borrowing.class)}
               </span>
               <span className={styles.date}>
                 貸出日: {borrowing.borrowedAt.toLocaleDateString()}
