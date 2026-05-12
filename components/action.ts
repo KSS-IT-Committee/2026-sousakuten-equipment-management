@@ -1,6 +1,5 @@
 "use server";
 
-import { CLASS_CODES } from "@/lib/class-number";
 import { revalidatePath } from "next/cache";
 
 import {
@@ -9,6 +8,7 @@ import {
   returnBorrowing,
 } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
+import { CLASS_CODES } from "@/lib/class-number";
 
 export const returnBorrowingAction = async (
   borrowingId: number,
