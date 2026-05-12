@@ -1,5 +1,6 @@
 "use server";
 
+import { CLASS_CODES } from "@/lib/class-number";
 import { revalidatePath } from "next/cache";
 
 import {
@@ -34,6 +35,9 @@ export const borrowEquipmentAction = async (
 
   if (availableCount <= 0) {
     throw new Error("No equipment available to borrow");
+  }
+  if (!CLASS_CODES.some((code) => code === classCode)) {
+    throw new Error("Invalid class code");
   }
 
   await createBorrowing({

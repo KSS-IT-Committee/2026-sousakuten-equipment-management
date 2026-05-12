@@ -61,5 +61,5 @@ export async function returnBorrowing(id: number, returnedAt: Date) {
   return await db
     .update(Borrowings)
     .set({ returnedAt: returnedAt })
-    .where(eq(Borrowings.id, id));
+    .where(and(eq(Borrowings.id, id), isNull(Borrowings.returnedAt)));
 }
