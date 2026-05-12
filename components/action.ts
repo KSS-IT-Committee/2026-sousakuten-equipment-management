@@ -6,9 +6,9 @@ import { createBorrowing, returnBorrowing } from "@/db/queries/borrowings";
 
 export async function returnBorrowingAction(
   borrowingId: number,
-  returnDate: Date,
+  returnedAt: Date,
 ) {
-  await returnBorrowing(borrowingId, returnDate);
+  await returnBorrowing(borrowingId, returnedAt);
   revalidatePath("/borrowings");
   revalidatePath("/equipment");
   revalidatePath("/");
@@ -21,7 +21,7 @@ export async function borrowEquipmentAction(
   await createBorrowing({
     equipmentId,
     class: classCode,
-    borrowDate: new Date(),
+    borrowedAt: new Date(),
   });
   revalidatePath("/equipment");
   revalidatePath("/");

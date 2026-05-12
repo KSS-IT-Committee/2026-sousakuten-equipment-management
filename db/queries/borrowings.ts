@@ -51,15 +51,15 @@ export async function getActiveBorrowingsByID(equipmentId: number) {
 export async function createBorrowing(data: {
   equipmentId: number;
   class: string;
-  borrowDate: Date;
-  returnDate?: Date;
+  borrowedAt: Date;
+  returnedAt?: Date;
 }) {
   return await db.insert(Borrowings).values(data);
 }
 
-export async function returnBorrowing(id: number, returnDate: Date) {
+export async function returnBorrowing(id: number, returnedAt: Date) {
   return await db
     .update(Borrowings)
-    .set({ returnedAt: returnDate })
+    .set({ returnedAt: returnedAt })
     .where(eq(Borrowings.id, id));
 }

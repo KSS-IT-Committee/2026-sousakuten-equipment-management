@@ -54,16 +54,3 @@ const CLASS_LABELS: Record<ClassCode, string> = {
   "6C": "6年C組",
   "6D": "6年D組",
 };
-
-export function getClassLabel(code: string): string {
-  if (CLASS_CODES.includes(code as ClassCode)) {
-    return CLASS_LABELS[code as ClassCode];
-  }
-  return "不明なクラス";
-}
-
-export function makeClassCode(grade: number, id: number): ClassCode | null {
-  const letter = String.fromCharCode(64 + id); // 1 -> 'A'
-  const code = `${grade}${letter}` as ClassCode;
-  return CLASS_CODES.includes(code) ? code : null;
-}

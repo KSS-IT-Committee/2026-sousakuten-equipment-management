@@ -8,13 +8,6 @@
 
 ## 2. Borrowings
 
-| id  | equipment_id | tag_number | class | borrowed_at | returned_at |
-| --- | ------------ | ---------- | ----- | ----------- | ----------- |
-| 1   | 1            | 3          | 11    | 2024-01-01  | 2024-01-10  |
-
-or
-
-currently, the `tag_number` field is not used, so it can be omitted from the table:
-| id | equipment_id | class | borrowed_at | returned_at |
-| --- | --- | --- | --- | --- |
-| 1 | 1 | 11 | 2024-01-01 | 2024-01-10 |
+| id  | equipmentId | class | borrowedAt | returnedAt |
+| --- | ----------- | ----- | ---------- | ---------- |
+| 1   | 1           | 1A    | 2024-01-01 | 2024-01-10 |
