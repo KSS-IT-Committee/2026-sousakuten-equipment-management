@@ -77,12 +77,8 @@
           "name": "borrowings_equipment_id_equipments_id_fk",
           "tableFrom": "borrowings",
           "tableTo": "equipments",
-          "columnsFrom": [
-            "equipment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["equipment_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

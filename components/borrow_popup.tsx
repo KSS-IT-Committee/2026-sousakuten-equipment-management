@@ -7,7 +7,15 @@ import { ClassBox } from "@/components/class_box";
 import { getClassLabel } from "@/lib/class-number";
 import styles from "@/styles/borrow_popup.module.css";
 
-export function BorrowingPopup({ id, title }: { id: number; title: string }) {
+export function BorrowingPopup({
+  id,
+  title,
+  availableCount,
+}: {
+  id: number;
+  title: string;
+  availableCount: number;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<{
     code: string;
@@ -61,6 +69,7 @@ export function BorrowingPopup({ id, title }: { id: number; title: string }) {
                 <BorrowButton
                   equipmentId={id}
                   classCode={selectedClass.code}
+                  disabled={availableCount <= 0}
                   onBorrow={closePopup}
                 />
               )}

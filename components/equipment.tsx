@@ -62,7 +62,11 @@ export async function EquipmentCell({ id }: { id: number }) {
         </div>
       </div>
 
-      <BorrowingPopup id={id} title={equipment.name} />
+      <BorrowingPopup
+        id={id}
+        title={equipment.name}
+        availableCount={availableCount}
+      />
     </div>
   );
 }
