@@ -1,4 +1,3 @@
-// Replace JSON-based class list with enum-like codes.
 export const CLASS_CODES = [
   "1A",
   "1B",
@@ -54,3 +53,7 @@ const CLASS_LABELS: Record<ClassCode, string> = {
   "6C": "6年C組",
   "6D": "6年D組",
 };
+
+export function getClassLabel(classCode: string): string {
+  return CLASS_LABELS[classCode as ClassCode] ?? classCode;
+}
