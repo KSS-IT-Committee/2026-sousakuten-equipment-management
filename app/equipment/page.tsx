@@ -9,19 +9,20 @@ type Props = {
 
 export default async function Equipment({ searchParams }: Props) {
   const resolvedParams = await searchParams;
-  const rawId = resolvedParams.id;
-
-  const id = rawId ? Number(rawId) : undefined;
+  const id = Number(resolvedParams.id);
+  const isValidId = isNaN(id);
 
   return (
     <>
       <div className={styles.cell}>
-        {id && !isNaN(id) ? (
-          <EquipmentCell id={id} />
+        {isValidId ? (
+          <>
+            <EquipmentCell id={id} />
+            <BorrowingEquipList id={id} />
+          </>
         ) : (
           <p>Error: Invalid equipment ID.</p>
         )}
-        {id && !isNaN(id) && <BorrowingEquipList id={id} />}
       </div>
     </>
   );

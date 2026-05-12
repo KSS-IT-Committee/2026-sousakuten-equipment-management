@@ -8,7 +8,7 @@ import {
   returnBorrowing,
 } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
-import { CLASS_CODES } from "@/lib/class-number";
+import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 
 export const returnBorrowingAction = async (
   borrowingId: number,
@@ -36,7 +36,7 @@ export const borrowEquipmentAction = async (
   if (availableCount <= 0) {
     throw new Error("No equipment available to borrow");
   }
-  if (!CLASS_CODES.some((code) => code === classCode)) {
+  if (!CLASS_CODES.includes(classCode as ClassCode)) {
     throw new Error("Invalid class code");
   }
 

@@ -9,7 +9,7 @@ export function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          創作展　貸出管理
+          創作展 貸出管理
         </Link>
         <Link href="/" className={styles.homeLink}>
           ホーム
