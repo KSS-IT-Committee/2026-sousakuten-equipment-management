@@ -22,6 +22,13 @@
       "when": 1778389386596,
       "tag": "0002_stale_raza",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1778577475290,
+      "tag": "0003_confused_gladiator",
+      "breakpoints": true
     }
   ]
 }
