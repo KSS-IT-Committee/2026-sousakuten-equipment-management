@@ -1,4 +1,5 @@
 import styles from "@/app/base.module.css";
+import { DefaultFooter } from "@/app/components/footer";
 import { EquipmentCell } from "@/components/equipment";
 import { getEquipments } from "@/db/queries/equipments";
 export const dynamic = "force-dynamic";
@@ -16,6 +17,7 @@ export default async function Home() {
           <EquipmentCell key={i} id={equipment.id} />
         ))}
       </div>
+      <DefaultFooter />
     </main>
   );
 }
