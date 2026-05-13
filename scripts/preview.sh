@@ -19,19 +19,9 @@ echo "Pulling ${IMAGE}"
 docker pull "$IMAGE"
 
 cleanup() {
-  echo "Cleaning up..."
-  docker compose -p "$PROJECT" -f "$COMPOSE_FILE" exec app npx drizzle-kit migrate --config=drizzle.config.ts
+  docker compose -p "$PROJECT" -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
 }
 trap cleanup EXIT INT TERM
 
 echo "Starting preview on http://localhost:3000 (Ctrl-C to stop)"
-
-docker compose -p "$PROJECT" -f "$COMPOSE_FILE" up -d --remove-orphans
-
-echo "Waiting for database to be ready..."
-sleep 5
-
-echo "Running database migrations..."
-docker compose -p "$PROJECT" -f "$COMPOSE_FILE" exec app npx drizzle-kit migrate
-
-docker compose -p "$PROJECT" -f "$COMPOSE_FILE" logs -f
+docker compose -p "$PROJECT" -f "$COMPOSE_FILE" up --remove-orphans
