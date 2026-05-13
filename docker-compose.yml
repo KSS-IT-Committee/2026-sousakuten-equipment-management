@@ -3,13 +3,13 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: info
-      POSTGRES_PASSWORD: info
-      POSTGRES_DB: info
+      POSTGRES_USER: equipment
+      POSTGRES_PASSWORD: equipment
+      POSTGRES_DB: equipment
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U info -d info"]
+      test: ["CMD-SHELL", "pg_isready -U equipment -d equipment"]
       interval: 2s
       timeout: 2s
       retries: 30
@@ -21,7 +21,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://info:info@db:5432/info
+      DATABASE_URL: postgres://equipment:equipment@db:5432/equipment
     ports:
       - "3000:3000"
     volumes:
