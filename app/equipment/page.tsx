@@ -10,7 +10,7 @@ type Props = {
 export default async function Equipment({ searchParams }: Props) {
   const resolvedParams = await searchParams;
   const id = Number(resolvedParams.id);
-  const isValidId = isNaN(id);
+  const isValidId = !isNaN(id);
 
   return (
     <>
