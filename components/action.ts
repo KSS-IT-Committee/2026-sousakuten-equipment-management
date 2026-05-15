@@ -2,13 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 
-import {
-  createBorrowing,
-  getActiveBorrowingsByID,
-  returnBorrowing,
-} from "@/db/queries/borrowings";
-import { getEquipmentById } from "@/db/queries/equipments";
+import { returnBorrowing } from "@/db/queries/borrowings";
+import { Borrowings, Equipments } from "@/db/schema";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
+import { db } from "@/lib/db";
+import { and, eq, isNull } from "drizzle-orm";
 
 export const returnBorrowingAction = async (
   borrowingId: number,
@@ -24,27 +22,42 @@ export const borrowEquipmentAction = async (
   equipmentId: number,
   classCode: string,
 ) => {
-  const equipment = await getEquipmentById(equipmentId);
-
-  if (!equipment) {
-    throw new Error("Equipment not found");
-  }
-
-  const activeBorrowings = await getActiveBorrowingsByID(equipmentId);
-  const availableCount = equipment.quantity - activeBorrowings.length;
-
-  if (availableCount <= 0) {
-    throw new Error("No equipment available to borrow");
-  }
   if (!CLASS_CODES.includes(classCode as ClassCode)) {
     throw new Error("Invalid class code");
   }
 
-  await createBorrowing({
-    equipmentId,
-    class: classCode,
-    borrowedAt: new Date(),
+  await db.transaction(async (tx) => {
+    const [eqItem] = await tx
+      .select()
+      .from(Equipments)
+      .where(eq(Equipments.id, equipmentId))
+      .for("update");
+
+    if (!eqItem) {
+      throw new Error("Equipment not found");
+    }
+
+    const active = await tx
+      .select({ id: Borrowings.id })
+      .from(Borrowings)
+      .where(
+        and(
+          eq(Borrowings.equipmentId, equipmentId),
+          isNull(Borrowings.returnedAt),
+        ),
+      );
+
+    if (eqItem.quantity - active.length <= 0) {
+      throw new Error("No equipment available to borrow");
+    }
+
+    await tx.insert(Borrowings).values({
+      equipmentId,
+      class: classCode,
+      borrowedAt: new Date(),
+    });
   });
+
   revalidatePath("/equipment");
   revalidatePath("/");
   revalidatePath("/borrowings");

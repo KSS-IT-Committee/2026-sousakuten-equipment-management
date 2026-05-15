@@ -11,7 +11,8 @@ export async function getEquipmentById(id: number) {
   const result = await db
     .select()
     .from(Equipments)
-    .where(eq(Equipments.id, id));
+    .where(eq(Equipments.id, id))
+    .orderBy(Equipments.id);
   return result[0];
 }
 
