@@ -5,7 +5,9 @@ import styles from "@/styles/borrowing-equip-list.module.css";
 
 export async function BorrowingEquipList({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByID(id);
-  const sortedBorrowings = borrowings.sort((a, b) => b.borrowedAt.getTime() - a.borrowedAt.getTime());
+  const sortedBorrowings = borrowings.sort(
+    (a, b) => b.borrowedAt.getTime() - a.borrowedAt.getTime(),
+  );
   return (
     <div>
       <div style={{ marginBottom: "20px" }}>
