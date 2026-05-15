@@ -3,7 +3,6 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-import { returnBorrowing } from "@/db/queries/borrowings";
 import { Borrowings, Equipments } from "@/db/schema";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 import { db } from "@/lib/db";
@@ -12,7 +11,23 @@ export const returnBorrowingAction = async (
   borrowingId: number,
   returnedAt: Date,
 ) => {
-  await returnBorrowing(borrowingId, returnedAt);
+  await db.transaction(async (tx) => {
+    const [existing] = await tx
+      .select()
+      .from(Borrowings)
+      .where(and(eq(Borrowings.id, borrowingId), isNull(Borrowings.returnedAt)))
+      .for("update");
+
+    if (!existing) {
+      throw new Error("Borrowing not found or already returned");
+    }
+
+    await tx
+      .update(Borrowings)
+      .set({ returnedAt })
+      .where(eq(Borrowings.id, borrowingId));
+  });
+
   revalidatePath("/borrowings");
   revalidatePath("/equipment");
   revalidatePath("/");

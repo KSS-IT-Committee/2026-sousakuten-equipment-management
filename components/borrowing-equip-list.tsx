@@ -5,9 +5,6 @@ import styles from "@/styles/borrowing-equip-list.module.css";
 
 export async function BorrowingEquipList({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByID(id);
-  const sortedBorrowings = borrowings.sort(
-    (a, b) => b.borrowedAt.getTime() - a.borrowedAt.getTime(),
-  );
   return (
     <div>
       <div style={{ marginBottom: "20px" }}>
@@ -28,14 +25,14 @@ export async function BorrowingEquipList({ id }: { id: number }) {
           現在、借出中の備品はありません
         </p>
       ) : (
-        sortedBorrowings.map((borrowing) => (
-          <div key={borrowing.id} className={styles.listItem}>
+        borrowings.map((borrowing) => (
+          <div key={borrowing.id} className={styles.listItem} role="listitem">
             <div className={styles.infoGroup}>
               <span className={styles.class}>
                 クラス: {getClassLabel(borrowing.class)}
               </span>
               <span className={styles.date}>
-                貸出日: {borrowing.borrowedAt.toLocaleDateString()}
+                貸出日: {new Date(borrowing.borrowedAt).toLocaleDateString()}
               </span>
             </div>
 
