@@ -1,0 +1,45 @@
+.deduction {
+  display: grid;
+  margin-left: 10px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
+
+  justify-items: center;
+  margin: 7px 0px;
+  background-color: white;
+
+  border: solid #e0e0e0 1px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.deduction:hover {
+  border-color: #007bff;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.deductionsample {
+  display: grid;
+  margin-left: 10px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
+
+  justify-items: center;
+}
+.deductionsample h2 {
+  font-size: 15px;
+}
+
+.line {
+  margin-bottom: 20px;
+}
+
+.deductionList {
+}
+
+.deduction h3,
+.deduction p {
+  font-size: 23px;
+}

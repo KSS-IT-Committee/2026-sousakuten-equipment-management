@@ -3,11 +3,55 @@ import {
   check,
   index,
   integer,
+  pgEnum,
   pgTable,
   serial,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
+
+export const CLASSES = [
+  "1A",
+  "1B",
+  "1C",
+  "1D",
+  "2A",
+  "2B",
+  "2C",
+  "2D",
+  "3A",
+  "3B",
+  "3C",
+  "3D",
+  "4A",
+  "4B",
+  "4C",
+  "4D",
+  "5A",
+  "5B",
+  "5C",
+  "5D",
+  "6A",
+  "6B",
+  "6C",
+  "6D",
+] as const;
+
+export type ClassName = (typeof CLASSES)[number];
+export const classEnum = pgEnum("class_name", CLASSES);
+
+export const Deductions = pgTable("deductions", {
+  id: serial("id").primaryKey(),
+  className: classEnum("class_name").notNull(),
+  content: text("content").notNull(),
+  points: integer("points").notNull(),
+  occurredAt: timestamp("occurred_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export type Deduction = typeof Deductions.$inferSelect;
+export type NewDeduction = typeof Deductions.$inferInsert;
 
 export const Equipments = pgTable(
   "equipments",

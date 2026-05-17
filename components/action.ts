@@ -7,6 +7,7 @@ import {
   getActiveBorrowingsByID,
   returnBorrowing,
 } from "@/db/queries/borrowings";
+import { createDeduction } from "@/db/queries/deductions";
 import { getEquipmentById } from "@/db/queries/equipments";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 
@@ -48,4 +49,22 @@ export const borrowEquipmentAction = async (
   revalidatePath("/equipment");
   revalidatePath("/");
   revalidatePath("/borrowings");
+};
+
+export const createDeductionAction = async (data: {
+  className: string;
+  content: string;
+  points: number;
+}) => {
+  if (!CLASS_CODES.includes(data.className as ClassCode)) {
+    throw new Error("Invalid class name");
+  }
+  await createDeduction({
+    className: data.className as ClassCode,
+    content: data.content,
+    points: data.points,
+    occurredAt: new Date(),
+  });
+  revalidatePath("/deductions");
+  revalidatePath("/classdeduction");
 };
