@@ -1,3 +1,18 @@
+.controls {
+  width: min(100%, 1100px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 16px;
+  margin: 0 auto 16px;
+}
+
+.changeUIButtons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .activeButton {
   padding: 10px 20px;
   background-color: #3543dc;
@@ -31,4 +46,45 @@
 .notactiveButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(50, 40, 237, 0.2);
+}
+
+.sortControls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.sortLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sortSelect {
+  min-width: 140px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.sortOrderButton {
+  padding: 10px 16px;
+  background-color: #eff2ff;
+  color: #2430ab;
+  border: 1px solid #a7b3ff;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sortOrderButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(50, 40, 237, 0.15);
 }

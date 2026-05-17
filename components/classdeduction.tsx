@@ -1,10 +1,43 @@
+import Link from "next/link";
+
+import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
 import { getDeductionsByClasses } from "@/db/queries/deductions";
 import { ClassName } from "@/db/schema";
 import styles from "@/styles/deduction.module.css";
-import Link from "next/link";
 
-export async function DeductionCellsByClasses({ classes }: { classes: ClassName[] }) {
+const sortDeductionMap: Record<
+  DeductionSortKey,
+  (left: Awaited<ReturnType<typeof getDeductionsByClasses>>[number], right: Awaited<ReturnType<typeof getDeductionsByClasses>>[number]) => number
+> = {
+  className: (left, right) => left.className.localeCompare(right.className, "ja"),
+  id: (left, right) => left.id - right.id,
+  occurredAt: (left, right) => left.occurredAt.getTime() - right.occurredAt.getTime(),
+  points: (left, right) => left.points - right.points,
+  content: (left, right) => left.content.localeCompare(right.content, "ja"),
+};
+
+export async function DeductionCellsByClasses({
+  classes,
+  sortBy,
+  sortOrder,
+}: {
+  classes: ClassName[];
+  sortBy: DeductionSortKey;
+  sortOrder: DeductionSortOrder;
+}) {
   const deductions = await getDeductionsByClasses(classes);
+  const sortedDeductions = [...deductions].sort((left, right) => {
+    const result = sortDeductionMap[sortBy](left, right);
+    if (result !== 0) {
+      return sortOrder === "asc" ? result : result * -1;
+    }
+
+    if (sortBy !== "id") {
+      return right.id - left.id;
+    }
+
+    return 0;
+  });
   const isthereAnyDeduction = deductions.length > 0;
 
   return (
@@ -22,7 +55,7 @@ export async function DeductionCellsByClasses({ classes }: { classes: ClassName[
             <h2>内容</h2>
           </div>
           <hr className={styles.line} />
-          {deductions.map((deduction) => (
+          {sortedDeductions.map((deduction) => (
             <Link href={`/deduction?id=${deduction.id}`} key={deduction.id} className={styles.linkArea}>
               <div key={deduction.id} className={styles.deduction}>
                 <h3>{deduction.className}</h3>

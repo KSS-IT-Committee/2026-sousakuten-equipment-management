@@ -1,7 +1,11 @@
 import { DeductionUI } from "@/components/deduction_ui";
 
 type Props = {
-  searchParams?: Promise<{ section?: string }>;
+  searchParams?: Promise<{
+    section?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  }>;
 };
 
 export default async function Deductions({ searchParams }: Props) {

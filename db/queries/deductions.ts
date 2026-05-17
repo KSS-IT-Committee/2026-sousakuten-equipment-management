@@ -1,6 +1,7 @@
+import { eq, inArray } from "drizzle-orm";
+
 import { ClassName, Deductions } from "@/db/schema";
 import { db } from "@/lib/db";
-import { eq, inArray } from "drizzle-orm";
 
 export async function getDeductions() {
   return await db.select().from(Deductions);
