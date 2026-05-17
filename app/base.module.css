@@ -17,7 +17,7 @@
   font-size: clamp(1.5rem, 3.5vw, 2.25rem);
   font-weight: 700;
   line-height: 1.2;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
   color: #1a1a1a;
 }
