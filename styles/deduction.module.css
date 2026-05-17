@@ -43,3 +43,30 @@
 .deduction p {
   font-size: 23px;
 }
+
+@media (max-width: 768px) {
+  .deduction {
+    grid-template-rows: 20px 1fr;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .content {
+    padding: 15px;
+    grid-row: 2/3;
+    grid-column: 1/5;
+  }
+  .deductionsample {
+    display: grid;
+    margin-left: 10px;
+    grid-template-rows: 2fr;
+    grid-template-columns: repeat(4, 1fr);
+
+    justify-items: center;
+  }
+  .contentHeader {
+    grid-column: 1/5;
+  }
+  .deduction h3,
+  .deduction p {
+    font-size: 18px;
+  }
+}

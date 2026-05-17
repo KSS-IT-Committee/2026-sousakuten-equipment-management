@@ -1,6 +1,6 @@
 import { DeductionCellsByClasses } from "@/components/classdeduction";
 import { DeductionForTest } from "@/components/deductionfortest";
-
+import { DeductionSumsList } from "./deductionlists";
 import SelectButtons from "./ui_buttons";
 
 export type DeductionSortKey = "className" | "id" | "occurredAt" | "points" | "content";
@@ -53,12 +53,16 @@ export async function DeductionUI({ searchParams }: Props) {
             "5B",
             "5C",
             "5D",
+            "6A",
+            "6B",
+            "6C",
+            "6D",
           ]}
           sortBy={sortBy}
           sortOrder={sortOrder}
         /> : null}
         {section === 2 ? (
-          <div>総合減点数（未実装）</div>
+          <DeductionSumsList />
         ) : null}
         {section === 3 ? <DeductionForTest /> : null}
       </div>
