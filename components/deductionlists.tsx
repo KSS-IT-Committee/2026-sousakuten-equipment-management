@@ -8,8 +8,8 @@ export async function DeductionSumsList() {
       <h1 className={styles.title}>クラス別減点合計</h1>
       <div className={styles.deductionSumList}>
         {CLASSES.map((className) => (
-          
-            <DeductionSum key={className} className={className} />
+
+          <DeductionSum key={className} className={className} />
 
         ))}
       </div>

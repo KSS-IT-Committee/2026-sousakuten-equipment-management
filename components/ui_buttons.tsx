@@ -3,13 +3,17 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
+import { CLASSES, type ClassName } from "@/db/schema";
 import styles from "@/styles/deduction_ui.module.css";
 
 const sortOptions: { value: DeductionSortKey; label: string }[] = [
+  { value: "occurredAt", label: "日にち" },
   { value: "className", label: "クラス" },
   { value: "id", label: "ID" },
   { value: "points", label: "加点・減点" },
+  { value: "content", label: "内容" },
 ];
+const emptyClassFilterValue = "__none__";
 
 export default function SelectButtons() {
   const router = useRouter();
@@ -18,6 +22,11 @@ export default function SelectButtons() {
   const selected = searchParams.get("section") ?? "1";
   const sortBy = (searchParams.get("sortBy") ?? "occurredAt") as DeductionSortKey;
   const sortOrder = (searchParams.get("sortOrder") ?? "desc") as DeductionSortOrder;
+  const rawSelectedClasses = searchParams.getAll("class");
+  const hasClassFilter = rawSelectedClasses.length > 0;
+  const selectedClasses = rawSelectedClasses.filter((className): className is ClassName =>
+    CLASSES.includes(className as ClassName),
+  );
 
   const updateParams = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -26,6 +35,31 @@ export default function SelectButtons() {
       params.set("section", "1");
     }
     router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const updateClassFilters = (classes: ClassName[]) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("class");
+    if (classes.length === 0) {
+      params.append("class", emptyClassFilterValue);
+    } else if (classes.length < CLASSES.length) {
+      classes.forEach((className) => {
+        params.append("class", className);
+      });
+    }
+    if (selected !== "1") {
+      params.set("section", "1");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+ const toggleClassFilter = (className: ClassName) => {
+    const currentClasses = hasClassFilter ? selectedClasses : [...CLASSES];
+    const nextClasses = currentClasses.includes(className)
+      ? currentClasses.filter((selectedClass) => selectedClass !== className)
+      : [...currentClasses, className];
+
+    updateClassFilters(nextClasses);
   };
 
   return (
@@ -39,9 +73,7 @@ export default function SelectButtons() {
           クラス別減点ポイント
         </button>
 
-        <button onClick={() => updateParams("section", "3")} className={selected === "3" ? styles.activeButton : styles.notactiveButton}>
-          減点追加
-        </button>
+
       </div>
 
       <div className={styles.sortControls}>
@@ -68,6 +100,52 @@ export default function SelectButtons() {
           {sortOrder === "asc" ? "昇順" : "降順"}
         </button>
       </div>
+
+      {selected === "1" ? (
+        <div className={styles.filterPanel}>
+          <div className={styles.filterHeader}>
+            <span className={styles.filterTitle}>クラスで絞り込み</span>
+            <div className={styles.filterActions}>
+              <button
+                className={styles.filterActionButton}
+                onClick={() => updateClassFilters(CLASSES)}
+                type="button"
+              >
+                全クラス表示
+              </button>
+              <button
+                className={styles.filterActionButton}
+                onClick={() => updateClassFilters([])}
+                type="button"
+              >
+                すべて解除
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.classCheckboxGrid}>
+            {CLASSES.map((className) => {
+              const isChecked = hasClassFilter ? selectedClasses.includes(className) : true;
+              return (
+                <label
+                  key={className}
+                  className={styles.classCheckboxLabel}
+                  data-checked={isChecked ? "true" : "false"}
+                >
+                  <input
+                    checked={isChecked}
+                    className={styles.classCheckbox}
+                    onChange={() => toggleClassFilter(className)}
+                    type="checkbox"
+                  />
+                  <span className={styles.classCheckboxMark} aria-hidden="true" />
+                  <span className={styles.classCheckboxText}>{className}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

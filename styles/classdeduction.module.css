@@ -39,6 +39,27 @@
 .deductionList {
 }
 
+.emptyState {
+  margin: 12px 10px 0;
+  padding: 24px;
+  border: 1px solid #d7dff7;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+  box-shadow: 0 8px 24px rgba(37, 56, 168, 0.08);
+}
+
+.emptyStateTitle {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2430ab;
+}
+
+.emptyStateBody {
+  font-size: 15px;
+  color: #44506b;
+}
+
 .deduction h3,
 .deduction p {
   font-size: 23px;

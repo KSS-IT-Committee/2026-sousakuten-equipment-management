@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
 import { getDeductionsByClasses } from "@/db/queries/deductions";
-import { ClassName } from "@/db/schema";
-import styles from "@/styles/deduction.module.css";
+import type { ClassName } from "@/db/schema";
+import styles from "@/styles/classdeduction.module.css";
 
 const sortDeductionMap: Record<
   DeductionSortKey,
@@ -25,6 +25,15 @@ export async function DeductionCellsByClasses({
   sortBy: DeductionSortKey;
   sortOrder: DeductionSortOrder;
 }) {
+  if (classes.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <p className={styles.emptyStateTitle}>表示するクラスが選択されていません。</p>
+        <p className={styles.emptyStateBody}>チェックボックスから1つ以上のクラスを選ぶと、減点履歴が表示されます。</p>
+      </div>
+    );
+  }
+
   const deductions = await getDeductionsByClasses(classes);
   const sortedDeductions = [...deductions].sort((left, right) => {
     const result = sortDeductionMap[sortBy](left, right);
@@ -44,7 +53,10 @@ export async function DeductionCellsByClasses({
 
     <div className={styles.cells}>
       {!isthereAnyDeduction ? (
-        <p>現在、これまでの減点はありません。</p>
+        <div className={styles.emptyState}>
+          <p className={styles.emptyStateTitle}>選択したクラスの減点履歴はまだありません。</p>
+          <p className={styles.emptyStateBody}>クラスの絞り込みを変えるか、新しく減点を追加するとここに表示されます。</p>
+        </div>
       ) : (
         <div className={styles.deductionList}>
           <div className={styles.deductionsample}>

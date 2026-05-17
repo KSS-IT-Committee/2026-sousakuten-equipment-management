@@ -38,6 +38,6 @@ export async function getDeductionsByClasses(classNames: ClassName[]) {
     .where(inArray(Deductions.className, classNames));
 }
 
-export async function deleteDeduction(id: number) {
+export async function deleteDeductionById(id: number) {
   await db.delete(Deductions).where(eq(Deductions.id, id));
 }

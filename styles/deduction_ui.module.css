@@ -3,9 +3,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px 16px;
-  margin: 0 auto 16px;
+  margin: 0 0 16px;
 }
 
 .changeUIButtons {
@@ -87,4 +87,129 @@
 .sortOrderButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(50, 40, 237, 0.15);
+}
+
+.filterPanel {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid #d6defa;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8faff 0%, #eef3ff 100%);
+  box-shadow: 0 6px 16px rgba(36, 48, 171, 0.08);
+}
+
+.filterHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.filterTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2430ab;
+}
+
+.filterActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filterActionButton {
+  padding: 8px 12px;
+  border: 1px solid #b9c4ff;
+  border-radius: 999px;
+  background-color: white;
+  color: #2430ab;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterActionButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(36, 48, 171, 0.12);
+}
+
+.classCheckboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 10px;
+}
+
+.classCheckboxLabel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #ced7fb;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.classCheckboxLabel[data-checked="true"] {
+  border-color: #3543dc;
+  background: linear-gradient(180deg, #eff2ff 0%, #dfe6ff 100%);
+  box-shadow: 0 4px 12px rgba(53, 67, 220, 0.16);
+}
+
+.classCheckbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.classCheckboxMark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #8ea0f4;
+  border-radius: 5px;
+  background-color: white;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.classCheckboxMark::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background-color: #3543dc;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+
+.classCheckbox:checked + .classCheckboxMark {
+  border-color: #3543dc;
+  background-color: #eef2ff;
+}
+
+.classCheckbox:checked + .classCheckboxMark::before {
+  transform: scale(1);
+}
+
+.classCheckbox:focus-visible + .classCheckboxMark {
+  outline: 2px solid #7a8cff;
+  outline-offset: 2px;
+}
+
+.classCheckboxText {
+  color: #22304b;
+}
+
+.classCheckboxLabel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(36, 48, 171, 0.1);
 }

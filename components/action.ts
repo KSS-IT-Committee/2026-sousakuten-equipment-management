@@ -7,7 +7,7 @@ import {
   getActiveBorrowingsByID,
   returnBorrowing,
 } from "@/db/queries/borrowings";
-import { createDeduction } from "@/db/queries/deductions";
+import { createDeduction, deleteDeductionById } from "@/db/queries/deductions";
 import { getEquipmentById } from "@/db/queries/equipments";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 
@@ -65,6 +65,12 @@ export const createDeductionAction = async (data: {
     points: data.points,
     occurredAt: new Date(),
   });
+  revalidatePath("/deductions");
+  revalidatePath("/classdeduction");
+};
+
+export const deleteDeductionAction = async (id: number) => {
+  await deleteDeductionById(id);
   revalidatePath("/deductions");
   revalidatePath("/classdeduction");
 };

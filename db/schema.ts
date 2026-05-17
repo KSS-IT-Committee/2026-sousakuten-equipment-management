@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   check,
   index,
@@ -8,6 +8,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 
 export const CLASSES = [
@@ -38,8 +39,10 @@ export const CLASSES = [
 ] as const;
 
 export type ClassName = (typeof CLASSES)[number];
+
 export const classEnum = pgEnum("class_name", CLASSES);
 
+// 減点クラスDB — per-class deductions (issue #3)
 export const Deductions = pgTable("deductions", {
   id: serial("id").primaryKey(),
   className: classEnum("class_name").notNull(),
@@ -50,9 +53,30 @@ export const Deductions = pgTable("deductions", {
     .notNull(),
 });
 
-export type Deduction = typeof Deductions.$inferSelect;
-export type NewDeduction = typeof Deductions.$inferInsert;
+// 伝達内容DB — announcement bodies (issue #3)
+export const announcements = pgTable("announcements", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
 
+// 伝達クラスDB — junction linking announcements to the classes they target (issue #3)
+export const announcementClasses = pgTable(
+  "announcement_classes",
+  {
+    id: serial("id").primaryKey(),
+    announcementId: integer("announcement_id")
+      .notNull()
+      .references(() => announcements.id, { onDelete: "cascade" }),
+    className: classEnum("class_name").notNull(),
+  },
+  (table) => [unique().on(table.announcementId, table.className)],
+);
+
+// 備品DB
 export const Equipments = pgTable(
   "equipments",
   {
@@ -64,6 +88,7 @@ export const Equipments = pgTable(
   (table) => [check("quantity_positive", sql`${table.quantity} > 0`)],
 );
 
+// 備品貸出DB
 export const Borrowings = pgTable(
   "borrowings",
   {
@@ -72,7 +97,7 @@ export const Borrowings = pgTable(
       .notNull()
       .references(() => Equipments.id),
     // tagNumber: integer("tag_number").notNull(),
-    class: text("class").notNull(),
+    class: integer("class").notNull(),
     borrowedAt: timestamp("borrowed_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -81,10 +106,30 @@ export const Borrowings = pgTable(
   (table) => [
     index("equipment_idx").on(table.equipmentId),
     index("class_idx").on(table.class),
-    check("class_format_check", sql`${table.class} ~ '^[1-6][A-D]$'`),
     check(
       "returned_at_after_borrowed_at",
       sql`${table.returnedAt} IS NULL OR ${table.returnedAt} >= ${table.borrowedAt}`,
     ),
   ],
 );
+
+export const announcementsRelations = relations(announcements, ({ many }) => ({
+  classes: many(announcementClasses),
+}));
+
+export const announcementClassesRelations = relations(
+  announcementClasses,
+  ({ one }) => ({
+    announcement: one(announcements, {
+      fields: [announcementClasses.announcementId],
+      references: [announcements.id],
+    }),
+  }),
+);
+
+export type Deduction = typeof deductions.$inferSelect;
+export type NewDeduction = typeof deductions.$inferInsert;
+export type Announcement = typeof announcements.$inferSelect;
+export type NewAnnouncement = typeof announcements.$inferInsert;
+export type AnnouncementClass = typeof announcementClasses.$inferSelect;
+export type NewAnnouncementClass = typeof announcementClasses.$inferInsert;

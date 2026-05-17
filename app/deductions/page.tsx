@@ -5,6 +5,7 @@ type Props = {
     section?: string;
     sortBy?: string;
     sortOrder?: string;
+    class?: string | string[];
   }>;
 };
 
