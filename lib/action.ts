@@ -3,13 +3,7 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-import {
-  createBorrowing,
-  getActiveBorrowingsByID,
-  returnBorrowing,
-} from "@/db/queries/borrowings";
 import { createDeduction, deleteDeductionById } from "@/db/queries/deductions";
-import { getEquipmentById } from "@/db/queries/equipments";
 import { Borrowings, Equipments } from "@/db/schema";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 import { db } from "@/lib/db";

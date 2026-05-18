@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type {
   DeductionSortKey,
   DeductionSortOrder,
@@ -5,7 +7,6 @@ import type {
 import { getDeductionsByClasses } from "@/db/queries/deductions";
 import type { ClassName } from "@/db/schema";
 import styles from "@/styles/classdeduction.module.css";
-import Link from "next/link";
 
 const sortDeductionMap: Record<
   DeductionSortKey,
