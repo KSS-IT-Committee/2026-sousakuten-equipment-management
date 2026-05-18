@@ -49,9 +49,9 @@ For utility functions, type definitions, constants, etc., use **Named Exports**.
 
 ```typescript
 // ✅ Correct
-export function validateEmail(email: string): boolean {
+export const validateEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+};
 
 export const MAX_RETRY_COUNT = 3;
 ```
@@ -76,8 +76,8 @@ Use **camelCase** for regular functions. Use **PascalCase** for React components
 
 ```typescript
 // ✅ Correct (regular functions)
-function fetchUserData() { }
-function validateInput() { }
+const fetchUserData = () => { }
+const validateInput = () => { }
 
 // ✅ Correct (React components)
 function IconCard() { return <div>...</div>; }
