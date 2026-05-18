@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import styles from "@/styles/navbar.module.css";
+import styles from "@/styles/Navbar.module.css";
 
 export function Navbar() {
   return (

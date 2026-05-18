@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { returnBorrowingAction } from "@/components/action";
+import { returnBorrowingAction } from "@/lib/action";
 import styles from "@/styles/ReturnButton.module.css";
 
 export function ReturnButton({ borrowingId }: { borrowingId: number }) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { borrowEquipmentAction } from "@/components/action";
+import { borrowEquipmentAction } from "@/lib/action";
 
 export function BorrowButton({
   equipmentId,
