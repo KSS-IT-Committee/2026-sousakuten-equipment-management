@@ -1,4 +1,4 @@
-import { DeductionUI } from "@/components/deduction_ui";
+import { DeductionUI } from "@/components/DeductionUi";
 
 type Props = {
   searchParams?: Promise<{
@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default async function Deductions({ searchParams }: Props) {
-
   return (
     <main className="flex-1 flex flex-col items-center justify-start">
       <div style={{ width: "100%", marginBottom: "24px" }}>
@@ -20,7 +19,6 @@ export default async function Deductions({ searchParams }: Props) {
         <h2 className="text-2xl text-center mt-4">
           各クラスの減点内容とポイントを管理するサイト
         </h2>
-
       </div>
       <DeductionUI searchParams={searchParams} />
     </main>

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import DeleteDeductionButton from "@/components/deletededuction_button";
+import DeleteDeductionButton from "@/components/DeletedeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
 
 import styles from "./base.module.css";
@@ -34,8 +34,6 @@ export default async function Page({ searchParams }: Props) {
         <h2>日時: {deduction.occurredAt.toLocaleString("ja-JP")}</h2>
       </div>
       <DeleteDeductionButton deductionId={deduction.id} />
-
-
     </main>
-  )
+  );
 }

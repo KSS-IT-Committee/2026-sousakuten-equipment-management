@@ -2,7 +2,10 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
+import type {
+  DeductionSortKey,
+  DeductionSortOrder,
+} from "@/components/DeductionUi";
 import { CLASSES, type ClassName } from "@/db/schema";
 import styles from "@/styles/deduction_ui.module.css";
 
@@ -20,12 +23,15 @@ export default function SelectButtons() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const selected = searchParams.get("section") ?? "1";
-  const sortBy = (searchParams.get("sortBy") ?? "occurredAt") as DeductionSortKey;
-  const sortOrder = (searchParams.get("sortOrder") ?? "desc") as DeductionSortOrder;
+  const sortBy = (searchParams.get("sortBy") ??
+    "occurredAt") as DeductionSortKey;
+  const sortOrder = (searchParams.get("sortOrder") ??
+    "desc") as DeductionSortOrder;
   const rawSelectedClasses = searchParams.getAll("class");
   const hasClassFilter = rawSelectedClasses.length > 0;
-  const selectedClasses = rawSelectedClasses.filter((className): className is ClassName =>
-    CLASSES.includes(className as ClassName),
+  const selectedClasses = rawSelectedClasses.filter(
+    (className): className is ClassName =>
+      CLASSES.includes(className as ClassName),
   );
 
   const updateParams = (key: string, value: string) => {
@@ -53,7 +59,7 @@ export default function SelectButtons() {
     router.push(`${pathname}?${params.toString()}`);
   };
 
- const toggleClassFilter = (className: ClassName) => {
+  const toggleClassFilter = (className: ClassName) => {
     const currentClasses = hasClassFilter ? selectedClasses : [...CLASSES];
     const nextClasses = currentClasses.includes(className)
       ? currentClasses.filter((selectedClass) => selectedClass !== className)
@@ -65,15 +71,23 @@ export default function SelectButtons() {
   return (
     <div className={styles.controls}>
       <div className={styles.changeUIButtons}>
-        <button onClick={() => updateParams("section", "1")} className={selected === "1" ? styles.activeButton : styles.notactiveButton}>
+        <button
+          onClick={() => updateParams("section", "1")}
+          className={
+            selected === "1" ? styles.activeButton : styles.notactiveButton
+          }
+        >
           減点履歴
         </button>
 
-        <button onClick={() => updateParams("section", "2")} className={selected === "2" ? styles.activeButton : styles.notactiveButton}>
+        <button
+          onClick={() => updateParams("section", "2")}
+          className={
+            selected === "2" ? styles.activeButton : styles.notactiveButton
+          }
+        >
           クラス別減点ポイント
         </button>
-
-
       </div>
 
       <div className={styles.sortControls}>
@@ -93,7 +107,9 @@ export default function SelectButtons() {
         </label>
 
         <button
-          onClick={() => updateParams("sortOrder", sortOrder === "asc" ? "desc" : "asc")}
+          onClick={() =>
+            updateParams("sortOrder", sortOrder === "asc" ? "desc" : "asc")
+          }
           className={styles.sortOrderButton}
           type="button"
         >
@@ -125,7 +141,9 @@ export default function SelectButtons() {
 
           <div className={styles.classCheckboxGrid}>
             {CLASSES.map((className) => {
-              const isChecked = hasClassFilter ? selectedClasses.includes(className) : true;
+              const isChecked = hasClassFilter
+                ? selectedClasses.includes(className)
+                : true;
               return (
                 <label
                   key={className}
@@ -138,7 +156,10 @@ export default function SelectButtons() {
                     onChange={() => toggleClassFilter(className)}
                     type="checkbox"
                   />
-                  <span className={styles.classCheckboxMark} aria-hidden="true" />
+                  <span
+                    className={styles.classCheckboxMark}
+                    aria-hidden="true"
+                  />
                   <span className={styles.classCheckboxText}>{className}</span>
                 </label>
               );

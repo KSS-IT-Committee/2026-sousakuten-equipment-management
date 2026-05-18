@@ -1,18 +1,24 @@
-import Link from "next/link";
-import styles from "@/styles/classdeduction.module.css";
-import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
-import type { ClassName } from "@/db/schema";
+import type {
+  DeductionSortKey,
+  DeductionSortOrder,
+} from "@/components/DeductionUi";
 import { getDeductionsByClasses } from "@/db/queries/deductions";
-
-
+import type { ClassName } from "@/db/schema";
+import styles from "@/styles/classdeduction.module.css";
+import Link from "next/link";
 
 const sortDeductionMap: Record<
   DeductionSortKey,
-  (left: Awaited<ReturnType<typeof getDeductionsByClasses>>[number], right: Awaited<ReturnType<typeof getDeductionsByClasses>>[number]) => number
+  (
+    left: Awaited<ReturnType<typeof getDeductionsByClasses>>[number],
+    right: Awaited<ReturnType<typeof getDeductionsByClasses>>[number],
+  ) => number
 > = {
-  className: (left, right) => left.className.localeCompare(right.className, "ja"),
+  className: (left, right) =>
+    left.className.localeCompare(right.className, "ja"),
   id: (left, right) => left.id - right.id,
-  occurredAt: (left, right) => left.occurredAt.getTime() - right.occurredAt.getTime(),
+  occurredAt: (left, right) =>
+    left.occurredAt.getTime() - right.occurredAt.getTime(),
   points: (left, right) => left.points - right.points,
   content: (left, right) => left.content.localeCompare(right.content, "ja"),
 };
@@ -29,8 +35,12 @@ export async function DeductionCellsByClasses({
   if (classes.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <p className={styles.emptyStateTitle}>表示するクラスが選択されていません。</p>
-        <p className={styles.emptyStateBody}>チェックボックスから1つ以上のクラスを選ぶと、減点履歴が表示されます。</p>
+        <p className={styles.emptyStateTitle}>
+          表示するクラスが選択されていません。
+        </p>
+        <p className={styles.emptyStateBody}>
+          チェックボックスから1つ以上のクラスを選ぶと、減点履歴が表示されます。
+        </p>
       </div>
     );
   }
@@ -51,12 +61,15 @@ export async function DeductionCellsByClasses({
   const isthereAnyDeduction = deductions.length > 0;
 
   return (
-
     <div className={styles.cells}>
       {!isthereAnyDeduction ? (
         <div className={styles.emptyState}>
-          <p className={styles.emptyStateTitle}>選択したクラスの減点履歴はまだありません。</p>
-          <p className={styles.emptyStateBody}>クラスの絞り込みを変えるか、新しく減点を追加するとここに表示されます。</p>
+          <p className={styles.emptyStateTitle}>
+            選択したクラスの減点履歴はまだありません。
+          </p>
+          <p className={styles.emptyStateBody}>
+            クラスの絞り込みを変えるか、新しく減点を追加するとここに表示されます。
+          </p>
         </div>
       ) : (
         <div className={styles.deductionList}>
@@ -69,21 +82,22 @@ export async function DeductionCellsByClasses({
           </div>
           <hr className={styles.line} />
           {sortedDeductions.map((deduction) => (
-            <Link href={`/history?id=${deduction.id}`} key={deduction.id} className={styles.linkArea}>
+            <Link
+              href={`/history?id=${deduction.id}`}
+              key={deduction.id}
+              className={styles.linkArea}
+            >
               <div className={styles.deduction}>
                 <h3>{deduction.className}</h3>
                 <p>{deduction.id}</p>
                 <p>{deduction.occurredAt.toLocaleDateString("ja-JP")}</p>
                 <p>{deduction.points * -1}</p>
                 <p className={styles.content}>{deduction.content}</p>
-
               </div>
             </Link>
           ))}
         </div>
-      )
-      }
-
+      )}
     </div>
-  )
+  );
 }

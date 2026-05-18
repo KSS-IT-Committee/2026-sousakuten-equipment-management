@@ -1,16 +1,14 @@
 import { CLASSES } from "@/db/schema";
 import styles from "@/styles/deductionsum.module.css";
 
-import { DeductionSum } from "./deductionsum";
+import { DeductionSum } from "@/components/Deductionsum";
 export async function DeductionSumsList() {
   return (
     <div>
       <h1 className={styles.title}>クラス別減点合計</h1>
       <div className={styles.deductionSumList}>
         {CLASSES.map((className) => (
-
           <DeductionSum key={className} className={className} />
-
         ))}
       </div>
     </div>
