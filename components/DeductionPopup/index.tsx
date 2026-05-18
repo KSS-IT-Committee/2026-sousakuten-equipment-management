@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { createDeductionAction } from "@/lib/action";
-import styles from "@/styles/DeductionPopup.module.css";
+import styles from "./DeductionPopup.module.css";
 
 export default function AddDeductionUI() {
   const [isOpen, setIsOpen] = useState(false);

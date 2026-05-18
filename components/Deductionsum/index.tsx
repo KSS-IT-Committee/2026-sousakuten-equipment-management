@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getDeductionsByClass } from "@/db/queries/deductions";
 import type { ClassName } from "@/db/schema";
-import styles from "@/styles/Deductionsum.module.css";
+import styles from "./DeductionSum.module.css";
 type Props = {
   className: ClassName;
 };

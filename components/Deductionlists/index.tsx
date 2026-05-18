@@ -1,6 +1,6 @@
 import { DeductionSum } from "@/components/Deductionsum";
 import { CLASSES } from "@/db/schema";
-import styles from "@/styles/Deductionsum.module.css";
+import styles from "./DeductionLists.module.css";
 export async function DeductionSumsList() {
   return (
     <div>
