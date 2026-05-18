@@ -27,6 +27,7 @@ export function BorrowingPopup({
 
   const closePopup = () => {
     setIsOpen(false);
+    setSelectedClass(null);
   };
 
   const handleClassSelect = (classCode: string) => {

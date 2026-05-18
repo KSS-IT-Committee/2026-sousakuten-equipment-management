@@ -26,13 +26,13 @@ export async function BorrowingEquipList({ id }: { id: number }) {
         </p>
       ) : (
         borrowings.map((borrowing) => (
-          <div key={borrowing.id} className={styles.listItem}>
+          <div key={borrowing.id} className={styles.listItem} role="listitem">
             <div className={styles.infoGroup}>
               <span className={styles.class}>
                 クラス: {getClassLabel(borrowing.class)}
               </span>
               <span className={styles.date}>
-                貸出日: {borrowing.borrowedAt.toLocaleDateString()}
+                貸出日: {new Date(borrowing.borrowedAt).toLocaleDateString()}
               </span>
             </div>
 
