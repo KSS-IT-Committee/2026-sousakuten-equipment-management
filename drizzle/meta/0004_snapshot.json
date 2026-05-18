@@ -1,6 +1,6 @@
 {
-  "id": "03d7f6dc-54e4-401b-89f2-796effe73fd1",
-  "prevId": "df3655c4-3c82-4f5f-8541-7d5d52b3711d",
+  "id": "80284f4a-6753-4618-b72b-97e42f6f3d92",
+  "prevId": "03d7f6dc-54e4-401b-89f2-796effe73fd1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -187,6 +187,99 @@
           "value": "\"equipments\".\"quantity\" > 0"
         }
       },
+      "isRLSEnabled": false
+    },
+    "public.announcement_classes": {
+      "name": "announcement_classes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "announcement_id": {
+          "name": "announcement_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "class_name": {
+          "name": "class_name",
+          "type": "class_name",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "announcement_classes_announcement_id_announcements_id_fk": {
+          "name": "announcement_classes_announcement_id_announcements_id_fk",
+          "tableFrom": "announcement_classes",
+          "tableTo": "announcements",
+          "columnsFrom": [
+            "announcement_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "announcement_classes_announcement_id_class_name_unique": {
+          "name": "announcement_classes_announcement_id_class_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "announcement_id",
+            "class_name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.announcements": {
+      "name": "announcements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
       "isRLSEnabled": false
     }
   },

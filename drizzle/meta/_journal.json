@@ -29,6 +29,13 @@
       "when": 1778577475290,
       "tag": "0003_confused_gladiator",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779097036214,
+      "tag": "0004_yellow_valeria_richards",
+      "breakpoints": true
     }
   ]
 }
