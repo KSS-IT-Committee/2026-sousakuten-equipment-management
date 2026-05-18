@@ -1,6 +1,6 @@
 import styles from "@/app/base.module.css";
-import { DefaultFooter } from "@/app/components/footer";
 import { EquipmentCell } from "@/components/Equipment";
+import { DefaultFooter } from "@/components/Footer";
 import { getEquipments } from "@/db/queries/equipments";
 export const dynamic = "force-dynamic";
 export default async function Home() {
