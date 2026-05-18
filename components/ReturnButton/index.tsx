@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 
-import { returnBorrowingAction } from "@/components/action";
-import styles from "@/styles/ReturnButton.module.css";
+import { returnBorrowingAction } from "@/lib/action";
+
+import styles from "./ReturnButton.module.css";
 
 export function ReturnButton({ borrowingId }: { borrowingId: number }) {
   const [loading, setLoading] = useState(false);
