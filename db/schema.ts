@@ -11,7 +11,7 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-export const CLASSES = [
+export const CLASS_VALUES = [
   "1A",
   "1B",
   "1C",
@@ -39,7 +39,7 @@ export const CLASSES = [
 ] as const;
 
 export type ClassName = (typeof CLASSES)[number];
-
+export const CLASSES = [...CLASS_VALUES];
 export const classEnum = pgEnum("class_name", [
   "1A", "1B", "1C", "1D",
   "2A", "2B", "2C", "2D",
