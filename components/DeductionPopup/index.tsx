@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { createDeductionAction } from "@/lib/action";
-import styles from "@/styles/deduction_popup.module.css";
+import styles from "@/styles/DeductionPopup.module.css";
 
 export default function AddDeductionUI() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +13,11 @@ export default function AddDeductionUI() {
   const [selectedClass, setSelectedClass] = useState<string>("");
   const [content, setContent] = useState("");
   const [points, setPoints] = useState<number>(5);
-  const addDeduction = async (className: string, content: string, points: number) => {
+  const addDeduction = async (
+    className: string,
+    content: string,
+    points: number,
+  ) => {
     await createDeductionAction({
       className: className,
       content: content,
@@ -23,18 +27,22 @@ export default function AddDeductionUI() {
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
   return (
     <div>
-      <button onClick={() => {
-        setIsOpen(true);
-        setSelectedClass("");
-        setSelectedGrade("");
-        setContent("");
-      }} className={styles.button}>減点追加</button>
-      {isOpen ?
+      <button
+        onClick={() => {
+          setIsOpen(true);
+          setSelectedClass("");
+          setSelectedGrade("");
+          setContent("");
+        }}
+        className={styles.button}
+      >
+        減点追加
+      </button>
+      {isOpen ? (
         <div className={styles.overlay}>
           <div className={styles.popup}>
             <h2>減点する</h2>
-            <p>ここに入力すると、即時減点されます。
-            </p>
+            <p>ここに入力すると、即時減点されます。</p>
 
             <div className={styles.inputGroup}>
               <label htmlFor="grade-select" className={styles.label}>
@@ -87,16 +95,24 @@ export default function AddDeductionUI() {
                 setIsOpenConfirmation(true);
               }}
               className={styles.addButton}
-              disabled={selectedGrade === "" || selectedClass === "" || content.trim() === "" || points <= 0}
+              disabled={
+                selectedGrade === "" ||
+                selectedClass === "" ||
+                content.trim() === "" ||
+                points <= 0
+              }
             >
               減点を追加
             </button>
-            <button onClick={() => setIsOpen(false)} className={styles.closeButton}>
+            <button
+              onClick={() => setIsOpen(false)}
+              className={styles.closeButton}
+            >
               閉じる
             </button>
-
           </div>
-        </div> : null}
+        </div>
+      ) : null}
       {isOpenConfirmation ? (
         <div className={styles.confirmationOverlay}>
           <div className={styles.confirmationPopup}>
@@ -104,7 +120,11 @@ export default function AddDeductionUI() {
             <p>{`${selectedGrade}年${selectedClass}組に${points}点の減点を追加しますか？`}</p>
             <button
               onClick={async () => {
-                await addDeduction(selectedGrade + selectedClass, content, points);
+                await addDeduction(
+                  selectedGrade + selectedClass,
+                  content,
+                  points,
+                );
                 setIsOpen(false);
                 setIsOpenConfirmation(false);
                 setSelectedClass("");
@@ -117,7 +137,9 @@ export default function AddDeductionUI() {
               OK
             </button>
             <button
-              onClick={() => { setIsOpenConfirmation(false) }}
+              onClick={() => {
+                setIsOpenConfirmation(false);
+              }}
               className={styles.cancelButton}
             >
               キャンセル
@@ -126,5 +148,5 @@ export default function AddDeductionUI() {
         </div>
       ) : null}
     </div>
-  )
+  );
 }

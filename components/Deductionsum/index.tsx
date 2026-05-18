@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getDeductionsByClass } from "@/db/queries/deductions";
 import type { ClassName } from "@/db/schema";
-import styles from "@/styles/deductionsum.module.css";
+import styles from "@/styles/Deductionsum.module.css";
 type Props = {
   className: ClassName;
 };
@@ -14,7 +14,6 @@ export async function DeductionSum({ className }: Props) {
     sum += deduction.points;
   }
   return (
-
     <div className={styles.section}>
       <Link href={`/deduction?class=${className}`} className={styles.linkArea}>
         <h2 className={styles.title}>{className}</h2>

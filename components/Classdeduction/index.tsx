@@ -6,7 +6,7 @@ import type {
 } from "@/components/DeductionUi";
 import { getDeductionsByClasses } from "@/db/queries/deductions";
 import type { ClassName } from "@/db/schema";
-import styles from "@/styles/classdeduction.module.css";
+import styles from "@/styles/Classdeduction.module.css";
 
 const sortDeductionMap: Record<
   DeductionSortKey,

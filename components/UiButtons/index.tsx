@@ -7,7 +7,7 @@ import type {
   DeductionSortOrder,
 } from "@/components/DeductionUi";
 import { CLASSES, type ClassName } from "@/db/schema";
-import styles from "@/styles/deduction_ui.module.css";
+import styles from "@/styles/DeductionUi.module.css";
 
 const sortOptions: { value: DeductionSortKey; label: string }[] = [
   { value: "occurredAt", label: "日にち" },
