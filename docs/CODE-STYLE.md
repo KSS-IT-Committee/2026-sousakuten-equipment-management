@@ -76,11 +76,8 @@ Use **camelCase** for regular functions. Use **PascalCase** for React components
 
 ```typescript
 // ✅ Correct (regular functions)
-// ✅ Correct (regular functions)
 const fetchUserData = () => {}
 const validateInput = () => {}
-
-// ✅ Correct (React components)
 
 // ✅ Correct (React components)
 function IconCard() { return <div>...</div>; }
