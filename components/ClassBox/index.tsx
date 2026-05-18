@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
-import styles from "@/styles/class_box.module.css";
+
+import styles from "./ClassBox.module.css";
 
 interface ClassBoxProps {
   onSelect?: (classCode: ClassCode) => void;

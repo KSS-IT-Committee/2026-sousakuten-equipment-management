@@ -1,10 +1,10 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 
 import { Borrowings } from "@/db/schema";
 import { db } from "@/lib/db";
 
 export async function getBorrowings() {
-  return await db.select().from(Borrowings);
+  return await db.select().from(Borrowings).orderBy(Borrowings.id);
 }
 
 export async function getBorrowingById(id: number) {
@@ -34,7 +34,8 @@ export async function getActiveBorrowings() {
   return await db
     .select()
     .from(Borrowings)
-    .where(isNull(Borrowings.returnedAt));
+    .where(isNull(Borrowings.returnedAt))
+    .orderBy(desc(Borrowings.borrowedAt));
 }
 
 export async function getActiveBorrowingsByID(equipmentId: number) {
@@ -46,7 +47,8 @@ export async function getActiveBorrowingsByID(equipmentId: number) {
         eq(Borrowings.equipmentId, equipmentId),
         isNull(Borrowings.returnedAt),
       ),
-    );
+    )
+    .orderBy(desc(Borrowings.borrowedAt));
 }
 
 export async function createBorrowing(data: {

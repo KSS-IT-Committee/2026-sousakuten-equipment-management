@@ -1,7 +1,8 @@
 import { ReturnButton } from "@/components/ReturnButton";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getClassLabel } from "@/lib/class-number";
-import styles from "@/styles/borrowing-equip-list.module.css";
+
+import styles from "./BorrowingEquipList.module.css";
 
 export async function BorrowingEquipList({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByID(id);
@@ -26,13 +27,13 @@ export async function BorrowingEquipList({ id }: { id: number }) {
         </p>
       ) : (
         borrowings.map((borrowing) => (
-          <div key={borrowing.id} className={styles.listItem}>
+          <div key={borrowing.id} className={styles.listItem} role="listitem">
             <div className={styles.infoGroup}>
               <span className={styles.class}>
                 クラス: {getClassLabel(borrowing.class)}
               </span>
               <span className={styles.date}>
-                貸出日: {borrowing.borrowedAt.toLocaleDateString()}
+                貸出日: {new Date(borrowing.borrowedAt).toLocaleDateString()}
               </span>
             </div>
 

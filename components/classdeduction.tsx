@@ -1,9 +1,10 @@
 import Link from "next/link";
-
-import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
-import { getDeductionsByClasses } from "@/db/queries/deductions";
-import type { ClassName } from "@/db/schema";
 import styles from "@/styles/classdeduction.module.css";
+import type { DeductionSortKey, DeductionSortOrder } from "@/components/deduction_ui";
+import type { ClassName } from "@/db/schema";
+import { getDeductionsByClasses } from "@/db/queries/deductions";
+
+
 
 const sortDeductionMap: Record<
   DeductionSortKey,
