@@ -1,5 +1,5 @@
 "use client";
-import { createDeductionAction } from "@/components/action";
+import { createDeductionAction } from "@/lib/action";
 
 export function DeductionForTest() {
   const testadd = async () => {

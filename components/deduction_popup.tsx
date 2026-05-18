@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { createDeductionAction } from "@/components/action";
+import { createDeductionAction } from "@/lib/action";
 import styles from "@/styles/deduction_popup.module.css";
 
 export default function AddDeductionUI() {
@@ -117,7 +117,7 @@ export default function AddDeductionUI() {
               OK
             </button>
             <button
-              onClick={() => {setIsOpenConfirmation(false)}}
+              onClick={() => { setIsOpenConfirmation(false) }}
               className={styles.cancelButton}
             >
               キャンセル

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { deleteDeductionAction } from "@/components/action";
+import { deleteDeductionAction } from "@/lib/action";
 import styles from "@/styles/deletededuction_button.module.css";
 
 export default function DeleteDeductionButton({ deductionId }: { deductionId: number }) {
