@@ -5,7 +5,8 @@ import { useState } from "react";
 import { BorrowButton } from "@/components/BorrowButton";
 import { ClassBox } from "@/components/ClassBox";
 import { getClassLabel } from "@/lib/class-number";
-import styles from "@/styles/BorrowPopup.module.css";
+
+import styles from "./BorrowPopup.module.css";
 
 export function BorrowingPopup({
   id,
