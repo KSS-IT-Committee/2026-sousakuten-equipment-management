@@ -127,8 +127,8 @@ export const announcementClassesRelations = relations(
   }),
 );
 
-export type Deduction = typeof deductions.$inferSelect;
-export type NewDeduction = typeof deductions.$inferInsert;
+export type Deduction = typeof Deductions.$inferSelect;
+export type NewDeduction = typeof Deductions.$inferInsert;
 export type Announcement = typeof announcements.$inferSelect;
 export type NewAnnouncement = typeof announcements.$inferInsert;
 export type AnnouncementClass = typeof announcementClasses.$inferSelect;
