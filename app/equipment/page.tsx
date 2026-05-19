@@ -1,6 +1,7 @@
 import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { EquipmentCell } from "@/components/Equipment";
 
+import Link from "next/link";
 import styles from "./base.module.css";
 
 type Props = {
@@ -15,6 +16,12 @@ export default async function Equipment({ searchParams }: Props) {
   return (
     <>
       <div className={styles.cell}>
+        <div className={styles.actionGroup}>
+          <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
+            修正
+          </Link>
+        </div>
+
         {isValidId ? (
           <>
             <EquipmentCell id={id} />

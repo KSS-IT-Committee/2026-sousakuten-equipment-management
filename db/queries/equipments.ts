@@ -23,3 +23,14 @@ export async function createEquipment(data: {
 }) {
   return await db.insert(Equipments).values(data);
 }
+
+export async function updateEquipment(
+  id: number,
+  data: {
+    name: string;
+    quantity: number;
+    picture?: string;
+  },
+) {
+  return await db.update(Equipments).set(data).where(eq(Equipments.id, id));
+}

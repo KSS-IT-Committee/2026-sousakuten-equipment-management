@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { BorrowingPopup } from "@/components/BorrowPopup";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
@@ -62,12 +61,6 @@ export async function EquipmentCell({ id }: { id: number }) {
           ></div>
         </div>
       </div>
-
-      <BorrowingPopup
-        id={id}
-        title={equipment.name}
-        availableCount={availableCount}
-      />
     </div>
   );
 }

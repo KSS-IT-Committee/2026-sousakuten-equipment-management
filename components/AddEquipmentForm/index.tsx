@@ -3,16 +3,33 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-import { createEquipmentAction } from "./action";
+import { createEquipmentAction, updateEquipmentAction } from "./action";
 
 import styles from "./AddEquipmentForm.module.css";
 
-export function AddEquipmentForm() {
+type EquipmentFormMode = "create" | "edit";
+
+type EquipmentFormValues = {
+  id?: number;
+  name: string;
+  quantity: number;
+  picture?: string | null;
+};
+
+type AddEquipmentFormProps = {
+  mode?: EquipmentFormMode;
+  initialValues?: EquipmentFormValues;
+};
+
+export function AddEquipmentForm({
+  mode = "create",
+  initialValues,
+}: AddEquipmentFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [preview, setPreview] = useState<string>("");
+  const [preview, setPreview] = useState<string>(initialValues?.picture ?? "");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -30,20 +47,12 @@ export function AddEquipmentForm() {
       setLoading(true);
       setError("");
 
-      const name = formData.get("name") as string;
-      const quantity = parseInt(formData.get("quantity") as string);
-
-      if (!name.trim()) {
-        setError("機器名を入力してください");
-        return;
+      if (mode === "edit" && initialValues?.id) {
+        formData.set("equipmentId", String(initialValues.id));
+        await updateEquipmentAction(formData);
+      } else {
+        await createEquipmentAction(formData);
       }
-
-      if (!quantity || quantity <= 0) {
-        setError("数量は1以上の数字を入力してください");
-        return;
-      }
-
-      await createEquipmentAction(formData);
 
       router.push("/equipment");
     } catch (err) {
@@ -55,6 +64,9 @@ export function AddEquipmentForm() {
 
   return (
     <form ref={formRef} action={handleSubmit} className={styles.form}>
+      {mode === "edit" && initialValues?.id ? (
+        <input type="hidden" name="equipmentId" value={initialValues.id} />
+      ) : null}
       <div className={styles.formGroup}>
         <label htmlFor="name" className={styles.label}>
           機器名 <span className={styles.required}>*</span>
@@ -65,6 +77,7 @@ export function AddEquipmentForm() {
           name="name"
           placeholder="例: プロジェクター"
           className={styles.input}
+          defaultValue={initialValues?.name ?? ""}
           required
         />
       </div>
@@ -80,6 +93,7 @@ export function AddEquipmentForm() {
           placeholder="例: 5"
           className={styles.input}
           min="1"
+          defaultValue={initialValues?.quantity ?? ""}
           required
         />
       </div>
@@ -111,7 +125,13 @@ export function AddEquipmentForm() {
           className={styles.submitButton}
           disabled={loading}
         >
-          {loading ? "追加中..." : "機器を追加"}
+          {loading
+            ? mode === "edit"
+              ? "修正中..."
+              : "追加中..."
+            : mode === "edit"
+              ? "修正する"
+              : "機器を追加"}
         </button>
         <button
           type="button"
