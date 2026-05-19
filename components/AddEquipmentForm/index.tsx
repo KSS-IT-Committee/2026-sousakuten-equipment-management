@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-import { createEquipmentAction } from "@/components/equipment-action";
-import styles from "@/styles/add-equipment-form.module.css";
+import { createEquipmentAction } from "./action";
+
+import styles from "./AddEquipmentForm.module.css";
 
 export function AddEquipmentForm() {
   const router = useRouter();
@@ -42,16 +43,7 @@ export function AddEquipmentForm() {
         return;
       }
 
-      let picture: string | undefined;
-      if (preview) {
-        picture = preview;
-      }
-
-      await createEquipmentAction({
-        name,
-        quantity,
-        picture,
-      });
+      await createEquipmentAction(formData);
 
       router.push("/equipment");
     } catch (err) {

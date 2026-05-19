@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import styles from "./home_button.module.css";
+import styles from "./HomeButton.module.css";
 
 export default function HomeButton() {
   return (

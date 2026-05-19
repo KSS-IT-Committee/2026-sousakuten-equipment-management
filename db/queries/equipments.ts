@@ -22,5 +22,4 @@ export async function createEquipment(data: {
   picture?: string;
 }) {
   return await db.insert(Equipments).values(data);
-  // if picture is empty, set default
 }

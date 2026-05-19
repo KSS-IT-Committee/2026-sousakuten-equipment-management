@@ -9,11 +9,12 @@
 ### Adding New Equipment
 
 To add new equipment, use the **Add Equipment** page accessible from `/add-equipment`. The form accepts:
+
 - **Equipment Title** (required): Name of the equipment
 - **Quantity** (required): Number of items (must be > 0)
-- **Picture** (optional): Image file (base64 encoded and stored in picture field)
+- **Picture** (optional): Image file stored in `public/equipment-images`, with the public URL saved in the `picture` field
 
-The form validates input and displays a preview of the selected image before submission.
+The form validates input, displays a preview of the selected image before submission, and stores the uploaded file outside the database.
 
 ## 2. Borrowings
 
