@@ -1,0 +1,65 @@
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  gap: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.listItem:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
+}
+
+.infoGroup {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.class,
+.date {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #333;
+}
+
+.class {
+  font-weight: 500;
+  color: #007bff;
+}
+
+.date {
+  color: #666;
+}
+
+.actionGroup {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: #0051bb;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}

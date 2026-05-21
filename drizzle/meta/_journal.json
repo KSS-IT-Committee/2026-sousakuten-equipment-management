@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1778313136754,
-      "tag": "0000_freezing_grandmaster",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1778331548399,
-      "tag": "0001_low_freak",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1778389386596,
-      "tag": "0002_stale_raza",
+      "when": 1779099488786,
+      "tag": "0000_woozy_lightspeed",
       "breakpoints": true
     }
   ]

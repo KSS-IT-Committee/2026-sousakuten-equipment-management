@@ -11,7 +11,7 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-export const CLASSES = [
+export const CLASS_VALUES = [
   "1A",
   "1B",
   "1C",
@@ -39,10 +39,36 @@ export const CLASSES = [
 ] as const;
 
 export type ClassName = (typeof CLASSES)[number];
-export const classEnum = pgEnum("class_name", CLASSES);
+export const CLASSES = [...CLASS_VALUES];
+export const classEnum = pgEnum("class_name", [
+  "1A",
+  "1B",
+  "1C",
+  "1D",
+  "2A",
+  "2B",
+  "2C",
+  "2D",
+  "3A",
+  "3B",
+  "3C",
+  "3D",
+  "4A",
+  "4B",
+  "4C",
+  "4D",
+  "5A",
+  "5B",
+  "5C",
+  "5D",
+  "6A",
+  "6B",
+  "6C",
+  "6D",
+] as const);
 
 // 減点クラスDB — per-class deductions (issue #3)
-export const deductions = pgTable("deductions", {
+export const Deductions = pgTable("deductions", {
   id: serial("id").primaryKey(),
   className: classEnum("class_name").notNull(),
   content: text("content").notNull(),
@@ -96,7 +122,7 @@ export const Borrowings = pgTable(
       .notNull()
       .references(() => Equipments.id),
     // tagNumber: integer("tag_number").notNull(),
-    class: integer("class").notNull(),
+    class: text("class").notNull(),
     borrowedAt: timestamp("borrowed_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -105,6 +131,7 @@ export const Borrowings = pgTable(
   (table) => [
     index("equipment_idx").on(table.equipmentId),
     index("class_idx").on(table.class),
+    check("class_format_check", sql`${table.class} ~ '^[1-6][A-D]$'`),
     check(
       "returned_at_after_borrowed_at",
       sql`${table.returnedAt} IS NULL OR ${table.returnedAt} >= ${table.borrowedAt}`,
@@ -126,8 +153,8 @@ export const announcementClassesRelations = relations(
   }),
 );
 
-export type Deduction = typeof deductions.$inferSelect;
-export type NewDeduction = typeof deductions.$inferInsert;
+export type Deduction = typeof Deductions.$inferSelect;
+export type NewDeduction = typeof Deductions.$inferInsert;
 export type Announcement = typeof announcements.$inferSelect;
 export type NewAnnouncement = typeof announcements.$inferInsert;
 export type AnnouncementClass = typeof announcementClasses.$inferSelect;
