@@ -3,6 +3,7 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
+import { createDeduction, deleteDeductionById } from "@/db/queries/deductions";
 import { Borrowings, Equipments } from "@/db/schema";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 import { db } from "@/lib/db";
@@ -76,4 +77,28 @@ export const borrowEquipmentAction = async (
   revalidatePath("/equipment");
   revalidatePath("/");
   revalidatePath("/borrowings");
+};
+
+export const createDeductionAction = async (data: {
+  className: string;
+  content: string;
+  points: number;
+}) => {
+  if (!CLASS_CODES.includes(data.className as ClassCode)) {
+    throw new Error("Invalid class name");
+  }
+  await createDeduction({
+    className: data.className as ClassCode,
+    content: data.content,
+    points: data.points,
+    occurredAt: new Date(),
+  });
+  revalidatePath("/deductions");
+  revalidatePath("/classdeduction");
+};
+
+export const deleteDeductionAction = async (id: number) => {
+  await deleteDeductionById(id);
+  revalidatePath("/deductions");
+  revalidatePath("/classdeduction");
 };

@@ -4,7 +4,9 @@ import { DefaultFooter } from "@/components/Footer";
 import { getEquipments } from "@/db/queries/equipments";
 export const dynamic = "force-dynamic";
 export default async function Home() {
+  console.log("hi");
   const equipments = await getEquipments();
+
   return (
     <main className="flex-1 flex flex-col items-center justify-start">
       <div className={styles.pageTitleWrapper}>
