@@ -30,7 +30,7 @@ export async function EquipmentCell({ id }: { id: number }) {
 
   return (
     <div className={styles.cell}>
-      <Link href="/" className={styles.linkArea}>
+      <Link href={`/equipment?id=${equipment.id}`} className={styles.linkArea}>
         {equipment.picture ? (
           <Image
             src={equipment.picture}

@@ -112,7 +112,13 @@ export function AddEquipmentForm({
         />
         {preview && (
           <div className={styles.previewContainer}>
-            <Image src={preview} alt="Preview" className={styles.preview} />
+            <Image
+              src={preview}
+              alt="Preview"
+              width={100}
+              height={100}
+              className={styles.preview}
+            />
           </div>
         )}
       </div>
