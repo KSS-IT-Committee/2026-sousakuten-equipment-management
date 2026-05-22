@@ -6,7 +6,10 @@ import path from "node:path";
 
 import { revalidatePath } from "next/cache";
 
-import { getBorrowingsByEquipmentId } from "@/db/queries/borrowings";
+import {
+  getActiveBorrowingsByID,
+  getBorrowingsByEquipmentId,
+} from "@/db/queries/borrowings";
 import {
   createEquipment,
   deleteEquipmentById,
@@ -97,6 +100,13 @@ export async function updateEquipmentAction(formData: FormData) {
 
   if (!Number.isInteger(quantity) || quantity <= 0) {
     throw new Error("数量は1以上の数字を入力してください");
+  }
+
+  const activeBorrowings = await getActiveBorrowingsByID(equipmentId);
+  if (quantity < activeBorrowings.length) {
+    throw new Error(
+      `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
+    );
   }
 
   let picture = existingEquipment.picture ?? undefined;
