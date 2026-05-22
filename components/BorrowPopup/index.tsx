@@ -81,7 +81,10 @@ export function BorrowingPopup({
               ) : null}
             </div>
             <div className={styles.popupFooter}>
-              <button onClick={closePopup} className={styles.popupButton}>
+              <button
+                onClick={closePopup}
+                className={styles.popupButton + " " + styles.secondaryButton}
+              >
                 閉じる
               </button>
               {selectedClass && (
@@ -90,7 +93,7 @@ export function BorrowingPopup({
                   classCode={selectedClass.code}
                   disabled={!canBorrow}
                   onBorrow={closePopup}
-                  className={styles.borrowButton}
+                  className={`${styles.borrowButton} ${styles.popupButton} ${styles.primaryButton}`}
                 />
               )}
             </div>

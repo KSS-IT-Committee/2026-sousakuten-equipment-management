@@ -8,6 +8,13 @@
   justify-content: center;
 }
 
+.triggerArea {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  width: 100%;
+}
+
 .confirmationBox {
   background-color: white;
   border-radius: 12px;

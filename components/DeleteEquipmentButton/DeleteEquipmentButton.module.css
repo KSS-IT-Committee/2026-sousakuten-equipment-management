@@ -10,6 +10,13 @@
   transition: all 0.2s ease;
 }
 
+.triggerArea {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+}
+
 .deleteButton:hover {
   background-color: #af2929;
 }

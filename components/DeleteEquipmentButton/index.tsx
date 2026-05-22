@@ -62,13 +62,15 @@ export function DeleteEquipmentButton({
 
   return (
     <>
-      <button
-        type="button"
-        className={styles.deleteButton}
-        onClick={openConfirm}
-      >
-        備品を削除
-      </button>
+      <div className={styles.triggerArea}>
+        <button
+          type="button"
+          className={styles.deleteButton}
+          onClick={openConfirm}
+        >
+          備品を削除
+        </button>
+      </div>
 
       {isConfirming ? (
         <div
