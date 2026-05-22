@@ -138,13 +138,10 @@
   }
 
   .homeLink,
-  .addEquipmentLink {
+  .addEquipmentLink,
+  .borrowingsLink {
     text-align: center;
     padding: 12px;
     border-radius: 8px;
-  }
-
-  .homeLink {
-    background-color: #f7fafc;
   }
 }

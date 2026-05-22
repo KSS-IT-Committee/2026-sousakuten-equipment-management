@@ -43,6 +43,13 @@ export function Navbar() {
           >
             備品追加
           </Link>
+          <Link
+            href="/deductions"
+            className={styles.borrowingsLink}
+            onClick={closeMenu}
+          >
+            減点管理
+          </Link>
         </div>
       </div>
     </nav>
