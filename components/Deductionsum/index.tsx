@@ -16,7 +16,7 @@ export async function DeductionSum({ className }: Props) {
   }
   return (
     <div className={styles.section}>
-      <Link href={`/deduction?class=${className}`} className={styles.linkArea}>
+      <Link href={`/deductions?class=${className}`} className={styles.linkArea}>
         <h2 className={styles.title}>{className}</h2>
         <p className={styles.sum}>{sum}点</p>
       </Link>

@@ -30,14 +30,31 @@ export async function EquipmentCell({ id }: { id: number }) {
 
   return (
     <div className={styles.cell}>
-      <Link href={`/equipment?id=${id}`} className={styles.linkArea}>
-        {equipment.picture && (
+      <Link href="/" className={styles.linkArea}>
+        {equipment.picture ? (
           <Image
             src={equipment.picture}
             alt={equipment.name}
             width={100}
             height={100}
+            className={styles.image}
           />
+        ) : (
+          <div
+            style={{
+              width: 100,
+              height: 100,
+              backgroundColor: "#f5f5f5",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#888",
+              fontSize: "12px",
+              borderRadius: "8px",
+            }}
+          >
+            No Image
+          </div>
         )}
         <h2>{equipment.name}</h2>
       </Link>

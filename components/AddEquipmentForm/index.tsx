@@ -1,10 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { createEquipmentAction, updateEquipmentAction } from "./action";
-
 import styles from "./AddEquipmentForm.module.css";
 
 type EquipmentFormMode = "create" | "edit";
@@ -112,7 +112,7 @@ export function AddEquipmentForm({
         />
         {preview && (
           <div className={styles.previewContainer}>
-            <img src={preview} alt="Preview" className={styles.preview} />
+            <Image src={preview} alt="Preview" className={styles.preview} />
           </div>
         )}
       </div>

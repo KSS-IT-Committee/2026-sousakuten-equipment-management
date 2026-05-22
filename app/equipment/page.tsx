@@ -1,7 +1,8 @@
+import Link from "next/link";
+
 import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { EquipmentCell } from "@/components/Equipment";
 
-import Link from "next/link";
 import styles from "./base.module.css";
 
 type Props = {

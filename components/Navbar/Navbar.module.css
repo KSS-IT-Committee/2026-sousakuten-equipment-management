@@ -52,23 +52,6 @@
   color: #2d3748;
 }
 
-.addEquipmentLink {
-  padding: 8px 20px;
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
-}
-
-.addEquipmentLink:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-}
-
 .hamburger {
   display: none;
   flex-direction: column;
@@ -143,5 +126,9 @@
     text-align: center;
     padding: 12px;
     border-radius: 8px;
+  }
+
+  .homeLink {
+    background-color: #f7fafc;
   }
 }
