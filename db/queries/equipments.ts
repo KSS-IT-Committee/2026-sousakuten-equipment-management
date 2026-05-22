@@ -34,3 +34,7 @@ export async function updateEquipment(
 ) {
   return await db.update(Equipments).set(data).where(eq(Equipments.id, id));
 }
+
+export async function deleteEquipmentById(id: number) {
+  return await db.delete(Equipments).where(eq(Equipments.id, id));
+}

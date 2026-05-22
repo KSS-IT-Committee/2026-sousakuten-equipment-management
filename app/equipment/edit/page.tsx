@@ -1,4 +1,5 @@
 import { AddEquipmentForm } from "@/components/AddEquipmentForm";
+import { DeleteEquipmentButton } from "@/components/DeleteEquipmentButton";
 import { getEquipmentById } from "@/db/queries/equipments";
 
 import styles from "../../add-equipment/page.module.css";
@@ -33,6 +34,10 @@ export default async function EditEquipmentPage({ searchParams }: Props) {
             quantity: equipment.quantity,
             picture: equipment.picture,
           }}
+        />
+        <DeleteEquipmentButton
+          equipmentId={equipment.id}
+          equipmentName={equipment.name}
         />
       </div>
     </main>

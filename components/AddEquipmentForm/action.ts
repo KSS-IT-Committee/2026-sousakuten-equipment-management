@@ -6,8 +6,10 @@ import path from "node:path";
 
 import { revalidatePath } from "next/cache";
 
+import { getBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import {
   createEquipment,
+  deleteEquipmentById,
   getEquipmentById,
   updateEquipment,
 } from "@/db/queries/equipments";
@@ -116,4 +118,26 @@ export async function updateEquipmentAction(formData: FormData) {
   revalidatePath("/equipment");
   revalidatePath("/");
   return result;
+}
+
+export async function deleteEquipmentAction(equipmentId: number) {
+  if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
+    throw new Error("備品IDが不正です");
+  }
+
+  const existingEquipment = await getEquipmentById(equipmentId);
+  if (!existingEquipment) {
+    throw new Error("備品が見つかりませんでした");
+  }
+
+  const borrowings = await getBorrowingsByEquipmentId(equipmentId);
+  if (borrowings.length > 0) {
+    throw new Error("貸出履歴がある備品は削除できません");
+  }
+
+  await deleteEquipmentById(equipmentId);
+  await deleteEquipmentImage(existingEquipment.picture);
+
+  revalidatePath("/equipment");
+  revalidatePath("/");
 }

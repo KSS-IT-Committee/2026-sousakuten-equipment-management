@@ -1,0 +1,142 @@
+.deleteButton {
+  padding: 14px 20px;
+  background-color: #dc3535;
+  color: white;
+  cursor: pointer;
+  border: 0;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background-color: #af2929;
+}
+
+.confirmationOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding: 16px;
+}
+
+.confirmationBox {
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 28px;
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #222;
+}
+
+.description,
+.warning {
+  margin: 0 0 12px;
+  line-height: 1.6;
+  color: #444;
+}
+
+.warning {
+  color: #a53a3a;
+  font-weight: 600;
+}
+
+.label {
+  display: block;
+  margin: 16px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: 2px solid rgba(220, 53, 53, 0.2);
+  border-color: #dc3535;
+}
+
+.error {
+  margin: 12px 0 0;
+  color: #c62828;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.confirmButton,
+.cancelButton {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.confirmButton {
+  background-color: #dc3535;
+  color: white;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background-color: #af2929;
+}
+
+.confirmButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #696969;
+  color: white;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #414141;
+}
+
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
