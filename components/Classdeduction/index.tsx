@@ -3,7 +3,7 @@ import Link from "next/link";
 import type {
   DeductionSortKey,
   DeductionSortOrder,
-} from "@/components/DeductionUi";
+} from "@/components/DeductionUI";
 import { getDeductionsByClasses } from "@/db/queries/deductions";
 import type { ClassName } from "@/db/schema";
 

@@ -27,6 +27,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/.next
     command: sh -c "npm install && npx drizzle-kit migrate && npm run dev"
 
 volumes:

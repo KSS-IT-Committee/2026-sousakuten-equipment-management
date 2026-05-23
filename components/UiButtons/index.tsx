@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type {
   DeductionSortKey,
   DeductionSortOrder,
-} from "@/components/DeductionUi";
+} from "@/components/DeductionUI";
 import { CLASSES, type ClassName } from "@/db/schema";
 
 import styles from "./UiButtons.module.css";

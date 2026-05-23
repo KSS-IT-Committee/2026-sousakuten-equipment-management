@@ -12,7 +12,6 @@ export async function getBorrowingById(id: number) {
     .select()
     .from(Borrowings)
     .where(eq(Borrowings.id, id));
-  console.log("getBorrowingById result:", result);
   return result[0];
 }
 

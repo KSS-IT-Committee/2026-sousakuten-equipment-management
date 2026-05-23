@@ -54,7 +54,7 @@ export function AddEquipmentForm({
         await createEquipmentAction(formData);
       }
 
-      router.push("/equipment");
+      router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
@@ -142,7 +142,7 @@ export function AddEquipmentForm({
         <button
           type="button"
           className={styles.cancelButton}
-          onClick={() => router.back()}
+          onClick={() => router.push("/")}
         >
           キャンセル
         </button>

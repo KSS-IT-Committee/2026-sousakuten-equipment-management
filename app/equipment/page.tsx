@@ -18,34 +18,32 @@ export default async function Equipment({ searchParams }: Props) {
   const isValidId = !isNaN(id);
 
   if (!isValidId) {
-    return <p>Error: Invalid equipment ID.</p>;
+    return <p>エラー: 無効なID</p>;
   }
 
   const equipment = await getEquipmentById(id);
   if (!equipment) {
-    return <p>Error: Equipment not found.</p>;
+    return <p>エラー: 備品が見つかりませんでした</p>;
   }
 
   const borrowings = await getActiveBorrowingsByID(id);
   const availableCount = equipment.quantity - borrowings.length;
 
   return (
-    <>
-      <div className={styles.cell}>
-        <div className={styles.actionGroup}>
-          <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
-            修正
-          </Link>
-          <BorrowingPopup
-            id={id}
-            title={equipment.name}
-            availableCount={availableCount}
-          />
-        </div>
-
-        <EquipmentCell id={id} />
-        <BorrowingEquipList id={id} />
+    <div className={styles.cell}>
+      <div className={styles.actionGroup}>
+        <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
+          編集
+        </Link>
+        <BorrowingPopup
+          id={id}
+          title={equipment.name}
+          availableCount={availableCount}
+        />
       </div>
-    </>
+
+      <EquipmentCell id={id} />
+      <BorrowingEquipList id={id} />
+    </div>
   );
 }

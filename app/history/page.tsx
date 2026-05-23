@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-
 import DeleteDeductionButton from "@/components/DeletedeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
 
@@ -13,18 +11,18 @@ export default async function Page({ searchParams }: Props) {
   const { id } = await searchParams;
   const deductionId = Number(id);
 
-  if (!id || Number.isNaN(deductionId)) {
-    notFound();
+  if (Number.isNaN(deductionId)) {
+    return <p>エラー: 無効なID</p>;
   }
 
   const deduction = await getDeductionsById(deductionId);
 
-  if (!deduction) {
-    notFound();
+  if (deduction === undefined) {
+    return <p>エラー: 無効なID</p>;
   }
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-start">
+    <>
       <div className={styles.window}>
         <h1>減点の詳細</h1>
         <h2>ID: #{deduction.id}</h2>
@@ -34,6 +32,6 @@ export default async function Page({ searchParams }: Props) {
         <h2>日時: {deduction.occurredAt.toLocaleString("ja-JP")}</h2>
       </div>
       <DeleteDeductionButton deductionId={deduction.id} />
-    </main>
+    </>
   );
 }

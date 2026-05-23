@@ -13,33 +13,31 @@ export default async function EditEquipmentPage({ searchParams }: Props) {
   const id = Number(resolvedParams.id);
 
   if (!Number.isInteger(id) || id <= 0) {
-    return <p>Error: Invalid equipment ID.</p>;
+    return <p>エラー: 無効なID</p>;
   }
 
   const equipment = await getEquipmentById(id);
 
   if (!equipment) {
-    return <p>Error: Equipment not found.</p>;
+    return <p>エラー: 備品が見つかりませんでした</p>;
   }
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        <h1 className={styles.title}>備品を修正</h1>
-        <AddEquipmentForm
-          mode="edit"
-          initialValues={{
-            id: equipment.id,
-            name: equipment.name,
-            quantity: equipment.quantity,
-            picture: equipment.picture,
-          }}
-        />
-        <DeleteEquipmentButton
-          equipmentId={equipment.id}
-          equipmentName={equipment.name}
-        />
-      </div>
-    </main>
+    <div className={styles.container}>
+      <h1 className={styles.title}>備品を修正</h1>
+      <AddEquipmentForm
+        mode="edit"
+        initialValues={{
+          id: equipment.id,
+          name: equipment.name,
+          quantity: equipment.quantity,
+          picture: equipment.picture,
+        }}
+      />
+      <DeleteEquipmentButton
+        equipmentId={equipment.id}
+        equipmentName={equipment.name}
+      />
+    </div>
   );
 }

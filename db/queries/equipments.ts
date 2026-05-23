@@ -4,7 +4,10 @@ import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
 
 export async function getEquipments() {
-  return await db.select().from(Equipments).orderBy(Equipments.id);
+  return await db
+    .select({ id: Equipments.id })
+    .from(Equipments)
+    .orderBy(Equipments.id);
 }
 
 export async function getEquipmentById(id: number) {

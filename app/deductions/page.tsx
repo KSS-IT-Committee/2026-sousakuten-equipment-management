@@ -1,4 +1,4 @@
-import { DeductionUI } from "@/components/DeductionUi";
+import { DeductionUI } from "@/components/DeductionUI";
 
 type Props = {
   searchParams?: Promise<{
@@ -11,7 +11,7 @@ type Props = {
 
 export default async function Deductions({ searchParams }: Props) {
   return (
-    <main className="flex-1 flex flex-col items-center justify-start">
+    <>
       <div style={{ width: "100%", marginBottom: "24px" }}>
         <h1 className="text-4xl font-bold text-center">
           創作展 減点処理サイト
@@ -21,6 +21,6 @@ export default async function Deductions({ searchParams }: Props) {
         </h2>
       </div>
       <DeductionUI searchParams={searchParams} />
-    </main>
+    </>
   );
 }
