@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
@@ -48,6 +49,19 @@ export default function RootLayout({
       lang="jp"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-DGM95SGSRQ"
+        strategy="afterInteractive"
+      ></Script>
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-DGM95SGSRQ');
+  `}
+      </Script>
       <body>
         <Navbar />
         <main>{children}</main>
