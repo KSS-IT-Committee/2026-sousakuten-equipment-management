@@ -4,14 +4,14 @@ import Link from "next/link";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
-import styles from "./Equipment.module.css";
+import styles from "./EquipmentCell.module.css";
 
 export async function EquipmentCell({ id }: { id: number }) {
   const equipment = await getEquipmentById(id);
   const borrowings = await getActiveBorrowingsByID(id);
 
   if (!equipment) {
-    return <div>Equipment not found</div>;
+    return <div>備品が見つかりませんでした</div>;
   }
 
   const borrowedCount = borrowings.length;

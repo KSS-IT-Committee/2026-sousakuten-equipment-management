@@ -1,5 +1,5 @@
 import styles from "@/app/base.module.css";
-import { EquipmentCell } from "@/components/Equipment";
+import { EquipmentCell } from "@/components/EquipmentCell";
 import { DefaultFooter } from "@/components/Footer";
 import { getEquipments } from "@/db/queries/equipments";
 export const dynamic = "force-dynamic";

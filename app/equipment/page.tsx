@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
-import { EquipmentCell } from "@/components/Equipment";
+import { EquipmentCell } from "@/components/EquipmentCell";
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
