@@ -40,32 +40,7 @@ export const CLASS_VALUES = [
 
 export type ClassName = (typeof CLASSES)[number];
 export const CLASSES = [...CLASS_VALUES];
-export const classEnum = pgEnum("class_name", [
-  "1A",
-  "1B",
-  "1C",
-  "1D",
-  "2A",
-  "2B",
-  "2C",
-  "2D",
-  "3A",
-  "3B",
-  "3C",
-  "3D",
-  "4A",
-  "4B",
-  "4C",
-  "4D",
-  "5A",
-  "5B",
-  "5C",
-  "5D",
-  "6A",
-  "6B",
-  "6C",
-  "6D",
-] as const);
+export const classEnum = pgEnum("class_name", CLASS_VALUES);
 
 // 減点クラスDB — per-class deductions (issue #3)
 export const Deductions = pgTable("deductions", {
