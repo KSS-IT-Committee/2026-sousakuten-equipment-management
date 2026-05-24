@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
+import { bufferToDataUrl } from "@/lib/image";
 
 import styles from "./EquipmentCell.module.css";
 
@@ -33,7 +34,7 @@ export async function EquipmentCell({ id }: { id: number }) {
       <Link href={`/equipment?id=${equipment.id}`} className={styles.linkArea}>
         {equipment.picture ? (
           <Image
-            src={equipment.picture}
+            src={bufferToDataUrl(equipment.picture)!}
             alt={equipment.name}
             width={100}
             height={100}

@@ -21,7 +21,7 @@ CREATE TABLE "equipments" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"quantity" integer NOT NULL,
-	"picture" text,
+	"picture" "bytea",
 	CONSTRAINT "quantity_positive" CHECK ("equipments"."quantity" > 0)
 );
 --> statement-breakpoint

@@ -1,10 +1,7 @@
 "use server";
 
-import { randomUUID } from "node:crypto";
-import { mkdir, unlink, writeFile } from "node:fs/promises";
-import path from "node:path";
-
 import { revalidatePath } from "next/cache";
+import path from "node:path";
 
 import {
   getActiveBorrowingsByID,
@@ -17,8 +14,6 @@ import {
   updateEquipment,
 } from "@/db/queries/equipments";
 
-const IMAGE_DIRECTORY = path.join(process.cwd(), "public", "equipment-images");
-
 const ALLOWED_TYPES = new Map([
   [".png", "image/png"],
   [".jpg", "image/jpeg"],
@@ -28,7 +23,7 @@ const ALLOWED_TYPES = new Map([
 
 const MAX_BYTES = 5 * 1024 * 1024;
 
-async function saveEquipmentImage(file: File) {
+async function processEquipmentImage(file: File): Promise<Buffer> {
   if (file.size > MAX_BYTES) {
     throw new Error("画像サイズは5MB以下にしてください");
   }
@@ -42,30 +37,8 @@ async function saveEquipmentImage(file: File) {
     );
   }
 
-  await mkdir(IMAGE_DIRECTORY, { recursive: true });
-
-  const filename = `${randomUUID()}${extension}`;
-  const filePath = path.join(IMAGE_DIRECTORY, filename);
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  await writeFile(filePath, buffer);
-
-  return `/equipment-images/${filename}`;
-}
-
-async function deleteEquipmentImage(imagePath?: string | null) {
-  if (!imagePath || !imagePath.startsWith("/equipment-images/")) {
-    return;
-  }
-
-  const fileName = path.basename(imagePath);
-  const filePath = path.join(IMAGE_DIRECTORY, fileName);
-
-  try {
-    await unlink(filePath);
-  } catch {
-    // Ignore missing files so edits do not fail on stale references.
-  }
+  const arrayBuffer = await file.arrayBuffer();
+  return Buffer.from(arrayBuffer);
 }
 
 export async function createEquipmentAction(formData: FormData) {
@@ -81,9 +54,10 @@ export async function createEquipmentAction(formData: FormData) {
     throw new Error("数量は1以上の数字を入力してください");
   }
 
-  let picture: string | undefined;
+  // DBの型に合わせて Buffer | undefined に変更
+  let picture: Buffer | undefined;
   if (pictureFile instanceof File && pictureFile.size > 0) {
-    picture = await saveEquipmentImage(pictureFile);
+    picture = await processEquipmentImage(pictureFile);
   }
 
   const result = await createEquipment({
@@ -128,13 +102,13 @@ export async function updateEquipmentAction(formData: FormData) {
     );
   }
 
-  let picture: string | null | undefined =
+  // existingEquipment.picture の型は Buffer | null になります
+  let picture: Buffer | null | undefined =
     existingEquipment.picture ?? undefined;
+
   if (pictureFile instanceof File && pictureFile.size > 0) {
-    picture = await saveEquipmentImage(pictureFile);
-    await deleteEquipmentImage(existingEquipment.picture);
+    picture = await processEquipmentImage(pictureFile);
   } else if (deletePicture) {
-    await deleteEquipmentImage(existingEquipment.picture);
     picture = null;
   }
 
@@ -164,8 +138,8 @@ export async function deleteEquipmentAction(equipmentId: number) {
     throw new Error("貸出履歴がある備品は削除できません");
   }
 
+  // レコードを削除するだけでバイナリデータ（画像）も一緒に消えます
   await deleteEquipmentById(equipmentId);
-  await deleteEquipmentImage(existingEquipment.picture);
 
   revalidatePath("/equipment");
   revalidatePath("/");

@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import {
   check,
+  customType,
   index,
   integer,
   pgEnum,
@@ -37,6 +38,12 @@ export const CLASS_VALUES = [
   "6C",
   "6D",
 ] as const;
+
+const bytea = customType<{ data: Buffer; notNull: false; default: false }>({
+  dataType() {
+    return "bytea";
+  },
+});
 
 export type ClassName = (typeof CLASSES)[number];
 export const CLASSES = [...CLASS_VALUES];
@@ -83,7 +90,7 @@ export const Equipments = pgTable(
     id: serial("id").primaryKey(),
     name: text("name").notNull(),
     quantity: integer("quantity").notNull(),
-    picture: text("picture"),
+    picture: bytea("picture"),
   },
   (table) => [check("quantity_positive", sql`${table.quantity} > 0`)],
 );

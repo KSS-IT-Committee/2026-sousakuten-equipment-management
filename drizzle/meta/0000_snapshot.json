@@ -1,5 +1,5 @@
 {
-  "id": "f8b3d7aa-9025-4225-aa65-f343cf228035",
+  "id": "5bf9a878-76e7-4067-9103-a61306eca482",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -77,8 +77,12 @@
           "name": "borrowings_equipment_id_equipments_id_fk",
           "tableFrom": "borrowings",
           "tableTo": "equipments",
-          "columnsFrom": ["equipment_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "equipment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -167,7 +171,7 @@
         },
         "picture": {
           "name": "picture",
-          "type": "text",
+          "type": "bytea",
           "primaryKey": false,
           "notNull": false
         }
@@ -215,8 +219,12 @@
           "name": "announcement_classes_announcement_id_announcements_id_fk",
           "tableFrom": "announcement_classes",
           "tableTo": "announcements",
-          "columnsFrom": ["announcement_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "announcement_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -226,7 +234,10 @@
         "announcement_classes_announcement_id_class_name_unique": {
           "name": "announcement_classes_announcement_id_class_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["announcement_id", "class_name"]
+          "columns": [
+            "announcement_id",
+            "class_name"
+          ]
         }
       },
       "policies": {},
