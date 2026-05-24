@@ -27,9 +27,11 @@ export function AddEquipmentForm({
 }: AddEquipmentFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const [preview, setPreview] = useState<string>(initialValues?.picture ?? "");
+  const [isPictureDeleted, setIsPictureDeleted] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,8 +39,17 @@ export function AddEquipmentForm({
       const reader = new FileReader();
       reader.onload = (event) => {
         setPreview(event.target?.result as string);
+        setIsPictureDeleted(false);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setPreview("");
+    setIsPictureDeleted(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -109,6 +120,7 @@ export function AddEquipmentForm({
           accept="image/*"
           className={styles.fileInput}
           onChange={handleImageChange}
+          ref={fileInputRef}
         />
         {preview && (
           <div className={styles.previewContainer}>
@@ -119,7 +131,17 @@ export function AddEquipmentForm({
               height={100}
               className={styles.preview}
             />
+            <button
+              type="button"
+              className={styles.removeImageButton}
+              onClick={handleRemoveImage}
+            >
+              削除
+            </button>
           </div>
+        )}
+        {isPictureDeleted && (
+          <input type="hidden" name="deletePicture" value="true" />
         )}
       </div>
 

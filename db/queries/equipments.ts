@@ -32,7 +32,7 @@ export async function updateEquipment(
   data: {
     name: string;
     quantity: number;
-    picture?: string;
+    picture?: string | null;
   },
 ) {
   return await db.update(Equipments).set(data).where(eq(Equipments.id, id));

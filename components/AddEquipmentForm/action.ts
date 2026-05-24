@@ -19,10 +19,31 @@ import {
 
 const IMAGE_DIRECTORY = path.join(process.cwd(), "public", "equipment-images");
 
+const ALLOWED_TYPES = new Map([
+  [".png", "image/png"],
+  [".jpg", "image/jpeg"],
+  [".jpeg", "image/jpeg"],
+  [".webp", "image/webp"],
+]);
+
+const MAX_BYTES = 5 * 1024 * 1024;
+
 async function saveEquipmentImage(file: File) {
+  if (file.size > MAX_BYTES) {
+    throw new Error("画像サイズは5MB以下にしてください");
+  }
+
+  const extension = path.extname(file.name).toLowerCase();
+  const expectedMimeType = ALLOWED_TYPES.get(extension);
+
+  if (!expectedMimeType || file.type !== expectedMimeType) {
+    throw new Error(
+      "許可されていないファイル形式です。PNG, JPG, WEBPのみアップロード可能です。",
+    );
+  }
+
   await mkdir(IMAGE_DIRECTORY, { recursive: true });
 
-  const extension = path.extname(file.name).toLowerCase() || ".png";
   const filename = `${randomUUID()}${extension}`;
   const filePath = path.join(IMAGE_DIRECTORY, filename);
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -37,7 +58,8 @@ async function deleteEquipmentImage(imagePath?: string | null) {
     return;
   }
 
-  const filePath = path.join(process.cwd(), "public", imagePath.slice(1));
+  const fileName = path.basename(imagePath);
+  const filePath = path.join(IMAGE_DIRECTORY, fileName);
 
   try {
     await unlink(filePath);
@@ -61,10 +83,6 @@ export async function createEquipmentAction(formData: FormData) {
 
   let picture: string | undefined;
   if (pictureFile instanceof File && pictureFile.size > 0) {
-    if (!pictureFile.type.startsWith("image/")) {
-      throw new Error("画像ファイルを選択してください");
-    }
-
     picture = await saveEquipmentImage(pictureFile);
   }
 
@@ -84,6 +102,7 @@ export async function updateEquipmentAction(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
   const pictureFile = formData.get("picture");
+  const deletePicture = formData.get("deletePicture") === "true";
 
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
     throw new Error("備品IDが不正です");
@@ -109,14 +128,14 @@ export async function updateEquipmentAction(formData: FormData) {
     );
   }
 
-  let picture = existingEquipment.picture ?? undefined;
+  let picture: string | null | undefined =
+    existingEquipment.picture ?? undefined;
   if (pictureFile instanceof File && pictureFile.size > 0) {
-    if (!pictureFile.type.startsWith("image/")) {
-      throw new Error("画像ファイルを選択してください");
-    }
-
     picture = await saveEquipmentImage(pictureFile);
     await deleteEquipmentImage(existingEquipment.picture);
+  } else if (deletePicture) {
+    await deleteEquipmentImage(existingEquipment.picture);
+    picture = null;
   }
 
   const result = await updateEquipment(equipmentId, {
