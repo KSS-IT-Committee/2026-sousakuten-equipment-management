@@ -87,6 +87,10 @@ export const createDeductionAction = async (data: {
   if (!CLASS_CODES.includes(data.className as ClassCode)) {
     throw new Error("Invalid class name");
   }
+  if (data.content.trim() === "") throw new Error("Invalid content");
+  if (!Number.isInteger(data.points) || data.points <= 0) {
+    throw new Error("Invalid points");
+  }
   await createDeduction({
     className: data.className as ClassCode,
     content: data.content,

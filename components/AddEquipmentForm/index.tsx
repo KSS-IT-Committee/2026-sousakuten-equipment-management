@@ -117,7 +117,7 @@ export function AddEquipmentForm({
           type="file"
           id="picture"
           name="picture"
-          accept="image/*"
+          accept="image/png,image/jpeg,image/webp"
           className={styles.fileInput}
           onChange={handleImageChange}
           ref={fileInputRef}

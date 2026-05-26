@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Footer } from "@/components/Footer";
 import changelog from "@/lib/changelog.generated.json";
 
 import styles from "./changelog.module.css";
