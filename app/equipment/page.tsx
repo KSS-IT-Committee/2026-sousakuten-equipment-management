@@ -15,7 +15,7 @@ type Props = {
 export default async function Equipment({ searchParams }: Props) {
   const resolvedParams = await searchParams;
   const id = Number(resolvedParams.id);
-  const isValidId = !isNaN(id);
+  const isValidId = Number.isInteger(id) && id > 0;
 
   if (!isValidId) {
     return <p>エラー: 無効なID</p>;

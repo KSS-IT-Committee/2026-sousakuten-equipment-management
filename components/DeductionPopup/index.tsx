@@ -14,6 +14,7 @@ export default function AddDeductionUI() {
   const [selectedClass, setSelectedClass] = useState<string>("");
   const [content, setContent] = useState("");
   const [points, setPoints] = useState<number>(5);
+  const [loading, setLoading] = useState(false);
   const addDeduction = async (
     className: string,
     content: string,
@@ -34,20 +35,26 @@ export default function AddDeductionUI() {
           setSelectedClass("");
           setSelectedGrade("");
           setContent("");
+          setLoading(false);
         }}
         className={styles.button}
       >
         減点追加
       </button>
       {isOpen ? (
-        <div className={styles.overlay}>
+        <div
+          className={styles.overlay}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="deduction-popup-title"
+        >
           <div className={styles.popup}>
-            <h2>減点する</h2>
+            <h2 id="deduction-popup-title">減点する</h2>
             <p>ここに入力すると、即時減点されます。</p>
 
             <div className={styles.inputGroup}>
               <label htmlFor="grade-select" className={styles.label}>
-                Grade:
+                学年:
               </label>
               <select
                 id="grade-select"
@@ -55,7 +62,7 @@ export default function AddDeductionUI() {
                 onChange={(e) => setSelectedGrade(e.target.value)}
                 className={styles.select}
               >
-                <option value="">Select a grade</option>
+                <option value="">学年を選択</option>
                 {grades.map((grade) => (
                   <option key={grade} value={grade}>
                     {grade}年
@@ -63,7 +70,7 @@ export default function AddDeductionUI() {
                 ))}
               </select>
               <label htmlFor="class-select" className={styles.label}>
-                Class:
+                組:
               </label>
               <select
                 id="class-select"
@@ -71,7 +78,7 @@ export default function AddDeductionUI() {
                 onChange={(e) => setSelectedClass(e.target.value)}
                 className={styles.select}
               >
-                <option value="">Select a class</option>
+                <option value="">組を選択</option>
                 {classIds.map((classId) => (
                   <option key={classId} value={classId}>
                     {classId}組
@@ -115,27 +122,45 @@ export default function AddDeductionUI() {
         </div>
       ) : null}
       {isOpenConfirmation ? (
-        <div className={styles.confirmationOverlay}>
+        <div
+          className={styles.confirmationOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="deduction-confirmation-title"
+        >
           <div className={styles.confirmationPopup}>
-            <h2>確認</h2>
+            <h2 id="deduction-confirmation-title">確認</h2>
             <p>{`${selectedGrade}年${selectedClass}組に${points}点の減点を追加しますか？`}</p>
             <button
               onClick={async () => {
-                await addDeduction(
-                  selectedGrade + selectedClass,
-                  content,
-                  points,
-                );
-                setIsOpen(false);
-                setIsOpenConfirmation(false);
-                setSelectedClass("");
-                setSelectedGrade("");
-                setContent("");
-                setPoints(5);
+                if (loading) return;
+                setLoading(true);
+                try {
+                  await addDeduction(
+                    selectedGrade + selectedClass,
+                    content,
+                    points,
+                  );
+                  setIsOpen(false);
+                  setIsOpenConfirmation(false);
+                  setSelectedClass("");
+                  setSelectedGrade("");
+                  setContent("");
+                  setPoints(5);
+                } catch (error) {
+                  alert(
+                    error instanceof Error
+                      ? error.message
+                      : "減点の追加に失敗しました",
+                  );
+                } finally {
+                  setLoading(false);
+                }
               }}
               className={styles.confirmButton}
+              disabled={loading}
             >
-              OK
+              {loading ? "処理中..." : "OK"}
             </button>
             <button
               onClick={() => {

@@ -38,7 +38,7 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
     <div className={styles.classBoxContainer}>
       <div className={styles.gradeContainer}>
         <label htmlFor="grade-select" className={styles.label}>
-          Grade:
+          学年:
         </label>
         <select
           id="grade-select"
@@ -46,7 +46,7 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
           onChange={handleGradeChange}
           className={styles.select}
         >
-          <option value="">Select a grade</option>
+          <option value="">学年を選択</option>
           {grades.map((grade) => (
             <option key={grade} value={grade}>
               {grade}年
@@ -57,7 +57,7 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
 
       <div className={styles.classContainer}>
         <label htmlFor="class-select" className={styles.label}>
-          Class:
+          組:
         </label>
         <select
           id="class-select"
@@ -66,7 +66,7 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
           disabled={!selectedGrade}
           className={styles.select}
         >
-          <option value="">Select a class</option>
+          <option value="">組を選択</option>
           {classIds.map((id) => (
             <option key={id} value={id}>
               {id}組

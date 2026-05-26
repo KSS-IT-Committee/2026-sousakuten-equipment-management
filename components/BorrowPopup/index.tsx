@@ -49,17 +49,26 @@ export function BorrowingPopup({
       {isOpen && (
         <div
           className={styles.popupOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="borrow-popup-title"
           onClick={(e) => {
             if (e.target === e.currentTarget) closePopup();
           }}
         >
           <div className={styles.popupContent}>
             <div className={styles.popupHeader}>
-              <h2 className={styles.popupTitle}>{title}</h2>
+              <h2 id="borrow-popup-title" className={styles.popupTitle}>
+                {title}
+              </h2>
               <p className={styles.popupSubtitle}>
                 借りたいクラスを選んでから確定してください
               </p>
-              <button className={styles.closeButton} onClick={closePopup}>
+              <button
+                className={styles.closeButton}
+                onClick={closePopup}
+                aria-label="閉じる"
+              >
                 ✕
               </button>
             </div>

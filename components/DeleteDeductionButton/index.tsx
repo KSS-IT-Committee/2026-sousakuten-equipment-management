@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { deleteDeductionAction } from "@/lib/action";
 
-import styles from "./DeletedeductionButton.module.css";
+import styles from "./DeleteDeductionButton.module.css";
 
 export default function DeleteDeductionButton({
   deductionId,

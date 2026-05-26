@@ -1,3 +1,7 @@
+export function bufferToDataUrl(buffer: Buffer | Uint8Array): string;
+export function bufferToDataUrl(
+  buffer: Buffer | Uint8Array | null | undefined,
+): string | null;
 export function bufferToDataUrl(
   buffer: Buffer | Uint8Array | null | undefined,
 ): string | null {
@@ -14,7 +18,9 @@ export function bufferToDataUrl(
       b[2] === 0x46 &&
       b[3] === 0x46
     ) {
-      mimeType = "image/webp";
+      if (b.length >= 12 && b.slice(8, 12).toString("ascii") === "WEBP") {
+        mimeType = "image/webp";
+      }
     } else if (b[0] === 0xff && b[1] === 0xd8) {
       mimeType = "image/jpeg";
     }

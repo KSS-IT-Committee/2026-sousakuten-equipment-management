@@ -1,5 +1,5 @@
-import { DeductionCellsByClasses } from "@/components/Classdeduction";
-import { DeductionSumsList } from "@/components/Deductionlists";
+import { DeductionCellsByClasses } from "@/components/ClassDeduction";
+import { DeductionSumsList } from "@/components/DeductionLists";
 import AddDeductionUI from "@/components/DeductionPopup";
 import SelectButtons from "@/components/UiButtons";
 import { CLASSES, type ClassName } from "@/db/schema";

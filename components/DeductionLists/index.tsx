@@ -1,4 +1,4 @@
-import { DeductionSum } from "@/components/Deductionsum";
+import { DeductionSum } from "@/components/DeductionSum";
 import { CLASSES } from "@/db/schema";
 
 import styles from "./DeductionLists.module.css";

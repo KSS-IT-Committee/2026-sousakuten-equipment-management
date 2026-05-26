@@ -7,7 +7,7 @@ import type {
 import { getDeductionsByClasses } from "@/db/queries/deductions";
 import type { ClassName } from "@/db/schema";
 
-import styles from "./Classdeduction.module.css";
+import styles from "./ClassDeduction.module.css";
 
 const sortDeductionMap: Record<
   DeductionSortKey,
@@ -93,7 +93,7 @@ export async function DeductionCellsByClasses({
                 <h3>{deduction.className}</h3>
                 <p>{deduction.id}</p>
                 <p>{deduction.occurredAt.toLocaleDateString("ja-JP")}</p>
-                <p>{deduction.points * -1}</p>
+                <p>{deduction.points}</p>
                 <p className={styles.content}>{deduction.content}</p>
               </div>
             </Link>

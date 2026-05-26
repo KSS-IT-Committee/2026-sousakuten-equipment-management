@@ -53,7 +53,7 @@ export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
 export async function createBorrowing(data: {
   equipmentId: number;
   class: ClassName;
-  borrowedAt: Date;
+  borrowedAt?: Date;
   returnedAt?: Date;
 }) {
   return await db.insert(Borrowings).values(data);

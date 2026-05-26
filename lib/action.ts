@@ -73,7 +73,6 @@ export const borrowEquipmentAction = async (
     await tx.insert(Borrowings).values({
       equipmentId,
       class: classCode,
-      borrowedAt: new Date(),
     });
   });
 
@@ -101,15 +100,14 @@ export const createDeductionAction = async (data: {
   await createDeduction({
     className: data.className as ClassCode,
     content,
-    points: data.points,
+    points: -Math.abs(data.points),
     occurredAt: new Date(),
   });
   revalidatePath("/deductions");
-  revalidatePath("/classdeduction");
 };
 
 export const deleteDeductionAction = async (id: number) => {
   await deleteDeductionById(id);
   revalidatePath("/deductions");
-  revalidatePath("/classdeduction");
+  revalidatePath("/history");
 };

@@ -47,6 +47,26 @@
   white-space: nowrap;
 }
 
+.summaryWrapper {
+  margin-bottom: 20px;
+}
+
+.summaryTitle {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.summaryCount {
+  color: #007bff;
+}
+
+.emptyMessage {
+  color: #666;
+  font-style: italic;
+}
+
 .button {
   padding: 8px 16px;
   background-color: #0070f3;

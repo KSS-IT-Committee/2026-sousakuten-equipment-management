@@ -8,23 +8,14 @@ export async function BorrowingEquipList({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByEquipmentId(id);
   return (
     <div>
-      <div style={{ marginBottom: "20px" }}>
-        <h3
-          style={{
-            margin: "0 0 16px 0",
-            fontSize: "18px",
-            fontWeight: "600",
-            color: "#1a1a1a",
-          }}
-        >
+      <div className={styles.summaryWrapper}>
+        <h3 className={styles.summaryTitle}>
           現在の借出数:{" "}
-          <span style={{ color: "#007bff" }}>{borrowings.length}</span>件
+          <span className={styles.summaryCount}>{borrowings.length}</span>件
         </h3>
       </div>
       {borrowings.length === 0 ? (
-        <p style={{ color: "#666", fontStyle: "italic" }}>
-          現在、借出中の備品はありません
-        </p>
+        <p className={styles.emptyMessage}>現在、借出中の備品はありません</p>
       ) : (
         borrowings.map((borrowing) => (
           <div key={borrowing.id} className={styles.listItem} role="listitem">

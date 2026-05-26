@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
@@ -20,42 +21,31 @@ export async function EquipmentCell({ id }: { id: number }) {
   const availabilityPercentage = Math.round(
     (availableCount / equipment.quantity) * 100,
   );
+  const imageSrc = bufferToDataUrl(equipment.picture);
+  const progressStyle = {
+    "--progress-width": `${availabilityPercentage}%`,
+  } as CSSProperties;
 
-  // Determine progress bar color based on availability percentage
-  let progressColor = "#ff9800"; // orange (default)
-  if (availabilityPercentage >= 70) {
-    progressColor = "#28a745"; // green
-  } else if (availabilityPercentage <= 30) {
-    progressColor = "#ff9800"; // orange
-  }
+  const progressFillClass =
+    availabilityPercentage >= 70
+      ? styles.progressFillAvailable
+      : availabilityPercentage <= 30
+        ? styles.progressFillWarning
+        : styles.progressFillUnavailable;
 
   return (
     <div className={styles.cell}>
       <Link href={`/equipment?id=${equipment.id}`} className={styles.linkArea}>
-        {equipment.picture ? (
+        {imageSrc ? (
           <Image
-            src={bufferToDataUrl(equipment.picture)!}
+            src={imageSrc}
             alt={equipment.name}
             width={100}
             height={100}
             className={styles.image}
           />
         ) : (
-          <div
-            style={{
-              width: 100,
-              height: 100,
-              backgroundColor: "#f5f5f5",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#888",
-              fontSize: "12px",
-              borderRadius: "8px",
-            }}
-          >
-            No Image
-          </div>
+          <div className={styles.imageFallback}>No Image</div>
         )}
         <h2>{equipment.name}</h2>
       </Link>
@@ -71,11 +61,8 @@ export async function EquipmentCell({ id }: { id: number }) {
         </div>
         <div className={styles.progressBar}>
           <div
-            className={styles.progressFill}
-            style={{
-              width: `${availabilityPercentage}%`,
-              backgroundColor: progressColor,
-            }}
+            className={`${styles.progressFill} ${progressFillClass}`}
+            style={progressStyle}
           ></div>
         </div>
       </div>
