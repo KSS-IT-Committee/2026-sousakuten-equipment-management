@@ -8,6 +8,13 @@
       "when": 1779603622460,
       "tag": "0000_great_adam_warlock",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779783456759,
+      "tag": "0001_slim_mole_man",
+      "breakpoints": true
     }
   ]
 }
