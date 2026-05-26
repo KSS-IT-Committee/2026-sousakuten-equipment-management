@@ -42,7 +42,7 @@ export default function ErrorPage({
           </ul>
         </div>
         <div className={styles.divider} />
-        
+
         <div style={{ display: "flex", gap: "16px", justifyContent: "center" }}>
           <button
             onClick={() => reset()}
@@ -51,7 +51,7 @@ export default function ErrorPage({
           >
             再試行する
           </button>
-          
+
           <Link href="/" className={styles.homeLink}>
             トップへ戻る
           </Link>
