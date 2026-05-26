@@ -50,7 +50,11 @@ export function DeleteEquipmentButton({
     setError("");
 
     try {
-      await deleteEquipmentAction(equipmentId);
+      const result = await deleteEquipmentAction(equipmentId);
+      if (!result.success) {
+        setError(result.error || "削除に失敗しました");
+        return;
+      }
       router.replace("/");
       router.refresh();
     } catch (err) {

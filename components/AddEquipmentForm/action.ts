@@ -91,39 +91,49 @@ export async function updateEquipmentAction(formData: FormData) {
   return result;
 }
 
-export async function deleteEquipmentAction(equipmentId: number) {
+export async function deleteEquipmentAction(
+  equipmentId: number,
+): Promise<{ success: boolean; error?: string }> {
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
-    throw new Error("備品IDが不正です");
+    return { success: false, error: "備品IDが不正です" };
   }
 
-  await db.transaction(async (tx) => {
-    const [existingEquipment] = await tx
-      .select()
-      .from(Equipments)
-      .where(eq(Equipments.id, equipmentId))
-      .for("update");
+  try {
+    await db.transaction(async (tx) => {
+      const [existingEquipment] = await tx
+        .select()
+        .from(Equipments)
+        .where(eq(Equipments.id, equipmentId))
+        .for("update");
 
-    if (!existingEquipment) {
-      throw new Error("備品が見つかりませんでした");
-    }
+      if (!existingEquipment) {
+        throw new Error("備品が見つかりませんでした");
+      }
 
-    const borrowings = await tx
-      .select({ id: Borrowings.id })
-      .from(Borrowings)
-      .where(eq(Borrowings.equipmentId, equipmentId));
+      const borrowings = await tx
+        .select({ id: Borrowings.id })
+        .from(Borrowings)
+        .where(eq(Borrowings.equipmentId, equipmentId));
 
-    if (borrowings.length > 0) {
-      throw new Error("貸出履歴がある備品は削除できません");
-    }
+      if (borrowings.length > 0) {
+        throw new Error("貸出履歴がある備品は削除できません");
+      }
 
-    // レコードを削除するだけでバイナリデータ（画像）も一緒に消えます
-    await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
-  });
-
-  revalidatePath("/equipment");
-  revalidatePath("/");
+      await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
+    });
+    revalidatePath("/equipment");
+    revalidatePath("/");
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      error:
+        err instanceof Error
+          ? err.message
+          : "データベース処理中にエラーが発生しました",
+    };
+  }
 }
-
 export async function getAvailableImages(): Promise<string[]> {
   const imageDir = path.join(process.cwd(), "public", "equipment-images");
 
