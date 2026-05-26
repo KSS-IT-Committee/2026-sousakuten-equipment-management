@@ -1,5 +1,4 @@
 import { DeductionCellsByClasses } from "@/components/Classdeduction";
-import { DeductionForTest } from "@/components/Deductionfortest";
 import { DeductionSumsList } from "@/components/Deductionlists";
 import AddDeductionUI from "@/components/DeductionPopup";
 import SelectButtons from "@/components/UiButtons";
@@ -73,7 +72,6 @@ export async function DeductionUI({ searchParams }: Props) {
         {section === 3 ? (
           <>
             <AddDeductionUI />
-            <DeductionForTest />
           </>
         ) : null}
       </div>

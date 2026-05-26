@@ -46,7 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="jp"
+      lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <Script
