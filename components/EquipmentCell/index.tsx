@@ -4,7 +4,6 @@ import type { CSSProperties } from "react";
 
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
-import { bufferToDataUrl } from "@/lib/image";
 
 import styles from "./EquipmentCell.module.css";
 
@@ -21,7 +20,7 @@ export async function EquipmentCell({ id }: { id: number }) {
   const availabilityPercentage = Math.round(
     (availableCount / equipment.quantity) * 100,
   );
-  const imageSrc = bufferToDataUrl(equipment.picture);
+  const imageSrc = equipment.picture;
   const progressStyle = {
     "--progress-width": `${availabilityPercentage}%`,
   } as CSSProperties;

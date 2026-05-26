@@ -22,7 +22,7 @@ export async function getEquipmentById(id: number) {
 export async function createEquipment(data: {
   name: string;
   quantity: number;
-  picture?: Buffer;
+  picture?: string | null;
 }) {
   return await db.insert(Equipments).values(data);
 }
@@ -32,7 +32,7 @@ export async function updateEquipment(
   data: {
     name: string;
     quantity: number;
-    picture?: Buffer | null;
+    picture?: string | null;
   },
 ) {
   return await db.update(Equipments).set(data).where(eq(Equipments.id, id));

@@ -1,7 +1,5 @@
 "use server";
 
-import path from "node:path";
-
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -14,37 +12,11 @@ import {
 import { Borrowings, Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
 
-const ALLOWED_TYPES = new Map([
-  [".png", "image/png"],
-  [".jpg", "image/jpeg"],
-  [".jpeg", "image/jpeg"],
-  [".webp", "image/webp"],
-]);
-
-const MAX_BYTES = 5 * 1024 * 1024;
-
-async function processEquipmentImage(file: File): Promise<Buffer> {
-  if (file.size > MAX_BYTES) {
-    throw new Error("画像サイズは5MB以下にしてください");
-  }
-
-  const extension = path.extname(file.name).toLowerCase();
-  const expectedMimeType = ALLOWED_TYPES.get(extension);
-
-  if (!expectedMimeType || file.type !== expectedMimeType) {
-    throw new Error(
-      "許可されていないファイル形式です。PNG, JPG, WEBPのみアップロード可能です。",
-    );
-  }
-
-  const arrayBuffer = await file.arrayBuffer();
-  return Buffer.from(arrayBuffer);
-}
-
 export async function createEquipmentAction(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
-  const pictureFile = formData.get("picture");
+  // picture is now expected to be an image path string
+  const picturePath = String(formData.get("picture") ?? "").trim();
 
   if (!name) {
     throw new Error("機器名を入力してください");
@@ -54,11 +26,7 @@ export async function createEquipmentAction(formData: FormData) {
     throw new Error("数量は1以上の数字を入力してください");
   }
 
-  // DBの型に合わせて Buffer | undefined に変更
-  let picture: Buffer | undefined;
-  if (pictureFile instanceof File && pictureFile.size > 0) {
-    picture = await processEquipmentImage(pictureFile);
-  }
+  const picture = picturePath ? picturePath : null;
 
   const result = await createEquipment({
     name,
@@ -75,7 +43,7 @@ export async function updateEquipmentAction(formData: FormData) {
   const equipmentId = Number(formData.get("equipmentId"));
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
-  const pictureFile = formData.get("picture");
+  const picturePath = String(formData.get("picture") ?? "").trim();
   const deletePicture = formData.get("deletePicture") === "true";
 
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
@@ -102,12 +70,10 @@ export async function updateEquipmentAction(formData: FormData) {
     );
   }
 
-  // existingEquipment.picture の型は Buffer | null になります
-  let picture: Buffer | null | undefined =
-    existingEquipment.picture ?? undefined;
+  let picture: string | null = existingEquipment.picture ?? null;
 
-  if (pictureFile instanceof File && pictureFile.size > 0) {
-    picture = await processEquipmentImage(pictureFile);
+  if (picturePath) {
+    picture = picturePath;
   } else if (deletePicture) {
     picture = null;
   }
