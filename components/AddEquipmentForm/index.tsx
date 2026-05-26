@@ -19,39 +19,21 @@ type EquipmentFormValues = {
 type AddEquipmentFormProps = {
   mode?: EquipmentFormMode;
   initialValues?: EquipmentFormValues;
+  availableImages?: string[];
 };
 
 export function AddEquipmentForm({
   mode = "create",
   initialValues,
+  availableImages = [],
 }: AddEquipmentFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [preview, setPreview] = useState<string>(initialValues?.picture ?? "");
-  const [isPictureDeleted, setIsPictureDeleted] = useState(false);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setPreview(event.target?.result as string);
-        setIsPictureDeleted(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setPreview("");
-    setIsPictureDeleted(true);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
+  const [selectedImage, setSelectedImage] = useState<string>(
+    initialValues?.picture ?? "",
+  );
 
   const handleSubmit = async (formData: FormData) => {
     try {
@@ -78,6 +60,7 @@ export function AddEquipmentForm({
       {mode === "edit" && initialValues?.id ? (
         <input type="hidden" name="equipmentId" value={initialValues.id} />
       ) : null}
+
       <div className={styles.formGroup}>
         <label htmlFor="name" className={styles.label}>
           機器名 <span className={styles.required}>*</span>
@@ -110,39 +93,59 @@ export function AddEquipmentForm({
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="picture" className={styles.label}>
-          画像（オプション）
-        </label>
-        <input
-          type="file"
-          id="picture"
-          name="picture"
-          accept="image/png,image/jpeg,image/webp"
-          className={styles.fileInput}
-          onChange={handleImageChange}
-          ref={fileInputRef}
-        />
-        {preview && (
-          <div className={styles.previewContainer}>
-            <Image
-              src={preview}
-              alt="Preview"
-              width={100}
-              height={100}
-              className={styles.preview}
-            />
-            <button
-              type="button"
-              className={styles.removeImageButton}
-              onClick={handleRemoveImage}
-            >
-              削除
-            </button>
+        <label className={styles.label}>アイコン画像を選択（オプション）</label>
+        <div
+          className={styles.imageGrid}
+          style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
+        >
+          <div
+            onClick={() => setSelectedImage("")}
+            style={{
+              width: 80,
+              height: 80,
+              border:
+                selectedImage === "" ? "3px solid #007bff" : "1px solid #ccc",
+              borderRadius: 8,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              backgroundColor: "#f5f5f5",
+              color: "#666",
+              fontSize: "14px",
+            }}
+          >
+            画像なし
           </div>
-        )}
-        {isPictureDeleted && (
-          <input type="hidden" name="deletePicture" value="true" />
-        )}
+
+          {availableImages.map((imgPath) => (
+            <div
+              key={imgPath}
+              onClick={() => setSelectedImage(imgPath)}
+              style={{
+                width: 80,
+                height: 80,
+                cursor: "pointer",
+                overflow: "hidden",
+                borderRadius: 8,
+                border:
+                  selectedImage === imgPath
+                    ? "3px solid #007bff"
+                    : "1px solid #ccc",
+              }}
+            >
+              <Image
+                src={imgPath}
+                alt="icon"
+                width={80}
+                height={80}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <input type="hidden" name="picture" value={selectedImage} />
       </div>
 
       {error && <div className={styles.error}>{error}</div>}

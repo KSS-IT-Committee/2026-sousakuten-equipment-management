@@ -1,7 +1,9 @@
 "use server";
 
 import { eq } from "drizzle-orm";
+import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
+import path from "path";
 
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import {
@@ -120,4 +122,13 @@ export async function deleteEquipmentAction(equipmentId: number) {
 
   revalidatePath("/equipment");
   revalidatePath("/");
+}
+
+export async function getAvailableImages(): Promise<string[]> {
+  const imageDir = path.join(process.cwd(), "public", "equipment-images");
+
+  const files = await fs.readdir(imageDir);
+  return files
+    .filter((file) => /\.(png|jpe?g|webp|gif|svg)$/i.test(file))
+    .map((file) => `/equipment-images/${file}`);
 }
