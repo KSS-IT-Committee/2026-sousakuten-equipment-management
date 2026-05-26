@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { BorrowButton } from "@/components/BorrowButton";
 import { ClassBox } from "@/components/ClassBox";
+import { ClassName } from "@/db/schema";
 import { getClassLabel } from "@/lib/class-number";
 
 import styles from "./BorrowPopup.module.css";
@@ -19,7 +20,7 @@ export function BorrowingPopup({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<{
-    code: string;
+    code: ClassName;
     label: string;
   } | null>(null);
   const togglePopup = () => {
@@ -31,7 +32,7 @@ export function BorrowingPopup({
     setSelectedClass(null);
   };
 
-  const handleClassSelect = (classCode: string) => {
+  const handleClassSelect = (classCode: ClassName) => {
     setSelectedClass({ code: classCode, label: getClassLabel(classCode) });
   };
 

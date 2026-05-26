@@ -25,8 +25,8 @@ function getDb(): Db {
 
 export const db = new Proxy({} as Db, {
   get: (_target, prop) => {
-  const target = getDb();
-  const value = Reflect.get(target, prop);
-  return typeof value === "function" ? value.bind(target) : value;
-  }
+    const target = getDb();
+    const value = Reflect.get(target, prop);
+    return typeof value === "function" ? value.bind(target) : value;
+  },
 });

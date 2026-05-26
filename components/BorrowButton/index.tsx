@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { ClassName } from "@/db/schema";
 import { borrowEquipmentAction } from "@/lib/action";
 
 export function BorrowButton({
@@ -12,7 +13,7 @@ export function BorrowButton({
   className,
 }: {
   equipmentId: number;
-  classCode: string;
+  classCode: ClassName;
   disabled?: boolean;
   onBorrow?: () => void;
   className?: string;

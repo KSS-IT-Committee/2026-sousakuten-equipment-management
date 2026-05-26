@@ -1,6 +1,6 @@
 import { and, desc, eq, isNull } from "drizzle-orm";
 
-import { Borrowings } from "@/db/schema";
+import { Borrowings, ClassName } from "@/db/schema";
 import { db } from "@/lib/db";
 
 export async function getBorrowings() {
@@ -22,7 +22,7 @@ export async function getBorrowingsByEquipmentId(equipmentId: number) {
     .where(eq(Borrowings.equipmentId, equipmentId));
 }
 
-export async function getBorrowingsByClass(classCode: string) {
+export async function getBorrowingsByClass(classCode: ClassName) {
   return await db
     .select()
     .from(Borrowings)
@@ -52,7 +52,7 @@ export async function getActiveBorrowingsByID(equipmentId: number) {
 
 export async function createBorrowing(data: {
   equipmentId: number;
-  class: string;
+  class: ClassName;
   borrowedAt: Date;
   returnedAt?: Date;
 }) {

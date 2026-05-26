@@ -4,7 +4,7 @@ import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { createDeduction, deleteDeductionById } from "@/db/queries/deductions";
-import { Borrowings, Equipments } from "@/db/schema";
+import { Borrowings, ClassName, Equipments } from "@/db/schema";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 import { db } from "@/lib/db";
 
@@ -36,7 +36,7 @@ export const returnBorrowingAction = async (
 
 export const borrowEquipmentAction = async (
   equipmentId: number,
-  classCode: string,
+  classCode: ClassName,
 ) => {
   if (!CLASS_CODES.includes(classCode as ClassCode)) {
     throw new Error("Invalid class code");
