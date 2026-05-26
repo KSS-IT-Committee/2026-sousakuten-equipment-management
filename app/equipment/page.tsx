@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
-import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
+import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
 import styles from "./base.module.css";
@@ -26,7 +26,7 @@ export default async function Equipment({ searchParams }: Props) {
     return <p>エラー: 備品が見つかりませんでした</p>;
   }
 
-  const borrowings = await getActiveBorrowingsByID(id);
+  const borrowings = await getActiveBorrowingsByEquipmentId(id);
   const availableCount = equipment.quantity - borrowings.length;
 
   return (

@@ -17,7 +17,6 @@ const sortOptions: { value: DeductionSortKey; label: string }[] = [
   { value: "points", label: "加点・減点" },
   { value: "content", label: "内容" },
 ];
-const emptyClassFilterValue = "__none__";
 
 export default function SelectButtons() {
   const router = useRouter();
@@ -29,11 +28,11 @@ export default function SelectButtons() {
   const sortOrder = (searchParams.get("sortOrder") ??
     "desc") as DeductionSortOrder;
   const rawSelectedClasses = searchParams.getAll("class");
-  const hasClassFilter = rawSelectedClasses.length > 0;
   const selectedClasses = rawSelectedClasses.filter(
     (className): className is ClassName =>
       CLASSES.includes(className as ClassName),
   );
+  const hasClassFilter = selectedClasses.length > 0;
 
   const updateParams = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -47,9 +46,7 @@ export default function SelectButtons() {
   const updateClassFilters = (classes: ClassName[]) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("class");
-    if (classes.length === 0) {
-      params.append("class", emptyClassFilterValue);
-    } else if (classes.length < CLASSES.length) {
+    if (classes.length > 0) {
       classes.forEach((className) => {
         params.append("class", className);
       });

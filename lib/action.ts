@@ -38,8 +38,11 @@ export const borrowEquipmentAction = async (
   equipmentId: number,
   classCode: ClassName,
 ) => {
+  if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
+    throw new Error("備品IDが不正です");
+  }
   if (!CLASS_CODES.includes(classCode as ClassCode)) {
-    throw new Error("Invalid class code");
+    throw new Error("クラスコードが不正です");
   }
 
   await db.transaction(async (tx) => {
@@ -85,15 +88,19 @@ export const createDeductionAction = async (data: {
   points: number;
 }) => {
   if (!CLASS_CODES.includes(data.className as ClassCode)) {
-    throw new Error("Invalid class name");
+    throw new Error("クラス名が不正です");
   }
-  if (data.content.trim() === "") throw new Error("Invalid content");
+  const content = data.content.trim();
+
+  if (content === "") {
+    throw new Error("内容を入力してください");
+  }
   if (!Number.isInteger(data.points) || data.points <= 0) {
-    throw new Error("Invalid points");
+    throw new Error("点数は1以上の整数で入力してください");
   }
   await createDeduction({
     className: data.className as ClassCode,
-    content: data.content,
+    content,
     points: data.points,
     occurredAt: new Date(),
   });

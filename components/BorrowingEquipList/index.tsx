@@ -1,11 +1,11 @@
 import { ReturnButton } from "@/components/ReturnButton";
-import { getActiveBorrowingsByID } from "@/db/queries/borrowings";
+import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getClassLabel } from "@/lib/class-number";
 
 import styles from "./BorrowingEquipList.module.css";
 
 export async function BorrowingEquipList({ id }: { id: number }) {
-  const borrowings = await getActiveBorrowingsByID(id);
+  const borrowings = await getActiveBorrowingsByEquipmentId(id);
   return (
     <div>
       <div style={{ marginBottom: "20px" }}>

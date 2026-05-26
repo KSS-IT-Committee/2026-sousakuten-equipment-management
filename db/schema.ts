@@ -113,7 +113,6 @@ export const Borrowings = pgTable(
   (table) => [
     index("equipment_idx").on(table.equipmentId),
     index("class_idx").on(table.class),
-    check("class_format_check", sql`${table.class} ~ '^[1-6][A-D]$'`),
     check(
       "returned_at_after_borrowed_at",
       sql`${table.returnedAt} IS NULL OR ${table.returnedAt} >= ${table.borrowedAt}`,

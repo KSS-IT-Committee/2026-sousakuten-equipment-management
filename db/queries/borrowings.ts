@@ -37,7 +37,7 @@ export async function getActiveBorrowings() {
     .orderBy(desc(Borrowings.borrowedAt));
 }
 
-export async function getActiveBorrowingsByID(equipmentId: number) {
+export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
   return await db
     .select()
     .from(Borrowings)

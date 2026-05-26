@@ -2,18 +2,17 @@
 
 import path from "node:path";
 
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-import {
-  getActiveBorrowingsByID,
-  getBorrowingsByEquipmentId,
-} from "@/db/queries/borrowings";
+import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import {
   createEquipment,
-  deleteEquipmentById,
   getEquipmentById,
   updateEquipment,
 } from "@/db/queries/equipments";
+import { Borrowings, Equipments } from "@/db/schema";
+import { db } from "@/lib/db";
 
 const ALLOWED_TYPES = new Map([
   [".png", "image/png"],
@@ -96,7 +95,7 @@ export async function updateEquipmentAction(formData: FormData) {
     throw new Error("数量は1以上の数字を入力してください");
   }
 
-  const activeBorrowings = await getActiveBorrowingsByID(equipmentId);
+  const activeBorrowings = await getActiveBorrowingsByEquipmentId(equipmentId);
   if (quantity < activeBorrowings.length) {
     throw new Error(
       `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
@@ -129,18 +128,29 @@ export async function deleteEquipmentAction(equipmentId: number) {
     throw new Error("備品IDが不正です");
   }
 
-  const existingEquipment = await getEquipmentById(equipmentId);
-  if (!existingEquipment) {
-    throw new Error("備品が見つかりませんでした");
-  }
+  await db.transaction(async (tx) => {
+    const [existingEquipment] = await tx
+      .select()
+      .from(Equipments)
+      .where(eq(Equipments.id, equipmentId))
+      .for("update");
 
-  const borrowings = await getBorrowingsByEquipmentId(equipmentId);
-  if (borrowings.length > 0) {
-    throw new Error("貸出履歴がある備品は削除できません");
-  }
+    if (!existingEquipment) {
+      throw new Error("備品が見つかりませんでした");
+    }
 
-  // レコードを削除するだけでバイナリデータ（画像）も一緒に消えます
-  await deleteEquipmentById(equipmentId);
+    const borrowings = await tx
+      .select({ id: Borrowings.id })
+      .from(Borrowings)
+      .where(eq(Borrowings.equipmentId, equipmentId));
+
+    if (borrowings.length > 0) {
+      throw new Error("貸出履歴がある備品は削除できません");
+    }
+
+    // レコードを削除するだけでバイナリデータ（画像）も一緒に消えます
+    await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
+  });
 
   revalidatePath("/equipment");
   revalidatePath("/");

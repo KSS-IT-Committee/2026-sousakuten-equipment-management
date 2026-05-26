@@ -44,7 +44,6 @@ export async function DeductionUI({ searchParams }: Props) {
     ? (resolvedSearchParams?.sortOrder as DeductionSortOrder)
     : "desc";
   const classParams = resolvedSearchParams?.class;
-  const hasClassFilter = classParams !== undefined;
   const rawSelectedClasses = Array.isArray(classParams)
     ? classParams
     : classParams
@@ -54,6 +53,7 @@ export async function DeductionUI({ searchParams }: Props) {
     (className): className is ClassName =>
       CLASSES.includes(className as ClassName),
   );
+  const hasClassFilter = selectedClasses.length > 0;
   const classesToDisplay = hasClassFilter ? selectedClasses : CLASSES;
 
   return (
