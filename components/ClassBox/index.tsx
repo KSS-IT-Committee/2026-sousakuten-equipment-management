@@ -7,7 +7,7 @@ import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 import styles from "./ClassBox.module.css";
 
 interface ClassBoxProps {
-  onSelect?: (classCode: ClassCode) => void;
+  onSelect?: (classCode: ClassCode | null) => void;
 }
 
 export function ClassBox({ onSelect }: ClassBoxProps) {
@@ -20,16 +20,25 @@ export function ClassBox({ onSelect }: ClassBoxProps) {
   const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGrade(e.target.value);
     setSelectedClassId("");
+    if (onSelect) {
+      onSelect(null);
+    }
   };
 
   const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newClassId = e.target.value;
     setSelectedClassId(newClassId);
 
-    if (onSelect && selectedGrade && newClassId) {
-      const code = `${selectedGrade}${newClassId}` as ClassCode;
-      if (CLASS_CODES.includes(code)) {
-        onSelect(code);
+    if (onSelect) {
+      if (selectedGrade && newClassId) {
+        const code = `${selectedGrade}${newClassId}` as ClassCode;
+        if (CLASS_CODES.includes(code)) {
+          onSelect(code);
+        } else {
+          onSelect(null);
+        }
+      } else {
+        onSelect(null);
       }
     }
   };

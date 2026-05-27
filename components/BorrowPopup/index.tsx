@@ -32,8 +32,12 @@ export function BorrowingPopup({
     setSelectedClass(null);
   };
 
-  const handleClassSelect = (classCode: ClassName) => {
-    setSelectedClass({ code: classCode, label: getClassLabel(classCode) });
+  const handleClassSelect = (classCode: ClassName | null) => {
+    if (classCode) {
+      setSelectedClass({ code: classCode, label: getClassLabel(classCode) });
+    } else {
+      setSelectedClass(null);
+    }
   };
 
   const canBorrow = availableCount > 0 && selectedClass !== null;
