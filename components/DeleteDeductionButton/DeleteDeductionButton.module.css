@@ -1,0 +1,96 @@
+.confirmationOverlay {
+  position: fixed;
+  display: flex;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.triggerArea {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.confirmationBox {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.deleteButton {
+  padding: 14px 20px;
+  margin: 5px;
+  background-color: #dc3535;
+  color: white;
+  cursor: pointer;
+  border: solid;
+  border-radius: 6px;
+  font-size: 14px;
+  border-width: 0px;
+  box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background-color: #af2929;
+}
+
+.confirmButton {
+  padding: 14px 20px;
+  margin: 5px;
+  background-color: #dc3535;
+  color: white;
+  cursor: pointer;
+  border: solid;
+  border-radius: 6px;
+  font-size: 14px;
+  border-width: 0px;
+  box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
+  transition: all 0.2s ease;
+}
+
+.confirmButton:hover {
+  background-color: #af2929;
+}
+
+.cancelButton {
+  padding: 14px 20px;
+  margin: 5px;
+  margin-top: 20px;
+  background-color: #696969;
+  color: white;
+  cursor: pointer;
+  border: solid;
+  border-radius: 6px;
+  font-size: 14px;
+  border-width: 0px;
+  box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #414141;
+}

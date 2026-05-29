@@ -11,7 +11,7 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-export const CLASSES = [
+export const CLASS_VALUES = [
   "1A",
   "1B",
   "1C",
@@ -39,10 +39,11 @@ export const CLASSES = [
 ] as const;
 
 export type ClassName = (typeof CLASSES)[number];
-export const classEnum = pgEnum("class_name", CLASSES);
+export const CLASSES = [...CLASS_VALUES];
+export const classEnum = pgEnum("class_name", CLASS_VALUES);
 
 // 減点クラスDB — per-class deductions (issue #3)
-export const deductions = pgTable("deductions", {
+export const Deductions = pgTable("deductions", {
   id: serial("id").primaryKey(),
   className: classEnum("class_name").notNull(),
   content: text("content").notNull(),
@@ -96,7 +97,7 @@ export const Borrowings = pgTable(
       .notNull()
       .references(() => Equipments.id),
     // tagNumber: integer("tag_number").notNull(),
-    class: integer("class").notNull(),
+    class: classEnum("class").notNull(),
     borrowedAt: timestamp("borrowed_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -126,8 +127,8 @@ export const announcementClassesRelations = relations(
   }),
 );
 
-export type Deduction = typeof deductions.$inferSelect;
-export type NewDeduction = typeof deductions.$inferInsert;
+export type Deduction = typeof Deductions.$inferSelect;
+export type NewDeduction = typeof Deductions.$inferInsert;
 export type Announcement = typeof announcements.$inferSelect;
 export type NewAnnouncement = typeof announcements.$inferInsert;
 export type AnnouncementClass = typeof announcementClasses.$inferSelect;

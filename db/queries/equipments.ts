@@ -4,22 +4,40 @@ import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
 
 export async function getEquipments() {
-  return await db.select().from(Equipments);
+  return await db
+    .select({ id: Equipments.id })
+    .from(Equipments)
+    .orderBy(Equipments.id);
 }
 
 export async function getEquipmentById(id: number) {
   const result = await db
     .select()
     .from(Equipments)
-    .where(eq(Equipments.id, id));
+    .where(eq(Equipments.id, id))
+    .orderBy(Equipments.id);
   return result[0];
 }
 
 export async function createEquipment(data: {
   name: string;
   quantity: number;
-  picture?: string;
+  picture?: string | null;
 }) {
   return await db.insert(Equipments).values(data);
-  // if picture is empty, set default
+}
+
+export async function updateEquipment(
+  id: number,
+  data: {
+    name: string;
+    quantity: number;
+    picture?: string | null;
+  },
+) {
+  return await db.update(Equipments).set(data).where(eq(Equipments.id, id));
+}
+
+export async function deleteEquipmentById(id: number) {
+  return await db.delete(Equipments).where(eq(Equipments.id, id));
 }

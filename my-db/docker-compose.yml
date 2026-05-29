@@ -1,0 +1,15 @@
+services:
+  db:
+    # alpineベースをやめて、標準の16（Debianベース）に変更します
+    image: postgres:16
+    container_name: local-postgres
+    # 明示的に一般的なLinux(64bit)環境を指定
+    platform: linux/arm64
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

@@ -1,0 +1,19 @@
+.deductionSumList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 20px;
+
+  padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+  .deductionSumList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: 20px;
+
+    padding: 0 16px;
+  }
+}

@@ -1,0 +1,44 @@
+.deductionSumList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 20px;
+
+  padding: 0 16px;
+}
+
+.section {
+  gap: 16px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-height: 150px;
+  width: 100%;
+  text-align: center;
+}
+.section h2 {
+  font-size: 40px;
+}
+.section p {
+  font-size: 30px;
+}
+.section:hover {
+  border-color: #007bff;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .deductionSumList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: 20px;
+
+    padding: 0 16px;
+  }
+}

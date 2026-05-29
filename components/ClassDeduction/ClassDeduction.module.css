@@ -1,0 +1,93 @@
+.deduction {
+  display: grid;
+  margin-left: 10px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
+
+  justify-items: center;
+  margin: 7px 0px;
+  background-color: white;
+
+  border: solid #e0e0e0 1px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.deduction:hover {
+  border-color: #007bff;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.deductionsample {
+  display: grid;
+  margin-left: 10px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
+
+  justify-items: center;
+}
+.deductionsample h2 {
+  font-size: 15px;
+}
+
+.line {
+  margin-bottom: 20px;
+}
+
+.deductionList {
+}
+
+.emptyState {
+  margin: 12px 10px 0;
+  padding: 24px;
+  border: 1px solid #d7dff7;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+  box-shadow: 0 8px 24px rgba(37, 56, 168, 0.08);
+}
+
+.emptyStateTitle {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2430ab;
+}
+
+.emptyStateBody {
+  font-size: 15px;
+  color: #44506b;
+}
+
+.deduction h3,
+.deduction p {
+  font-size: 23px;
+}
+
+@media (max-width: 768px) {
+  .deduction {
+    grid-template-rows: 20px 1fr;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .content {
+    padding: 15px;
+    grid-row: 2/3;
+    grid-column: 1/5;
+  }
+  .deductionsample {
+    display: grid;
+    margin-left: 10px;
+    grid-template-rows: 2fr;
+    grid-template-columns: repeat(4, 1fr);
+
+    justify-items: center;
+  }
+  .contentHeader {
+    grid-column: 1/5;
+  }
+  .deduction h3,
+  .deduction p {
+    font-size: 18px;
+  }
+}

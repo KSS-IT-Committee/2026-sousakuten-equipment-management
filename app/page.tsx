@@ -1,10 +1,22 @@
-import { DefaultFooter } from "@/app/components/footer";
+import styles from "@/app/base.module.css";
+import { EquipmentCell } from "@/components/EquipmentCell";
+import { getEquipments } from "@/db/queries/equipments";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const equipments = await getEquipments();
+
   return (
-    <main className="flex-1 flex items-center justify-center">
-      <h1 className="text-4xl font-bold">創作展　貸出備品管理サイト</h1>
-      <DefaultFooter />
-    </main>
+    <>
+      <div className={styles.pageTitleWrapper}>
+        <h1 className={styles.pageTitle}>創作展 貸出備品管理サイト</h1>
+      </div>
+      <div className={styles.equipmentList}>
+        {equipments.map((equipment) => (
+          <EquipmentCell key={equipment.id} id={equipment.id} />
+        ))}
+      </div>
+    </>
   );
 }

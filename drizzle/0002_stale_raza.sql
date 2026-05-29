@@ -1,2 +1,0 @@
-ALTER TABLE "borrowings" ADD CONSTRAINT "returned_at_after_borrowed_at" CHECK ("borrowings"."returned_at" IS NULL OR "borrowings"."returned_at" >= "borrowings"."borrowed_at");--> statement-breakpoint
-ALTER TABLE "equipments" ADD CONSTRAINT "quantity_positive" CHECK ("equipments"."quantity" > 0);

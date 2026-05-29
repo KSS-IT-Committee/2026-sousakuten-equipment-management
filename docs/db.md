@@ -2,19 +2,35 @@
 
 ## 1. Equipments
 
-| id  | name        | quantity | picture                                         |
-| --- | ----------- | -------- | ----------------------------------------------- |
-| 1   | Equipment 1 | 5        | ![Equipment 1](https://via.placeholder.com/150) |
+| id  | name        | quantity | picture                                 |
+| --- | ----------- | -------- | --------------------------------------- |
+| 1   | Equipment 1 | 5        | /public/equipment-images/equipment1.jpg |
+
+### Adding New Equipment
+
+To add new equipment, use the **Add Equipment** page accessible from `/add-equipment`. The form accepts:
+
+- **Equipment Title** (required): Name of the equipment
+- **Quantity** (required): Number of items (must be > 0)
+- **Picture** (optional): Image file stored in `public/equipment-images`, with the public URL saved in the `picture` field
+
+The form validates input, displays a preview of the selected image before submission, and stores the uploaded file outside the database.
 
 ## 2. Borrowings
 
-| id  | equipment_id | tag_number | class | borrowed_at | returned_at |
-| --- | ------------ | ---------- | ----- | ----------- | ----------- |
-| 1   | 1            | 3          | 11    | 2024-01-01  | 2024-01-10  |
+| id  | equipmentId | class | borrowedAt | returnedAt |
+| --- | ----------- | ----- | ---------- | ---------- |
+| 1   | 1           | 1A    | 2024-01-01 | 2024-01-10 |
 
-or
+## 3. Deductions
 
-currently, the `tag_number` field is not used, so it can be omitted from the table:
-| id | equipment_id | class | borrowed_at | returned_at |
-| --- | --- | --- | --- | --- |
-| 1 | 1 | 11 | 2024-01-01 | 2024-01-10 |
+**Note**: Deductions are stored as positive values.
+
+| id  | className | content                  | points | occurredAt |
+| --- | --------- | ------------------------ | ------ | ---------- |
+| 1   | 1A        | Late return of equipment | 5      | 2024-01-11 |
+
+## 4. Others
+
+`announcements`, `ammouncementsClasses`, `announcementsRelations` and `announcementClasses` tables are exist but not used.
+It's existing for the new features.
