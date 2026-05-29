@@ -23,6 +23,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          # scripts/build-changelog.mjs (run via prebuild) resolves add-dates
+          # from `git log --follow`; shallow clones would miss older entries.
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -55,6 +60,12 @@ jobs:
       - name: Generate next-env.d.ts
         run: npx next typegen || true
 
+      - name: Generate changelog artifact
+        # Materialise lib/changelog.generated.json so tsc can resolve the
+        # static import in app/changelog/page.tsx. The prebuild hook re-runs
+        # this during `npm run build` below; that's fine and idempotent.
+        run: npm run changelog
+
       - name: Run TypeScript compiler check
         run: npx tsc --noEmit
 
@@ -78,6 +89,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020

@@ -2,6 +2,10 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
+
+import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "創作展　貸出備品管理サイト",
+  title: "創作展 貸出備品管理サイト",
   description: "創作展中の備品貸出管理サイト",
   robots: {
     index: false,
@@ -42,10 +46,27 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="ja"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-DGM95SGSRQ"
+        strategy="afterInteractive"
+      ></Script>
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-DGM95SGSRQ');
+  `}
+      </Script>
+      <body>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

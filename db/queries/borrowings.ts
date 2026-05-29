@@ -1,10 +1,10 @@
-import { eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 
-import { Borrowings } from "@/db/schema";
+import { Borrowings, ClassName } from "@/db/schema";
 import { db } from "@/lib/db";
 
 export async function getBorrowings() {
-  return await db.select().from(Borrowings);
+  return await db.select().from(Borrowings).orderBy(Borrowings.id);
 }
 
 export async function getBorrowingById(id: number) {
@@ -22,33 +22,46 @@ export async function getBorrowingsByEquipmentId(equipmentId: number) {
     .where(eq(Borrowings.equipmentId, equipmentId));
 }
 
-export async function getBorrowingsByClass(classNumber: number) {
+export async function getBorrowingsByClass(classCode: ClassName) {
   return await db
     .select()
     .from(Borrowings)
-    .where(eq(Borrowings.class, classNumber));
+    .where(eq(Borrowings.class, classCode));
 }
 
 export async function getActiveBorrowings() {
-  const now = new Date();
   return await db
     .select()
     .from(Borrowings)
-    .where(isNull(Borrowings.returnedAt));
+    .where(isNull(Borrowings.returnedAt))
+    .orderBy(desc(Borrowings.borrowedAt));
+}
+
+export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
+  return await db
+    .select()
+    .from(Borrowings)
+    .where(
+      and(
+        eq(Borrowings.equipmentId, equipmentId),
+        isNull(Borrowings.returnedAt),
+      ),
+    )
+    .orderBy(desc(Borrowings.borrowedAt));
 }
 
 export async function createBorrowing(data: {
   equipmentId: number;
-  class: number;
-  borrowDate: Date;
-  returnDate?: Date;
+  class: ClassName;
+  borrowedAt?: Date;
+  returnedAt?: Date;
 }) {
   return await db.insert(Borrowings).values(data);
 }
 
-export async function returnBorrowing(id: number, returnDate: Date) {
+export async function returnBorrowing(id: number, returnedAt: Date) {
   return await db
     .update(Borrowings)
-    .set({ returnedAt: returnDate })
-    .where(eq(Borrowings.id, id));
+    .set({ returnedAt: returnedAt })
+    .where(and(eq(Borrowings.id, id), isNull(Borrowings.returnedAt)));
 }

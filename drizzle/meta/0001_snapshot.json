@@ -1,6 +1,6 @@
 {
-  "id": "54475b52-d9f9-495b-a96f-52444b2f75af",
-  "prevId": "6d146099-ae4e-4c97-acd9-8924cba3396e",
+  "id": "ed9e1da6-8c9b-4ef2-81e4-c11e117443a3",
+  "prevId": "5bf9a878-76e7-4067-9103-a61306eca482",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -22,7 +22,8 @@
         },
         "class": {
           "name": "class",
-          "type": "integer",
+          "type": "class_name",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -86,6 +87,56 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
+      "checkConstraints": {
+        "returned_at_after_borrowed_at": {
+          "name": "returned_at_after_borrowed_at",
+          "value": "\"borrowings\".\"returned_at\" IS NULL OR \"borrowings\".\"returned_at\" >= \"borrowings\".\"borrowed_at\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.deductions": {
+      "name": "deductions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "class_name": {
+          "name": "class_name",
+          "type": "class_name",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "points": {
+          "name": "points",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "occurred_at": {
+          "name": "occurred_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
     },
@@ -123,11 +174,133 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
+      "checkConstraints": {
+        "quantity_positive": {
+          "name": "quantity_positive",
+          "value": "\"equipments\".\"quantity\" > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.announcement_classes": {
+      "name": "announcement_classes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "announcement_id": {
+          "name": "announcement_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "class_name": {
+          "name": "class_name",
+          "type": "class_name",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "announcement_classes_announcement_id_announcements_id_fk": {
+          "name": "announcement_classes_announcement_id_announcements_id_fk",
+          "tableFrom": "announcement_classes",
+          "tableTo": "announcements",
+          "columnsFrom": ["announcement_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "announcement_classes_announcement_id_class_name_unique": {
+          "name": "announcement_classes_announcement_id_class_name_unique",
+          "nullsNotDistinct": false,
+          "columns": ["announcement_id", "class_name"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.announcements": {
+      "name": "announcements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.class_name": {
+      "name": "class_name",
+      "schema": "public",
+      "values": [
+        "1A",
+        "1B",
+        "1C",
+        "1D",
+        "2A",
+        "2B",
+        "2C",
+        "2D",
+        "3A",
+        "3B",
+        "3C",
+        "3D",
+        "4A",
+        "4B",
+        "4C",
+        "4D",
+        "5A",
+        "5B",
+        "5C",
+        "5D",
+        "6A",
+        "6B",
+        "6C",
+        "6D"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
