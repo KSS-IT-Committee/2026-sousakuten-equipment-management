@@ -21,11 +21,11 @@ export async function createEquipmentAction(formData: FormData) {
   const picturePath = String(formData.get("picture") ?? "").trim();
 
   if (!name) {
-    throw new Error("機器名を入力してください");
+    throw new Error("error: equipment name is required");
   }
 
   if (!Number.isInteger(quantity) || quantity <= 0) {
-    throw new Error("数量は1以上の数字を入力してください");
+    throw new Error("error: quantity must be a positive integer");
   }
 
   const picture = picturePath ? picturePath : null;
@@ -49,20 +49,20 @@ export async function updateEquipmentAction(formData: FormData) {
   const deletePicture = formData.get("deletePicture") === "true";
 
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
-    throw new Error("備品IDが不正です");
+    throw new Error("error: equipment ID is invalid");
   }
 
   const existingEquipment = await getEquipmentById(equipmentId);
   if (!existingEquipment) {
-    throw new Error("備品が見つかりませんでした");
+    throw new Error("error: equipment not found");
   }
 
   if (!name) {
-    throw new Error("機器名を入力してください");
+    throw new Error("error: equipment name is required");
   }
 
   if (!Number.isInteger(quantity) || quantity <= 0) {
-    throw new Error("数量は1以上の数字を入力してください");
+    throw new Error("error: quantity must be a positive integer");
   }
 
   const activeBorrowings = await getActiveBorrowingsByEquipmentId(equipmentId);
