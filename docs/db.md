@@ -4,7 +4,7 @@
 
 | id  | name        | quantity | picture                                         |
 | --- | ----------- | -------- | ----------------------------------------------- |
-| 1   | Equipment 1 | 5        | ![Equipment 1](https://via.placeholder.com/150) |
+| 1   | Equipment 1 | 5        | /public/equipment-images/equipment1.jpg |
 
 ### Adding New Equipment
 
@@ -21,3 +21,15 @@ The form validates input, displays a preview of the selected image before submis
 | id  | equipmentId | class | borrowedAt | returnedAt |
 | --- | ----------- | ----- | ---------- | ---------- |
 | 1   | 1           | 1A    | 2024-01-01 | 2024-01-10 |
+
+## 3. Deductions
+
+**Note**: Deductions are stored as positive values.
+
+| id | className | content | points | occurredAt |
+| -- | --------- | ------- | ------ | ---------- |
+| 1  | 1A        | Late return of equipment | 5      | 2024-01-11 |
+
+## 4. Others
+`announcements`, `ammouncementsClasses`, `announcementsRelations` and `announcementClasses` tables are exist but not used.
+It's existing for the new features.
