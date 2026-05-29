@@ -2,8 +2,8 @@
 
 ## 1. Equipments
 
-| id  | name        | quantity | picture                                         |
-| --- | ----------- | -------- | ----------------------------------------------- |
+| id  | name        | quantity | picture                                 |
+| --- | ----------- | -------- | --------------------------------------- |
 | 1   | Equipment 1 | 5        | /public/equipment-images/equipment1.jpg |
 
 ### Adding New Equipment
@@ -26,10 +26,11 @@ The form validates input, displays a preview of the selected image before submis
 
 **Note**: Deductions are stored as positive values.
 
-| id | className | content | points | occurredAt |
-| -- | --------- | ------- | ------ | ---------- |
-| 1  | 1A        | Late return of equipment | 5      | 2024-01-11 |
+| id  | className | content                  | points | occurredAt |
+| --- | --------- | ------------------------ | ------ | ---------- |
+| 1   | 1A        | Late return of equipment | 5      | 2024-01-11 |
 
 ## 4. Others
+
 `announcements`, `ammouncementsClasses`, `announcementsRelations` and `announcementClasses` tables are exist but not used.
 It's existing for the new features.

@@ -46,7 +46,6 @@ export async function updateEquipmentAction(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
   const picturePath = String(formData.get("picture") ?? "").trim();
-  const deletePicture = formData.get("deletePicture") === "true";
 
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
     throw new Error("error: equipment ID is invalid");
@@ -72,13 +71,7 @@ export async function updateEquipmentAction(formData: FormData) {
     );
   }
 
-  let picture: string | null = existingEquipment.picture ?? null;
-
-  if (picturePath) {
-    picture = picturePath;
-  } else if (deletePicture) {
-    picture = null;
-  }
+  const picture = picturePath ? picturePath : null;
 
   const result = await updateEquipment(equipmentId, {
     name,
