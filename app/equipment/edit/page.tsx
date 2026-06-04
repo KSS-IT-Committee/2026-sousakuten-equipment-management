@@ -3,6 +3,8 @@ import { getAvailableImages } from "@/components/AddEquipmentForm/action";
 import { DeleteEquipmentButton } from "@/components/DeleteEquipmentButton";
 import { getEquipmentById } from "@/db/queries/equipments";
 
+import { checkUserAuth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import styles from "../../add-equipment/page.module.css";
 
 type Props = {
@@ -23,7 +25,10 @@ export default async function EditEquipmentPage({ searchParams }: Props) {
   if (!equipment) {
     return <p>エラー: 備品が見つかりませんでした</p>;
   }
-
+  const perm = await checkUserAuth();
+  if (!perm.isLoggedIn) {
+    redirect("/");
+  }
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>備品を修正</h1>

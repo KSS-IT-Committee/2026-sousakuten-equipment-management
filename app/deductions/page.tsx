@@ -1,5 +1,6 @@
 import { DeductionUI } from "@/components/DeductionUI";
-
+import { checkUserAuth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 type Props = {
   searchParams?: Promise<{
     section?: string;
@@ -10,6 +11,11 @@ type Props = {
 };
 
 export default async function Deductions({ searchParams }: Props) {
+  const perm = await checkUserAuth();
+  if (!perm.isLoggedIn) {
+    redirect("/");
+  }
+
   return (
     <>
       <div style={{ width: "100%", marginBottom: "24px" }}>
