@@ -1,9 +1,9 @@
+import { redirect } from "next/navigation";
+
 import styles from "@/app/add-equipment/page.module.css";
 import { AddEquipmentForm } from "@/components/AddEquipmentForm";
 import { getAvailableImages } from "@/components/AddEquipmentForm/action";
-
 import { checkUserAuth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 export default async function AddEquipmentPage() {
   const images = await getAvailableImages();

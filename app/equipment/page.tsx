@@ -5,10 +5,9 @@ import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
+import { checkUserAuth } from "@/lib/auth";
 
 import styles from "./base.module.css";
-
-import { checkUserAuth } from "@/lib/auth";
 
 type Props = {
   searchParams: Promise<{ id?: string }>;

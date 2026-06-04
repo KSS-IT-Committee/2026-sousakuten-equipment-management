@@ -1,10 +1,11 @@
+import { redirect } from "next/navigation";
+
 import { AddEquipmentForm } from "@/components/AddEquipmentForm";
 import { getAvailableImages } from "@/components/AddEquipmentForm/action";
 import { DeleteEquipmentButton } from "@/components/DeleteEquipmentButton";
 import { getEquipmentById } from "@/db/queries/equipments";
-
 import { checkUserAuth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+
 import styles from "../../add-equipment/page.module.css";
 
 type Props = {

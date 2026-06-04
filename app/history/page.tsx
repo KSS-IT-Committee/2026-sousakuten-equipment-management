@@ -1,10 +1,9 @@
 import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
-import { redirect } from "next/navigation";
-import styles from "./base.module.css";
-
 import { checkUserAuth } from "@/lib/auth";
+
+import styles from "./base.module.css";
 
 type Props = {
   searchParams: Promise<{ id?: string }>;
