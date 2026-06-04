@@ -8,6 +8,8 @@ import { getEquipmentById } from "@/db/queries/equipments";
 
 import styles from "./base.module.css";
 
+import { checkUserAuth } from "@/lib/auth";
+
 type Props = {
   searchParams: Promise<{ id?: string }>;
 };
@@ -29,18 +31,21 @@ export default async function Equipment({ searchParams }: Props) {
   const borrowings = await getActiveBorrowingsByEquipmentId(id);
   const availableCount = equipment.quantity - borrowings.length;
 
+  const perm = await checkUserAuth();
   return (
     <div className={styles.cell}>
-      <div className={styles.actionGroup}>
-        <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
-          編集
-        </Link>
-        <BorrowingPopup
-          id={id}
-          title={equipment.name}
-          availableCount={availableCount}
-        />
-      </div>
+      {perm.isLoggedIn && (
+        <div className={styles.actionGroup}>
+          <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
+            編集
+          </Link>
+          <BorrowingPopup
+            id={id}
+            title={equipment.name}
+            availableCount={availableCount}
+          />
+        </div>
+      )}
 
       <EquipmentCell id={id} />
       <BorrowingEquipList id={id} />
