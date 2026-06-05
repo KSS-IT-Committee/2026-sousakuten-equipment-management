@@ -1,11 +1,11 @@
 "use server";
 
 import { cookies } from "next/headers";
-
+import { CLASS_CODES } from "./class-number";
 export type AuthCheckResult = {
   isLoggedIn: boolean;
   role: "admin" | "user" | null;
-  className: string | null; // e.g., "1A", "2B", or "all" for admin
+  className: typeof CLASS_CODES | "all" | null; // e.g., "1A", "2B", or "all" for admin
   error?: string;
 };
 export async function checkUserAuth(): Promise<AuthCheckResult> {
