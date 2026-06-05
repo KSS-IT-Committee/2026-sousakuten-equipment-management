@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+
 import { CLASS_CODES } from "./class-number";
 export type AuthCheckResult = {
   isLoggedIn: boolean;
