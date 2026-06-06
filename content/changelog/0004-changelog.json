@@ -1,0 +1,5 @@
+{
+  "title": "checkUserAuthの追加",
+  "description": "ユーザーの認証状態を確認するためのcheckUserAuth関数が追加されました。これにより、ユーザーがログインしているかどうかを簡単に確認できるようになりました。",
+  "credits": ["@K10-K10"]
+}
