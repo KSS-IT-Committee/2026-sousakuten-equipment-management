@@ -34,10 +34,8 @@ export default async function Page({ searchParams }: Props) {
         <BackButton />
       </div>
       <div className={styles.buttonRow}>
-
         <DeleteDeductionButton deductionId={deduction.id} />
       </div>
-
     </>
   );
 }

@@ -13,6 +13,5 @@ export default function BackButton() {
         戻る
       </button>
     </div>
-
   );
 }

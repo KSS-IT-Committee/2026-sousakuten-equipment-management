@@ -34,14 +34,17 @@ export default function SelectButtons() {
   );
   const hasClassFilter = selectedClasses.length > 0;
 
-  const groupedClasses = CLASSES.reduce((groups, className) => {
-    const grade = className[0];
-    if (!groups[grade]) {
-      groups[grade] = [];
-    }
-    groups[grade].push(className);
-    return groups;
-  }, {} as Record<string, ClassName[]>);
+  const groupedClasses = CLASSES.reduce(
+    (groups, className) => {
+      const grade = className[0];
+      if (!groups[grade]) {
+        groups[grade] = [];
+      }
+      groups[grade].push(className);
+      return groups;
+    },
+    {} as Record<string, ClassName[]>,
+  );
 
   const updateParams = (key: string, value: string | null = null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -126,7 +129,6 @@ export default function SelectButtons() {
           </button>
         )}
 
-
         <button
           onClick={() => updateParamsBulk({ class: null, section: "2" })}
           className={
@@ -194,7 +196,6 @@ export default function SelectButtons() {
           ))}
         </div>
       ) : null}
-
     </div>
   );
 }

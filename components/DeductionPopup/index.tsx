@@ -54,7 +54,6 @@ export default function AddDeductionUI() {
               <p>ここに入力すると、即時減点されます。</p>
             </div>
 
-
             <div className={styles.inputGroup}>
               <div className={styles.inputareas}>
                 <div className={styles.inputarea}>
@@ -112,7 +111,6 @@ export default function AddDeductionUI() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
-
             </div>
             <button
               onClick={async () => {
@@ -146,7 +144,11 @@ export default function AddDeductionUI() {
         >
           <div className={styles.confirmationPopup}>
             <h2 id="deduction-confirmation-title">確認</h2>
-            <p>{`${selectedGrade}年${selectedClass}組に${points}点の減点を追加しますか？`}<br />{"理由:" + content}</p>
+            <p>
+              {`${selectedGrade}年${selectedClass}組に${points}点の減点を追加しますか？`}
+              <br />
+              {"理由:" + content}
+            </p>
             <button
               onClick={async () => {
                 if (loading) return;
