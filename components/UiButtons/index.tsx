@@ -7,6 +7,7 @@ import type {
   DeductionSortOrder,
 } from "@/components/DeductionUI";
 import { CLASSES, type ClassName } from "@/db/schema";
+
 import styles from "./UiButtons.module.css";
 
 const sortOptions: { value: DeductionSortKey; label: string }[] = [

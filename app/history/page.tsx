@@ -1,6 +1,7 @@
 import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
+
 import styles from "./base.module.css";
 
 type Props = {
