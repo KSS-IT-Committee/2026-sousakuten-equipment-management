@@ -61,7 +61,7 @@ export async function DeductionUI({ searchParams }: Props) {
       <AddDeductionUI />
       <SelectButtons />
       <div>
-        {section === 1 ? (
+        {section === 1 && hasClassFilter ? (
           <DeductionCellsByClasses
             classes={classesToDisplay}
             sortBy={sortBy}

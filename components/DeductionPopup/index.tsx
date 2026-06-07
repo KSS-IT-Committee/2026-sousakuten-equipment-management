@@ -49,54 +49,70 @@ export default function AddDeductionUI() {
           aria-labelledby="deduction-popup-title"
         >
           <div className={styles.popup}>
-            <h2 id="deduction-popup-title">減点する</h2>
-            <p>ここに入力すると、即時減点されます。</p>
+            <div className={styles.details}>
+              <h2 id="deduction-popup-title">減点する</h2>
+              <p>ここに入力すると、即時減点されます。</p>
+            </div>
+
 
             <div className={styles.inputGroup}>
-              <label htmlFor="grade-select" className={styles.label}>
-                学年:
-              </label>
-              <select
-                id="grade-select"
-                value={selectedGrade}
-                onChange={(e) => setSelectedGrade(e.target.value)}
-                className={styles.select}
-              >
-                <option value="">学年を選択</option>
-                {grades.map((grade) => (
-                  <option key={grade} value={grade}>
-                    {grade}年
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="class-select" className={styles.label}>
-                組:
-              </label>
-              <select
-                id="class-select"
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className={styles.select}
-              >
-                <option value="">組を選択</option>
-                {classIds.map((classId) => (
-                  <option key={classId} value={classId}>
-                    {classId}組
-                  </option>
-                ))}
-              </select>
+              <div className={styles.inputareas}>
+                <div className={styles.inputarea}>
+                  <label htmlFor="grade-select" className={styles.label}>
+                    学年
+                  </label>
+                  <select
+                    id="grade-select"
+                    value={selectedGrade}
+                    onChange={(e) => setSelectedGrade(e.target.value)}
+                    className={styles.select}
+                  >
+                    <option value="">学年を選択</option>
+                    {grades.map((grade) => (
+                      <option key={grade} value={grade}>
+                        {grade}年
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.inputarea}>
+                  <label htmlFor="class-select" className={styles.label}>
+                    組
+                  </label>
+                  <select
+                    id="class-select"
+                    value={selectedClass}
+                    onChange={(e) => setSelectedClass(e.target.value)}
+                    className={styles.select}
+                  >
+                    <option value="">組を選択</option>
+                    {classIds.map((classId) => (
+                      <option key={classId} value={classId}>
+                        {classId}組
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className={styles.inputarea}>
+                <label htmlFor="class-select" className={styles.label}>
+                  減点点数
+                </label>
+                <input
+                  type="number"
+                  className={styles.numberselect}
+                  value={points}
+                  onChange={(e) => setPoints(Number(e.target.value))}
+                />
+              </div>
+
               <textarea
                 placeholder="減点の詳細を入力"
                 className={styles.textInput}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
-              <input
-                type="number"
-                className={styles.select}
-                value={points}
-                onChange={(e) => setPoints(Number(e.target.value))}
-              />
+
             </div>
             <button
               onClick={async () => {
@@ -130,7 +146,7 @@ export default function AddDeductionUI() {
         >
           <div className={styles.confirmationPopup}>
             <h2 id="deduction-confirmation-title">確認</h2>
-            <p>{`${selectedGrade}年${selectedClass}組に${points}点の減点を追加しますか？`}</p>
+            <p>{`${selectedGrade}年${selectedClass}組に${points}点の減点を追加しますか？`}<br />{"理由:" + content}</p>
             <button
               onClick={async () => {
                 if (loading) return;

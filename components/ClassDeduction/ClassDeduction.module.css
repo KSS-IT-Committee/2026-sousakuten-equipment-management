@@ -3,7 +3,7 @@
   margin-left: 10px;
   grid-template-rows: 1fr;
   grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
-
+  padding: 10px 0;
   justify-items: center;
   margin: 7px 0px;
   background-color: white;
@@ -67,6 +67,7 @@
 
 @media (max-width: 768px) {
   .deduction {
+    padding: 5px;
     grid-template-rows: 20px 1fr;
     grid-template-columns: repeat(4, 1fr);
   }

@@ -142,9 +142,21 @@
   gap: 10px;
 }
 
+.classGroup {
+  margin-bottom: 16px;
+}
+
+.classGroupTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #3543dc;
+  margin-bottom: 8px;
+}
+
 .classCheckboxLabel {
   position: relative;
   display: flex;
+
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
@@ -212,4 +224,18 @@
 .classCheckboxLabel:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(36, 48, 171, 0.1);
+}
+
+@media (max-width: 768px) {
+  .activeButton,
+  .notactiveButton {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+  .classCheckboxGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 10px;
+  }
 }

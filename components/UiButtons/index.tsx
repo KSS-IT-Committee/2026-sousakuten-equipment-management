@@ -7,7 +7,6 @@ import type {
   DeductionSortOrder,
 } from "@/components/DeductionUI";
 import { CLASSES, type ClassName } from "@/db/schema";
-
 import styles from "./UiButtons.module.css";
 
 const sortOptions: { value: DeductionSortKey; label: string }[] = [
@@ -34,10 +33,45 @@ export default function SelectButtons() {
   );
   const hasClassFilter = selectedClasses.length > 0;
 
-  const updateParams = (key: string, value: string) => {
+  const groupedClasses = CLASSES.reduce((groups, className) => {
+    const grade = className[0];
+    if (!groups[grade]) {
+      groups[grade] = [];
+    }
+    groups[grade].push(className);
+    return groups;
+  }, {} as Record<string, ClassName[]>);
+
+  const updateParams = (key: string, value: string | null = null) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set(key, value);
+    if (value === null || value === "") {
+      params.delete(key);
+    } else {
+      params.set(key, value);
+    }
+
     if ((key === "sortBy" || key === "sortOrder") && selected !== "1") {
+      params.set("section", "1");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const updateParamsBulk = (
+    updates: Record<string, string | null | undefined>,
+  ) => {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(updates)) {
+      if (value === null || value === "" || value === undefined) {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    }
+
+    if (
+      (updates.sortBy !== undefined || updates.sortOrder !== undefined) &&
+      selected !== "1"
+    ) {
       params.set("section", "1");
     }
     router.push(`${pathname}?${params.toString()}`);
@@ -57,8 +91,12 @@ export default function SelectButtons() {
     router.push(`${pathname}?${params.toString()}`);
   };
 
+  const selectAllClasses = () => {
+    updateClassFilters([...CLASSES]);
+  };
+
   const toggleClassFilter = (className: ClassName) => {
-    const currentClasses = hasClassFilter ? selectedClasses : [...CLASSES];
+    const currentClasses = hasClassFilter ? selectedClasses : [];
     const nextClasses = currentClasses.includes(className)
       ? currentClasses.filter((selectedClass) => selectedClass !== className)
       : [...currentClasses, className];
@@ -69,17 +107,27 @@ export default function SelectButtons() {
   return (
     <div className={styles.controls}>
       <div className={styles.changeUIButtons}>
-        <button
-          onClick={() => updateParams("section", "1")}
-          className={
-            selected === "1" ? styles.activeButton : styles.notactiveButton
-          }
-        >
-          減点履歴
-        </button>
+        {selectedClasses.length > 0 ? (
+          <button
+            onClick={() => updateParamsBulk({ section: "1", class: null })}
+            className={styles.notactiveButton}
+          >
+            戻る
+          </button>
+        ) : (
+          <button
+            onClick={() => updateParamsBulk({ class: null, section: "1" })}
+            className={
+              selected === "1" ? styles.activeButton : styles.notactiveButton
+            }
+          >
+            減点履歴
+          </button>
+        )}
+
 
         <button
-          onClick={() => updateParams("section", "2")}
+          onClick={() => updateParamsBulk({ class: null, section: "2" })}
           className={
             selected === "2" ? styles.activeButton : styles.notactiveButton
           }
@@ -115,56 +163,37 @@ export default function SelectButtons() {
         </button>
       </div>
 
-      {selected === "1" ? (
+      {selected === "1" && selectedClasses.length === 0 ? (
         <div className={styles.filterPanel}>
           <div className={styles.filterHeader}>
-            <span className={styles.filterTitle}>クラスで絞り込み</span>
-            <div className={styles.filterActions}>
-              <button
-                className={styles.filterActionButton}
-                onClick={() => updateClassFilters(CLASSES)}
-                type="button"
-              >
-                全クラス表示
-              </button>
-              <button
-                className={styles.filterActionButton}
-                onClick={() => updateClassFilters([])}
-                type="button"
-              >
-                すべて解除
-              </button>
+            <span className={styles.filterTitle}>クラスを選択</span>
+          </div>
+          <button
+            type="button"
+            className={styles.classCheckboxLabel}
+            onClick={selectAllClasses}
+          >
+            全てのクラス
+          </button>
+          {Object.entries(groupedClasses).map(([grade, classes]) => (
+            <div key={grade} className={styles.classGroup}>
+              <div className={styles.classGroupTitle}>{grade}年</div>
+              <div className={styles.classCheckboxGrid}>
+                {classes.map((className) => (
+                  <button
+                    key={className}
+                    className={styles.classCheckboxLabel}
+                    onClick={() => toggleClassFilter(className)}
+                  >
+                    {className}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-
-          <div className={styles.classCheckboxGrid}>
-            {CLASSES.map((className) => {
-              const isChecked = hasClassFilter
-                ? selectedClasses.includes(className)
-                : true;
-              return (
-                <label
-                  key={className}
-                  className={styles.classCheckboxLabel}
-                  data-checked={isChecked ? "true" : "false"}
-                >
-                  <input
-                    checked={isChecked}
-                    className={styles.classCheckbox}
-                    onChange={() => toggleClassFilter(className)}
-                    type="checkbox"
-                  />
-                  <span
-                    className={styles.classCheckboxMark}
-                    aria-hidden="true"
-                  />
-                  <span className={styles.classCheckboxText}>{className}</span>
-                </label>
-              );
-            })}
-          </div>
+          ))}
         </div>
       ) : null}
+
     </div>
   );
 }

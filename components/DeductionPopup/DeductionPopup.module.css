@@ -8,6 +8,32 @@
   justify-content: center;
 }
 
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.inputarea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.label {
+  margin-top: 10px;
+}
+
+.inputareas {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
 .popup {
   background-color: white;
   border-radius: 12px;
@@ -71,7 +97,17 @@
 }
 
 .select {
-  padding: 10px 12px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.numberselect {
+  padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
@@ -140,7 +176,7 @@
   position: fixed;
   display: flex;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000;
   align-items: center;
   justify-content: center;

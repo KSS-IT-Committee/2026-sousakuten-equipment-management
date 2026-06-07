@@ -1,6 +1,6 @@
+import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
-
 import styles from "./base.module.css";
 
 type Props = {
@@ -30,8 +30,13 @@ export default async function Page({ searchParams }: Props) {
         <h2>減点ポイント: {deduction.points}点</h2>
         <h2>内容: {deduction.content}</h2>
         <h2>日時: {deduction.occurredAt.toLocaleString("ja-JP")}</h2>
+        <BackButton />
       </div>
-      <DeleteDeductionButton deductionId={deduction.id} />
+      <div className={styles.buttonRow}>
+
+        <DeleteDeductionButton deductionId={deduction.id} />
+      </div>
+
     </>
   );
 }
