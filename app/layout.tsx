@@ -49,19 +49,27 @@ export default function RootLayout({
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-DGM95SGSRQ"
-        strategy="afterInteractive"
-      ></Script>
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
+      {/* Google tag (gtag.js) — skipped on PR preview deployments.
+          IS_PR_PREVIEW is injected at runtime by the deploy infra and read
+          here server-side, so it must NOT be NEXT_PUBLIC_ (those inline at
+          build time). */}
+      {process.env.IS_PR_PREVIEW !== "true" && (
+        <>
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-DGM95SGSRQ"
+            strategy="afterInteractive"
+          ></Script>
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-DGM95SGSRQ');
   `}
-      </Script>
+          </Script>
+        </>
+      )}
       <body>
         <Navbar />
         <main>{children}</main>
