@@ -61,10 +61,11 @@ export default function AddDeductionUI() {
                     学年
                   </label>
                   <select
+                    className={styles.select}
                     id="grade-select"
                     value={selectedGrade}
                     onChange={(e) => setSelectedGrade(e.target.value)}
-                    className={styles.select}
+
                   >
                     <option value="">学年を選択</option>
                     {grades.map((grade) => (

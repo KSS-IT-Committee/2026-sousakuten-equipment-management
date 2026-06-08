@@ -11,7 +11,7 @@
   gap: 16px;
   background-color: white;
   border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border-radius: 16px;
   padding: 16px;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -40,5 +40,11 @@
     gap: 20px;
 
     padding: 0 16px;
+  }
+  .section h2 {
+    font-size: 30px;
+  }
+  .section p {
+    font-size: 20px;
   }
 }

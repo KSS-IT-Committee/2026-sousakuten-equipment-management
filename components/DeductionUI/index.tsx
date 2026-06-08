@@ -57,7 +57,7 @@ export async function DeductionUI({ searchParams }: Props) {
   const classesToDisplay = hasClassFilter ? selectedClasses : CLASSES;
 
   return (
-    <main>
+    <>
       <AddDeductionUI />
       <SelectButtons />
       <div>
@@ -75,6 +75,6 @@ export async function DeductionUI({ searchParams }: Props) {
           </>
         ) : null}
       </div>
-    </main>
+    </>
   );
 }

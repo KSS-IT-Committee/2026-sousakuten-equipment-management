@@ -9,7 +9,8 @@
   background-color: white;
 
   border: solid #e0e0e0 1px;
-  border-radius: 10px;
+  border-radius: 20px;
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
@@ -34,9 +35,6 @@
 
 .line {
   margin-bottom: 20px;
-}
-
-.deductionList {
 }
 
 .emptyState {
@@ -68,8 +66,10 @@
 @media (max-width: 768px) {
   .deduction {
     padding: 5px;
+    padding-top: 10px;
     grid-template-rows: 20px 1fr;
-    grid-template-columns: repeat(4, 1fr);
+    padding-bottom: 2px;
+    grid-template-columns: 1fr 2fr 2fr 2fr;
   }
   .content {
     padding: 15px;
@@ -80,7 +80,7 @@
     display: grid;
     margin-left: 10px;
     grid-template-rows: 2fr;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 2fr 2fr 2fr;
 
     justify-items: center;
   }
