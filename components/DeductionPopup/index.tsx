@@ -94,7 +94,7 @@ export default function AddDeductionUI() {
                 </div>
               </div>
               <div className={styles.inputarea}>
-                <label htmlFor="class-select" className={styles.label}>
+                <label className={styles.label}>
                   減点点数
                 </label>
                 <input
