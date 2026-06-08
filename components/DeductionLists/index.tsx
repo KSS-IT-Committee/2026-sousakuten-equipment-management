@@ -28,7 +28,6 @@ export async function DeductionSumsList() {
             </div>
           </div>
         ))}
-
       </div>
     </div>
   );

@@ -65,7 +65,6 @@ export default function AddDeductionUI() {
                     id="grade-select"
                     value={selectedGrade}
                     onChange={(e) => setSelectedGrade(e.target.value)}
-
                   >
                     <option value="">学年を選択</option>
                     {grades.map((grade) => (
