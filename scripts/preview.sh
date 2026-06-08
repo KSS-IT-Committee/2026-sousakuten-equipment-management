@@ -1,22 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+PROJECT="equipment-preview"
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 COMPOSE_FILE="${REPO_DIR}/docker-compose.preview.yml"
 
 remote_url=$(git -C "$REPO_DIR" remote get-url origin)
-case "$remote_url" in
-  *github.com[:/]* ) ;;
-  *)
-    echo "Error: origin remote must point to github.com, got: $remote_url" >&2
-    exit 1
-    ;;
-esac
 slug=${remote_url#*github.com[:/]}
 slug=${slug%.git}
 slug=$(printf '%s' "$slug" | tr '[:upper:]' '[:lower:]')
-
-PROJECT="${PROJECT:-${slug}-preview}"
 
 export IMAGE_SLUG="$slug"
 
@@ -37,7 +29,7 @@ fi
 export TAG
 
 cleanup() {
-  docker compose -p "$PROJECT" -f "$COMPOSE_FILE" down --remove-orphans >/dev/null || true
+  docker compose -p "$PROJECT" -f "$COMPOSE_FILE" down --remove-orphans >/dev/null 2>&1 || true
 }
 trap cleanup EXIT INT TERM
 
