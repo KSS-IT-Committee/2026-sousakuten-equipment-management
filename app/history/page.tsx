@@ -11,7 +11,7 @@ export default async function Page({ searchParams }: Props) {
   const { id } = await searchParams;
   const deductionId = Number(id);
 
-  if (Number.isNaN(deductionId)) {
+  if (Number.isNaN(deductionId) || deductionId <= 0) {
     return <p>エラー: 無効なID</p>;
   }
 

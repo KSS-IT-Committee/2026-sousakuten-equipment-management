@@ -69,11 +69,6 @@ export async function DeductionUI({ searchParams }: Props) {
           />
         ) : null}
         {section === 2 ? <DeductionSumsList /> : null}
-        {section === 3 ? (
-          <>
-            <AddDeductionUI />
-          </>
-        ) : null}
       </div>
     </main>
   );
