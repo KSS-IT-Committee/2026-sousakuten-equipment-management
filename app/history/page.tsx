@@ -30,7 +30,7 @@ export default async function Page({ searchParams }: Props) {
         <h2>クラス: {deduction.className}</h2>
         <h2>減点ポイント: {deduction.points}点</h2>
         <h2>内容: {deduction.content}</h2>
-        <h2>日時: {deduction.occurredAt.toLocaleString("ja-JP")}</h2>
+        <h2>日時: {deduction.occurredAt.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })}</h2>
         <BackButton />
       </div>
       <div className={styles.buttonRow}>
