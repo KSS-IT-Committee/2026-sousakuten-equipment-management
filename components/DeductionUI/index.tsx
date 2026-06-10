@@ -57,11 +57,11 @@ export async function DeductionUI({ searchParams }: Props) {
   const classesToDisplay = hasClassFilter ? selectedClasses : CLASSES;
 
   return (
-    <main>
+    <>
       <AddDeductionUI />
       <SelectButtons />
       <div>
-        {section === 1 ? (
+        {section === 1 && hasClassFilter ? (
           <DeductionCellsByClasses
             classes={classesToDisplay}
             sortBy={sortBy}
@@ -70,6 +70,6 @@ export async function DeductionUI({ searchParams }: Props) {
         ) : null}
         {section === 2 ? <DeductionSumsList /> : null}
       </div>
-    </main>
+    </>
   );
 }
