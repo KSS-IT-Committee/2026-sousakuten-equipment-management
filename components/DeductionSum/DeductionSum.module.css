@@ -18,6 +18,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   min-height: 150px;
   width: 100%;
+  min-width: 0;
+  justify-self: stretch;
   text-align: center;
 }
 .section h2 {
@@ -30,6 +32,12 @@
   border-color: #007bff;
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
   transform: translateY(-3px);
+}
+
+.linkArea {
+  display: block;
+  width: 100%;
+  min-width: 0;
 }
 
 @media (max-width: 768px) {
