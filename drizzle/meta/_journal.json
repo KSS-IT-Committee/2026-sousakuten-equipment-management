@@ -15,6 +15,13 @@
       "when": 1779783456759,
       "tag": "0001_slim_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781186550020,
+      "tag": "0002_exotic_magus",
+      "breakpoints": true
     }
   ]
 }

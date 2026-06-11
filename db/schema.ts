@@ -9,6 +9,7 @@ import {
   text,
   timestamp,
   unique,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const CLASS_VALUES = [
@@ -133,3 +134,38 @@ export type Announcement = typeof announcements.$inferSelect;
 export type NewAnnouncement = typeof announcements.$inferInsert;
 export type AnnouncementClass = typeof announcementClasses.$inferSelect;
 export type NewAnnouncementClass = typeof announcementClasses.$inferInsert;
+
+/* ───────────────────────── shared login ───────────────────────── */
+
+// Login credentials, loaded out-of-band from 2026-account-generator's
+// users.sql. event-week-top hosts the /login page; this app only reads the
+// table through `sessions`.
+export const users = pgTable("users", {
+  username: varchar("username", { length: 8 }).primaryKey(),
+  passwordHash: varchar("password_hash", { length: 60 }).notNull(),
+});
+
+// Login sessions, shared by every *.2026 app. The browser cookie holds a
+// random token; `id` is the SHA-256 hex of that token, so a leaked table
+// dump cannot be replayed as a cookie. Expiry slides on access: apps renew
+// `expires_at` to now + TTL (default 2 days) when they validate a session.
+export const sessions = pgTable(
+  "sessions",
+  {
+    id: varchar("id", { length: 64 }).primaryKey(),
+    username: varchar("username", { length: 8 })
+      .notNull()
+      .references(() => users.username, { onDelete: "cascade" }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("sessions_username_idx").on(table.username),
+    index("sessions_expires_at_idx").on(table.expiresAt),
+  ],
+);
+
+export type User = typeof users.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
