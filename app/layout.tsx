@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 
+import { AccountNav } from "@/components/AccountNav";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 
@@ -71,7 +72,7 @@ export default function RootLayout({
         </>
       )}
       <body>
-        <Navbar />
+        <Navbar accountSlot={<AccountNav />} />
         <main>{children}</main>
         <Footer />
       </body>

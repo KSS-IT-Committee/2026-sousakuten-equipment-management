@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import styles from "./Navbar.module.css";
 
-export function Navbar() {
+type NavbarProps = {
+  // Server-rendered login control, passed in from the layout (this is a
+  // client component, so it can't render the async AccountNav itself).
+  accountSlot?: ReactNode;
+};
+
+export function Navbar({ accountSlot }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
@@ -41,6 +47,10 @@ export function Navbar() {
         <Link href="/" className={styles.logo} onClick={closeMenu}>
           創作展 貸出管理
         </Link>
+
+        {accountSlot ? (
+          <div className={styles.account}>{accountSlot}</div>
+        ) : null}
 
         <button
           className={`${styles.hamburger} ${isMenuOpen ? styles.open : ""}`}
