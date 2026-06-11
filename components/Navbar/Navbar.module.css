@@ -18,6 +18,15 @@
   height: 64px;
 }
 
+/* Login control: pushed to the right of the logo, before the nav links /
+   hamburger, so it stays in the always-visible bar on every breakpoint. */
+.account {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
 .logo {
   font-size: 18px;
   font-weight: 700;
