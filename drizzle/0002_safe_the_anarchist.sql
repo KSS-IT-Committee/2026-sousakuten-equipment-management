@@ -1,12 +1,12 @@
 CREATE TABLE "sessions" (
 	"id" varchar(64) PRIMARY KEY NOT NULL,
-	"username" varchar(8) NOT NULL,
+	"username" varchar(32) NOT NULL,
 	"expires_at" timestamp with time zone NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"username" varchar(8) PRIMARY KEY NOT NULL,
+	"username" varchar(32) PRIMARY KEY NOT NULL,
 	"password_hash" varchar(60) NOT NULL
 );
 --> statement-breakpoint
