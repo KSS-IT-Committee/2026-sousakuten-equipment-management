@@ -1,5 +1,5 @@
 {
-  "id": "032c5ffd-61c8-41ce-a2a7-c8d3e702fc08",
+  "id": "1b58a1f2-8c36-4c25-8249-662ae6f54484",
   "prevId": "ed9e1da6-8c9b-4ef2-81e4-c11e117443a3",
   "version": "7",
   "dialect": "postgresql",
@@ -78,12 +78,8 @@
           "name": "borrowings_equipment_id_equipments_id_fk",
           "tableFrom": "borrowings",
           "tableTo": "equipments",
-          "columnsFrom": [
-            "equipment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["equipment_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -216,12 +212,8 @@
           "name": "announcement_classes_announcement_id_announcements_id_fk",
           "tableFrom": "announcement_classes",
           "tableTo": "announcements",
-          "columnsFrom": [
-            "announcement_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["announcement_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -231,10 +223,7 @@
         "announcement_classes_announcement_id_class_name_unique": {
           "name": "announcement_classes_announcement_id_class_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "announcement_id",
-            "class_name"
-          ]
+          "columns": ["announcement_id", "class_name"]
         }
       },
       "policies": {},
@@ -346,12 +335,8 @@
           "name": "sessions_username_users_username_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "username"
-          ],
-          "columnsTo": [
-            "username"
-          ],
+          "columnsFrom": ["username"],
+          "columnsTo": ["username"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -359,7 +344,12 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {},
+      "checkConstraints": {
+        "session_id_is_sha256_hex": {
+          "name": "session_id_is_sha256_hex",
+          "value": "\"sessions\".\"id\" ~ '^[0-9a-f]{64}$'"
+        }
+      },
       "isRLSEnabled": false
     },
     "public.users": {
