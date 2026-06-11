@@ -8,7 +8,8 @@ CREATE TABLE "sessions" (
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"username" varchar(32) PRIMARY KEY NOT NULL,
-	"password_hash" varchar(60) NOT NULL
+	"password_hash" varchar(60) NOT NULL,
+	"has_logged_in" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_username_users_username_fk" FOREIGN KEY ("username") REFERENCES "public"."users"("username") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

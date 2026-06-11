@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   check,
   index,
   integer,
@@ -143,6 +144,9 @@ export type NewAnnouncementClass = typeof announcementClasses.$inferInsert;
 export const users = pgTable("users", {
   username: varchar("username", { length: 32 }).primaryKey(),
   passwordHash: varchar("password_hash", { length: 60 }).notNull(),
+  // Latches true on the account's first successful login and never goes back
+  // to false. Lets us tell which accounts have ever been used.
+  hasLoggedIn: boolean("has_logged_in").notNull().default(false),
 });
 
 // Login sessions, shared by every *.2026 app. The browser cookie holds a
