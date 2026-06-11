@@ -13,6 +13,11 @@ type Props = {
 };
 
 export default async function EditEquipmentPage({ searchParams }: Props) {
+  const perm = await checkUserAuth();
+  if (!perm.isLoggedIn) {
+    redirect("/");
+  }
+
   const resolvedParams = await searchParams;
   const id = Number(resolvedParams.id);
 
@@ -25,10 +30,6 @@ export default async function EditEquipmentPage({ searchParams }: Props) {
 
   if (!equipment) {
     return <p>エラー: 備品が見つかりませんでした</p>;
-  }
-  const perm = await checkUserAuth();
-  if (!perm.isLoggedIn) {
-    redirect("/");
   }
   return (
     <div className={styles.container}>

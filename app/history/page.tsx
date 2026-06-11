@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
@@ -10,6 +12,11 @@ type Props = {
 };
 
 export default async function Page({ searchParams }: Props) {
+  const perm = await checkUserAuth();
+  if (!perm.isLoggedIn) {
+    redirect("/");
+  }
+
   const { id } = await searchParams;
   const deductionId = Number(id);
 
@@ -19,10 +26,6 @@ export default async function Page({ searchParams }: Props) {
 
   const deduction = await getDeductionsById(deductionId);
 
-  const perm = await checkUserAuth();
-  if (!perm.isLoggedIn) {
-    redirect("/");
-  }
   if (deduction === undefined) {
     return <p>エラー: 無効なID</p>;
   }
