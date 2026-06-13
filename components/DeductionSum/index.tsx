@@ -10,6 +10,7 @@ type Props = {
 
 export async function DeductionSum({ className }: Props) {
   const deductions = await getDeductionsByClass(className);
+
   let sum = 0;
   for (const deduction of deductions) {
     sum += deduction.points;

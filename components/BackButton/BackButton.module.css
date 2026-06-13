@@ -1,0 +1,25 @@
+.backButton {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: black;
+  border: solid #3543dc;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
+  margin: 10px 5px;
+}
+
+.backButton:hover {
+  background-color: #3543dc;
+  color: white;
+}
+
+.triggerArea {
+  display: flex;
+
+  margin-top: 16px;
+  width: 100%;
+}

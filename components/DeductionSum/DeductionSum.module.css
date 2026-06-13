@@ -11,13 +11,15 @@
   gap: 16px;
   background-color: white;
   border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border-radius: 16px;
   padding: 16px;
   box-sizing: border-box;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   min-height: 150px;
   width: 100%;
+  min-width: 0;
+  justify-self: stretch;
   text-align: center;
 }
 .section h2 {
@@ -32,6 +34,12 @@
   transform: translateY(-3px);
 }
 
+.linkArea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
 @media (max-width: 768px) {
   .deductionSumList {
     display: grid;
@@ -40,5 +48,11 @@
     gap: 20px;
 
     padding: 0 16px;
+  }
+  .section h2 {
+    font-size: 30px;
+  }
+  .section p {
+    font-size: 20px;
   }
 }

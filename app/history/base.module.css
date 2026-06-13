@@ -7,7 +7,12 @@
   background-color: white;
 
   border: solid #e0e0e0 1px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
 }

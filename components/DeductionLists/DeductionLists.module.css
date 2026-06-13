@@ -1,19 +1,42 @@
 .deductionSumList {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
+  display: block;
   gap: 20px;
 
+  padding: 0 0;
+}
+
+.classList {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  justify-items: stretch;
+  align-items: stretch;
   padding: 0 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.classList > * {
+  min-width: 0;
+  width: 100%;
+  justify-self: stretch;
+  align-self: stretch;
+}
+
+.gradeTitle {
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {
   .deductionSumList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: block;
+
     justify-items: center;
     gap: 20px;
 
-    padding: 0 16px;
+    padding: 0 0;
+  }
+  .classList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
