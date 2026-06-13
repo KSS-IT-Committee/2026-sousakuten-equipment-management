@@ -73,6 +73,7 @@ export default function RootLayout({
         </>
       )}
       <body>
+        <NoScriptAlert />
         <Navbar accountSlot={<AccountNav />} />
         <main>{children}</main>
         <Footer />
