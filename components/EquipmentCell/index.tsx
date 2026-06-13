@@ -17,13 +17,14 @@ export async function EquipmentCell({ id }: { id: number }) {
 
   const borrowedCount = borrowings.length;
   const availableCount = Math.max(0, equipment.quantity - borrowedCount);
-  
-  const availabilityPercentage = equipment.quantity > 0
-    ? Math.round((availableCount / equipment.quantity) * 100)
-    : 0;
+
+  const availabilityPercentage =
+    equipment.quantity > 0
+      ? Math.round((availableCount / equipment.quantity) * 100)
+      : 0;
 
   const imageSrc = equipment.picture;
-  
+
   const progressStyle = {
     "--progress-width": `${availabilityPercentage}%`,
   } as CSSProperties;
@@ -37,7 +38,8 @@ export async function EquipmentCell({ id }: { id: number }) {
 
   const isBase64 = imageSrc?.startsWith("data:image/");
   const isPath = imageSrc?.startsWith("/");
-  const hasImage = imageSrc && (isBase64 || isPath) && imageSrc !== "[object File]";
+  const hasImage =
+    imageSrc && (isBase64 || isPath) && imageSrc !== "[object File]";
 
   return (
     <div className={styles.cell}>
@@ -45,13 +47,13 @@ export async function EquipmentCell({ id }: { id: number }) {
         <div className={styles.imageWrapper}>
           {hasImage ? (
             <Image
-              src={imageSrc} 
+              src={imageSrc}
               alt={equipment.name}
               width={200}
               height={200}
-              priority={id <= 4} 
+              priority={id <= 4}
               className={styles.image}
-              style={{ objectFit: "cover" }} 
+              style={{ objectFit: "cover" }}
             />
           ) : (
             <div className={styles.imageFallback}>No Image</div>
@@ -65,17 +67,23 @@ export async function EquipmentCell({ id }: { id: number }) {
           <span className={styles.quantityLabel}>利用可能:</span>
           <span
             className={`${styles.quantityValue} ${
-              availableCount === 0 
-                ? styles.unavailable 
-                : availableCount <= equipment.quantity * 0.3 
-                  ? styles.warning 
+              availableCount === 0
+                ? styles.unavailable
+                : availableCount <= equipment.quantity * 0.3
+                  ? styles.warning
                   : styles.available
             }`}
           >
             {availableCount}/{equipment.quantity}
           </span>
         </div>
-        <div className={styles.progressBar} role="progressbar" aria-valuenow={availabilityPercentage} aria-valuemin={0} aria-valuemax={100}>
+        <div
+          className={styles.progressBar}
+          role="progressbar"
+          aria-valuenow={availabilityPercentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div
             className={`${styles.progressFill} ${progressFillClass}`}
             style={progressStyle}

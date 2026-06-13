@@ -29,7 +29,7 @@ export function AddEquipmentForm({
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  
+
   const [imagePreview, setImagePreview] = useState<string>(
     initialValues?.picture ?? "",
   );
@@ -122,8 +122,16 @@ export function AddEquipmentForm({
         />
 
         {imagePreview ? (
-          <div className={styles.previewContainer} style={{ marginTop: "15px" }}>
-            <p className={styles.previewLabel} style={{ fontSize: "14px", color: "#666" }}>選択中のプレビュー:</p>
+          <div
+            className={styles.previewContainer}
+            style={{ marginTop: "15px" }}
+          >
+            <p
+              className={styles.previewLabel}
+              style={{ fontSize: "14px", color: "#666" }}
+            >
+              選択中のプレビュー:
+            </p>
             <div
               style={{
                 width: 120,
@@ -159,7 +167,14 @@ export function AddEquipmentForm({
         ) : null}
       </div>
 
-      {error && <div className={styles.error} style={{ color: "#ff4d4f", marginBottom: "15px" }}>{error}</div>}
+      {error && (
+        <div
+          className={styles.error}
+          style={{ color: "#ff4d4f", marginBottom: "15px" }}
+        >
+          {error}
+        </div>
+      )}
 
       <div className={styles.buttonGroup}>
         <button
