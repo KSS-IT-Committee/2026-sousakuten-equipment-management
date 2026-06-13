@@ -138,6 +138,9 @@ export type NewAnnouncementClass = typeof announcementClasses.$inferInsert;
 
 /* ───────────────────────── shared login ───────────────────────── */
 
+export const ROLENAMES = ["IT", "Sousakuten", "Taiikusai"] as const;
+export const roleEnum = pgEnum("role", ROLENAMES);
+
 // Login credentials, loaded out-of-band from 2026-account-generator's
 // users.sql. event-week-top hosts the /login page; this app only reads the
 // table through `sessions`.
@@ -147,6 +150,10 @@ export const users = pgTable("users", {
   // Latches true on the account's first successful login and never goes back
   // to false. Lets us tell which accounts have ever been used.
   hasLoggedIn: boolean("has_logged_in").notNull().default(false),
+  roles: roleEnum("roles")
+    .array()
+    .notNull()
+    .default(sql`'{}'`),
 });
 
 // Login sessions, shared by every *.2026 app. The browser cookie holds a
