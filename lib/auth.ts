@@ -23,12 +23,15 @@ export async function checkUserAuth(): Promise<AuthCheckResult> {
       };
     }
 
-    return {
-      isLoggedIn: false,
-      className: null,
-      role: null,
-      error: "ログインしていません。",
-    };
+    // TODO: modify this logic @rotarymars
+    if (token) {
+      return {
+        isLoggedIn: false,
+        className: null,
+        role: null,
+        error: "ログインしていません。",
+      };
+    }
   } catch {
     return {
       isLoggedIn: false,
@@ -37,4 +40,10 @@ export async function checkUserAuth(): Promise<AuthCheckResult> {
       error: "認証処理中にエラーが発生しました。",
     };
   }
+  return {
+    isLoggedIn: false,
+    className: null,
+    role: null,
+    error: "認証トークンが見つかりませんでした。",
+  };
 }
