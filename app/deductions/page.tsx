@@ -1,5 +1,5 @@
+import styles from "@/app/base.module.css";
 import { DeductionUI } from "@/components/DeductionUI";
-
 type Props = {
   searchParams?: Promise<{
     section?: string;
@@ -13,10 +13,10 @@ export default async function Deductions({ searchParams }: Props) {
   return (
     <>
       <div style={{ width: "100%", marginBottom: "24px" }}>
-        <h1 className="text-4xl font-bold text-center">
+        <h1 className={styles.pageTitle}>
           創作展 減点処理サイト
         </h1>
-        <h2 className="text-2xl text-center mt-4">
+        <h2 className={styles.pageSubtitle}>
           各クラスの減点内容とポイントを管理するサイト
         </h2>
       </div>

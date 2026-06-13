@@ -50,6 +50,7 @@ export default function RootLayout({
     <html
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      suppressHydrationWarning
     >
       {/* Google tag (gtag.js) — skipped on PR preview deployments.
           IS_PR_PREVIEW is injected at runtime by the deploy infra and read
