@@ -21,6 +21,10 @@
   color: #1a1a1a;
 }
 
+.dark .pageTitle {
+  color: #fff;
+}
+
 @media (max-width: 768px) {
   .equipmentList {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
