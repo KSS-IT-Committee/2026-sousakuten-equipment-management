@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
+import { checkUserAuth } from "@/lib/auth";
+
 import styles from "./Navbar.module.css";
 
 type NavbarProps = {
@@ -41,6 +43,17 @@ export function Navbar({ accountSlot }: NavbarProps) {
     };
   }, [isMenuOpen]);
 
+  const [perm, setPerm] = useState<{ isLoggedIn: boolean }>({
+    isLoggedIn: false,
+  });
+  useEffect(() => {
+    async function fetchAuth() {
+      const result = await checkUserAuth();
+      setPerm(result);
+    }
+    fetchAuth();
+  }, []);
+
   return (
     <nav className={styles.navbar} ref={navRef}>
       <div className={styles.container}>
@@ -61,26 +74,29 @@ export function Navbar({ accountSlot }: NavbarProps) {
           <span></span>
           <span></span>
         </button>
-
-        <div className={`${styles.navLinks} ${isMenuOpen ? styles.open : ""}`}>
-          <Link href="/" className={styles.homeLink} onClick={closeMenu}>
-            ホーム
-          </Link>
-          <Link
-            href="/add-equipment"
-            className={styles.addEquipmentLink}
-            onClick={closeMenu}
+        {perm.isLoggedIn && (
+          <div
+            className={`${styles.navLinks} ${isMenuOpen ? styles.open : ""}`}
           >
-            備品追加
-          </Link>
-          <Link
-            href="/deductions"
-            className={styles.borrowingsLink}
-            onClick={closeMenu}
-          >
-            減点管理
-          </Link>
-        </div>
+            <Link href="/" className={styles.homeLink} onClick={closeMenu}>
+              ホーム
+            </Link>
+            <Link
+              href="/add-equipment"
+              className={styles.addEquipmentLink}
+              onClick={closeMenu}
+            >
+              備品追加
+            </Link>
+            <Link
+              href="/deductions"
+              className={styles.borrowingsLink}
+              onClick={closeMenu}
+            >
+              減点管理
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

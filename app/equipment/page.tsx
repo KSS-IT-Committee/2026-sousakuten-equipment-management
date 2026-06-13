@@ -5,6 +5,7 @@ import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
+import { checkUserAuth } from "@/lib/auth";
 
 import styles from "./base.module.css";
 
@@ -29,18 +30,21 @@ export default async function Equipment({ searchParams }: Props) {
   const borrowings = await getActiveBorrowingsByEquipmentId(id);
   const availableCount = equipment.quantity - borrowings.length;
 
+  const perm = await checkUserAuth();
   return (
     <div className={styles.cell}>
-      <div className={styles.actionGroup}>
-        <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
-          編集
-        </Link>
-        <BorrowingPopup
-          id={id}
-          title={equipment.name}
-          availableCount={availableCount}
-        />
-      </div>
+      {perm.isLoggedIn && (
+        <div className={styles.actionGroup}>
+          <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
+            編集
+          </Link>
+          <BorrowingPopup
+            id={id}
+            title={equipment.name}
+            availableCount={availableCount}
+          />
+        </div>
+      )}
 
       <EquipmentCell id={id} />
       <BorrowingEquipList id={id} />
