@@ -1,5 +1,5 @@
-import styles from "@/app/base.module.css";
 import { DeductionUI } from "@/components/DeductionUI";
+import styles from "./page.module.css";
 type Props = {
   searchParams?: Promise<{
     section?: string;

@@ -72,6 +72,12 @@
   font-size: 14px;
 }
 
+:global(.dark) .sortSelect {
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: #eee;
+}
+
 .sortOrderButton {
   padding: 10px 16px;
   background-color: #eff2ff;
@@ -98,6 +104,12 @@
   box-shadow: 0 6px 16px rgba(36, 48, 171, 0.08);
 }
 
+:global(.dark) .filterPanel {
+  background: linear-gradient(180deg, #1a1a1a 0%, #1a1a1a 100%);
+  border-color: #333;
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.08);
+}
+
 .filterHeader {
   display: flex;
   flex-wrap: wrap;
@@ -111,6 +123,11 @@
   font-size: 15px;
   font-weight: 700;
   color: #2430ab;
+}
+
+:global(.dark) .filterTitle,
+:global(.dark) .classGroupTitle {
+  color: #7a8cff;
 }
 
 .filterActions {
@@ -167,6 +184,11 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+:global(.dark) .classCheckboxLabel {
+  background-color: rgba(35, 35, 35, 0.9);
+  border-color: #333;
 }
 
 .classCheckboxLabel[data-checked="true"] {

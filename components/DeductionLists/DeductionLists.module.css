@@ -5,6 +5,10 @@
   padding: 0 0;
 }
 
+:global(.dark) .title {
+  color: #fff;
+}
+
 .classList {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -25,6 +29,10 @@
 
 .gradeTitle {
   margin-top: 10px;
+}
+
+:global(.dark) .gradeTitle {
+  color: #eee;
 }
 
 @media (max-width: 768px) {

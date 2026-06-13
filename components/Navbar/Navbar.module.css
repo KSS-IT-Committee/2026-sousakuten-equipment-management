@@ -94,6 +94,22 @@
   transform: translateY(-8px) rotate(-45deg);
 }
 
+.addEquipmentLink,
+.borrowingsLink {
+  padding: 8px 16px;
+  color: #4a5568;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+:global(.dark) .addEquipmentLink,
+:global(.dark) .borrowingsLink {
+  color: #4a5568;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 16px;
