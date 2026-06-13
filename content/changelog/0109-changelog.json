@@ -1,0 +1,5 @@
+{
+  "title": "build(deps-dev): bump eslint from 10.4.1 to 10.5.0",
+  "description": "パッケージのバージョンを上げました。これによるページの変更はありません。",
+  "credits": ["@dependabot[bot]"]
+}
