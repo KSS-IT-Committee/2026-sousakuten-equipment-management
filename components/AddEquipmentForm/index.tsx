@@ -19,21 +19,36 @@ type EquipmentFormValues = {
 type AddEquipmentFormProps = {
   mode?: EquipmentFormMode;
   initialValues?: EquipmentFormValues;
-  availableImages?: string[];
 };
 
 export function AddEquipmentForm({
   mode = "create",
   initialValues,
-  availableImages = [],
 }: AddEquipmentFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string>(
+
+  const [imagePreview, setImagePreview] = useState<string>(
     initialValues?.picture ?? "",
   );
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError("画像サイズは2MB以下にしてください。");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (formData: FormData) => {
     try {
@@ -48,6 +63,7 @@ export function AddEquipmentForm({
       }
 
       router.push("/");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
@@ -93,62 +109,72 @@ export function AddEquipmentForm({
       </div>
 
       <div className={styles.formGroup}>
-        <label className={styles.label}>アイコン画像を選択（オプション）</label>
-        <div
-          className={styles.imageGrid}
-          style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
-        >
-          <div
-            onClick={() => setSelectedImage("")}
-            style={{
-              width: 80,
-              height: 80,
-              border:
-                selectedImage === "" ? "3px solid #007bff" : "1px solid #ccc",
-              borderRadius: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              backgroundColor: "#f5f5f5",
-              color: "#666",
-              fontSize: "14px",
-            }}
-          >
-            画像なし
-          </div>
+        <label htmlFor="picture" className={styles.label}>
+          機器画像を追加（オプション）
+        </label>
+        <input
+          type="file"
+          id="picture"
+          name="picture"
+          accept="image/*"
+          onChange={handleImageChange}
+          className={styles.fileInput}
+        />
 
-          {availableImages.map((imgPath) => (
+        {imagePreview ? (
+          <div
+            className={styles.previewContainer}
+            style={{ marginTop: "15px" }}
+          >
+            <p
+              className={styles.previewLabel}
+              style={{ fontSize: "14px", color: "#666" }}
+            >
+              選択中のプレビュー:
+            </p>
             <div
-              key={imgPath}
-              onClick={() => setSelectedImage(imgPath)}
               style={{
-                width: 80,
-                height: 80,
-                cursor: "pointer",
-                overflow: "hidden",
+                width: 120,
+                height: 120,
+                position: "relative",
                 borderRadius: 8,
-                border:
-                  selectedImage === imgPath
-                    ? "3px solid #007bff"
-                    : "1px solid #ccc",
+                overflow: "hidden",
+                border: "1px solid #ccc",
               }}
             >
               <Image
-                src={imgPath}
-                alt="icon"
-                width={80}
-                height={80}
+                src={imagePreview}
+                alt="Equipment Preview"
+                fill
                 style={{ objectFit: "cover" }}
               />
             </div>
-          ))}
-        </div>
-
-        <input type="hidden" name="picture" value={selectedImage} />
+            <button
+              type="button"
+              onClick={() => setImagePreview("")}
+              style={{
+                marginTop: "5px",
+                fontSize: "12px",
+                color: "#ff4d4f",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              画像を削除
+            </button>
+          </div>
+        ) : null}
       </div>
 
-      {error && <div className={styles.error}>{error}</div>}
+      {error && (
+        <div
+          className={styles.error}
+          style={{ color: "#ff4d4f", marginBottom: "15px" }}
+        >
+          {error}
+        </div>
+      )}
 
       <div className={styles.buttonGroup}>
         <button

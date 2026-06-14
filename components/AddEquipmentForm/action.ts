@@ -17,8 +17,9 @@ import { db } from "@/lib/db";
 export async function createEquipmentAction(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
-  // picture is now expected to be an image path string
-  const picturePath = String(formData.get("picture") ?? "").trim();
+
+  const file = formData.get("picture") as File | null;
+  let pictureBase64: string | null = null;
 
   if (!name) {
     throw new Error("error: equipment name is required");
@@ -28,12 +29,16 @@ export async function createEquipmentAction(formData: FormData) {
     throw new Error("error: quantity must be a positive integer");
   }
 
-  const picture = picturePath ? picturePath : null;
+  if (file && file.size > 0 && file.name !== "undefined") {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    pictureBase64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+  }
 
   const result = await createEquipment({
     name,
     quantity,
-    picture,
+    picture: pictureBase64,
   });
 
   revalidatePath("/equipment");
@@ -45,7 +50,9 @@ export async function updateEquipmentAction(formData: FormData) {
   const equipmentId = Number(formData.get("equipmentId"));
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
-  const picturePath = String(formData.get("picture") ?? "").trim();
+
+  const file = formData.get("picture") as File | null;
+  let pictureBase64: string | null = null;
 
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
     throw new Error("error: equipment ID is invalid");
@@ -71,13 +78,28 @@ export async function updateEquipmentAction(formData: FormData) {
     );
   }
 
-  const picture = picturePath ? picturePath : null;
+  if (file && file.size > 0 && file.name !== "undefined") {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    pictureBase64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+  }
 
-  const result = await updateEquipment(equipmentId, {
+  const updateData: {
+    name: string;
+    quantity: number;
+    picture?: string | null;
+  } = {
     name,
     quantity,
-    picture,
-  });
+  };
+
+  if (pictureBase64) {
+    updateData.picture = pictureBase64;
+  } else if (file && file.size === 0) {
+    updateData.picture = null;
+  }
+
+  const result = await updateEquipment(equipmentId, updateData);
 
   revalidatePath("/equipment");
   revalidatePath("/");
