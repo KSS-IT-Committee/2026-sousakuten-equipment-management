@@ -7,6 +7,7 @@ import Script from "next/script";
 import { AccountNav } from "@/components/AccountNav";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { NoScriptAlert } from "@/components/NoScriptAlert";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,6 +73,7 @@ export default function RootLayout({
         </>
       )}
       <body>
+        <NoScriptAlert />
         <Navbar accountSlot={<AccountNav />} />
         <main>{children}</main>
         <Footer />
