@@ -76,12 +76,14 @@ a {
 
 :root {
   --background: white;
+  color-scheme: light dark;
 
   --text: black;
 }
 
 .dark {
   --background: #111;
+  color-scheme: dark;
 
   --text: white;
 }

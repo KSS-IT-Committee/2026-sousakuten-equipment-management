@@ -1,5 +1,6 @@
 .navbar {
   background-color: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid #f0f0f0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
@@ -9,7 +10,12 @@
 }
 
 :global(.dark) .navbar {
-  background-color: #21242a;
+  /* Use a semi-transparent dark color so backdrop-filter behaves consistently
+     across browsers (Safari prefers the prefixed property and rgba works
+     better with translucent/backdrop stacks). */
+  background-color: rgba(33, 36, 42, 0.9);
+  border-bottom: 1px solid #1f1f1f;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .container {
@@ -141,6 +147,13 @@
     transition: all 0.3s ease;
     box-sizing: border-box;
     border-bottom: 1px solid #f0f0f0;
+  }
+
+  /* Mobile nav background in dark mode */
+  :global(.dark) .navLinks {
+    background-color: rgba(12, 20, 28, 0.95);
+    border-bottom: 1px solid #1b1b1b;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
   }
 
   .navLinks.open {
