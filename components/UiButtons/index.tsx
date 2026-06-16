@@ -187,7 +187,9 @@ export default function SelectButtons() {
                   <button
                     key={className}
                     className={styles.classCheckboxLabel}
-                    data-checked={selectedClasses.includes(className) ? "true" : "false"}
+                    data-checked={
+                      selectedClasses.includes(className) ? "true" : "false"
+                    }
                     onClick={() => toggleClassFilter(className)}
                   >
                     {className}
