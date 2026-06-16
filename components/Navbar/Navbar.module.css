@@ -8,6 +8,10 @@
   z-index: 100;
 }
 
+:global(.dark) .navbar {
+  background-color: #21242a;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
