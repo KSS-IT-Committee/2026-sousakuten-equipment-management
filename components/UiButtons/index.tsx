@@ -174,6 +174,7 @@ export default function SelectButtons() {
           <button
             type="button"
             className={styles.classCheckboxLabel}
+            data-checked={!hasClassFilter ? "true" : "false"}
             onClick={selectAllClasses}
           >
             全てのクラス
@@ -186,6 +187,7 @@ export default function SelectButtons() {
                   <button
                     key={className}
                     className={styles.classCheckboxLabel}
+                    data-checked={selectedClasses.includes(className) ? "true" : "false"}
                     onClick={() => toggleClassFilter(className)}
                   >
                     {className}

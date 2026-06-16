@@ -48,6 +48,18 @@
   box-shadow: 0 4px 6px rgba(50, 40, 237, 0.2);
 }
 
+:global(.dark) .notactiveButton {
+  background-color: #1a1a1a;
+  color: #eee;
+  border-color: #3543dc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+:global(.dark) .notactiveButton:hover {
+  background-color: #2430ab;
+  color: white;
+}
+
 .sortControls {
   display: flex;
   flex-wrap: wrap;
@@ -194,7 +206,15 @@
 .classCheckboxLabel[data-checked="true"] {
   border-color: #3543dc;
   background: linear-gradient(180deg, #eff2ff 0%, #dfe6ff 100%);
+  color: #2430ab;
   box-shadow: 0 4px 12px rgba(53, 67, 220, 0.16);
+}
+
+:global(.dark) .classCheckboxLabel[data-checked="true"] {
+  background: linear-gradient(180deg, #2430ab 0%, #1e278a 100%);
+  border-color: #3543dc;
+  color: white;
+  box-shadow: 0 4px 12px rgba(53, 67, 220, 0.4);
 }
 
 .classCheckbox {
