@@ -74,6 +74,10 @@
   color: #2d3748;
 }
 
+:global(.dark) .homeLink:hover {
+  background-color: #1b1b1b;
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
@@ -119,8 +123,9 @@
 }
 
 :global(.dark) .addEquipmentLink,
-:global(.dark) .borrowingsLink {
-  color: #4a5568;
+:global(.dark) .borrowingsLink,
+:global(.dark) .homeLink {
+  color: white;
 }
 
 @media (max-width: 768px) {
