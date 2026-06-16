@@ -2,6 +2,12 @@
   background-color: rgba(255, 255, 255, 0.9);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: backdrop-filter, background-color;
+  background-clip: padding-box;
+  isolation: isolate;
   border-bottom: 1px solid #f0f0f0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
   position: sticky;
@@ -10,9 +16,6 @@
 }
 
 :global(.dark) .navbar {
-  /* Use a semi-transparent dark color so backdrop-filter behaves consistently
-     across browsers (Safari prefers the prefixed property and rgba works
-     better with translucent/backdrop stacks). */
   background-color: rgba(33, 36, 42, 0.9);
   border-bottom: 1px solid #1f1f1f;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
