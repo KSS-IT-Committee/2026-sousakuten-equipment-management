@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 
-import styles from "./page.module.css";
 import { DeductionUI } from "@/components/DeductionUI";
 import { checkUserAuth } from "@/lib/auth";
+
+import styles from "./page.module.css";
 type Props = {
   searchParams?: Promise<{
     section?: string;
