@@ -12,7 +12,7 @@ type Props = {
 
 export default async function EditEquipmentPage({ searchParams }: Props) {
   return (
-    <AuthGuard>
+    <AuthGuard role="Sousakuten">
       <EditEquipmentContent searchParams={searchParams} />
     </AuthGuard>
   );

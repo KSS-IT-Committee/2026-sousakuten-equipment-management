@@ -1,7 +1,11 @@
+import { forbidden } from "next/navigation";
+
 import { AuthGuard } from "@/components/AuthGuard";
 import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
+import { Internal } from "@/components/Internal";
 import { getDeductionsById } from "@/db/queries/deductions";
+import { getViewer } from "@/lib/authorize";
 
 import styles from "./base.module.css";
 
@@ -31,6 +35,13 @@ async function DeductionDetail({ searchParams }: Props) {
     return <p>エラー: 無効なID</p>;
   }
 
+  // A non-admin may only see their own class's deduction — don't reveal another
+  // class's record via /history?id=N.
+  const viewer = await getViewer();
+  if (!viewer?.isAdmin && deduction.className !== viewer?.className) {
+    forbidden();
+  }
+
   return (
     <>
       <div className={styles.window}>
@@ -47,9 +58,11 @@ async function DeductionDetail({ searchParams }: Props) {
         </h2>
         <BackButton />
       </div>
-      <div className={styles.buttonRow}>
-        <DeleteDeductionButton deductionId={deduction.id} />
-      </div>
+      <Internal role="Sousakuten">
+        <div className={styles.buttonRow}>
+          <DeleteDeductionButton deductionId={deduction.id} />
+        </div>
+      </Internal>
     </>
   );
 }

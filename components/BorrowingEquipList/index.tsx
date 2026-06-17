@@ -1,3 +1,4 @@
+import { Internal } from "@/components/Internal";
 import { ReturnButton } from "@/components/ReturnButton";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getClassLabel } from "@/lib/class-number";
@@ -28,9 +29,11 @@ export async function BorrowingEquipList({ id }: { id: number }) {
               </span>
             </div>
 
-            <div className={styles.actionGroup}>
-              <ReturnButton borrowingId={borrowing.id} />
-            </div>
+            <Internal role="Sousakuten">
+              <div className={styles.actionGroup}>
+                <ReturnButton borrowingId={borrowing.id} />
+              </div>
+            </Internal>
           </div>
         ))
       )}

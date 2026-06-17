@@ -5,7 +5,7 @@ import { AuthGuard } from "@/components/AuthGuard";
 
 export default function AddEquipmentPage() {
   return (
-    <AuthGuard>
+    <AuthGuard role="Sousakuten">
       <AddEquipmentContent />
     </AuthGuard>
   );
