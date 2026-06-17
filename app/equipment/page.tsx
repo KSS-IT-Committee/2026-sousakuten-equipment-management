@@ -32,7 +32,7 @@ export default async function Equipment({ searchParams }: Props) {
 
   return (
     <div className={styles.cell}>
-      <Internal>
+      <Internal role="Sousakuten">
         <div className={styles.actionGroup}>
           <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
             編集
