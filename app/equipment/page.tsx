@@ -3,9 +3,9 @@ import Link from "next/link";
 import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
+import { Internal } from "@/components/Internal";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
-import { checkUserAuth } from "@/lib/auth";
 
 import styles from "./base.module.css";
 
@@ -30,10 +30,9 @@ export default async function Equipment({ searchParams }: Props) {
   const borrowings = await getActiveBorrowingsByEquipmentId(id);
   const availableCount = equipment.quantity - borrowings.length;
 
-  const perm = await checkUserAuth();
   return (
     <div className={styles.cell}>
-      {perm.isLoggedIn && (
+      <Internal>
         <div className={styles.actionGroup}>
           <Link href={`/equipment/edit?id=${id}`} className={styles.editButton}>
             編集
@@ -44,7 +43,7 @@ export default async function Equipment({ searchParams }: Props) {
             availableCount={availableCount}
           />
         </div>
-      )}
+      </Internal>
 
       <EquipmentCell id={id} />
       <BorrowingEquipList id={id} />
