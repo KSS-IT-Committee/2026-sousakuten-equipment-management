@@ -12,7 +12,7 @@ const ADMIN_ROLE = "Sousakuten";
 export async function isAdmin(): Promise<boolean> {
   const user = await getCurrentUser();
   if (!user) return false;
-  return hasAccess(user.username, ADMIN_ROLE, undefined);
+  return hasAccess(user, ADMIN_ROLE, undefined);
 }
 
 /**
@@ -42,7 +42,7 @@ export async function getViewer(): Promise<Viewer | null> {
   if (!user) return null;
   return {
     username: user.username,
-    isAdmin: await hasAccess(user.username, ADMIN_ROLE, undefined),
+    isAdmin: hasAccess(user, ADMIN_ROLE, undefined),
     className: classOf(user.username),
   };
 }
