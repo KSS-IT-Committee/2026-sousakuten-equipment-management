@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { createDeduction, deleteDeductionById } from "@/db/queries/deductions";
 import { Borrowings, ClassName, Equipments } from "@/db/schema";
+import { requireAdmin } from "@/lib/authorize";
 import { CLASS_CODES, ClassCode } from "@/lib/class-number";
 import { db } from "@/lib/db";
 
@@ -12,6 +13,7 @@ export const returnBorrowingAction = async (
   borrowingId: number,
   returnedAt: Date,
 ) => {
+  await requireAdmin();
   await db.transaction(async (tx) => {
     const [existing] = await tx
       .select()
@@ -38,6 +40,7 @@ export const borrowEquipmentAction = async (
   equipmentId: number,
   classCode: ClassName,
 ) => {
+  await requireAdmin();
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
     throw new Error("備品IDが不正です");
   }
@@ -86,6 +89,7 @@ export const createDeductionAction = async (data: {
   content: string;
   points: number;
 }) => {
+  await requireAdmin();
   if (!CLASS_CODES.includes(data.className as ClassCode)) {
     throw new Error("クラス名が不正です");
   }
@@ -107,6 +111,7 @@ export const createDeductionAction = async (data: {
 };
 
 export const deleteDeductionAction = async (id: number) => {
+  await requireAdmin();
   await deleteDeductionById(id);
   revalidatePath("/deductions");
   revalidatePath("/history");

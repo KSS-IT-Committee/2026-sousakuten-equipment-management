@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-
-import { checkUserAuth } from "@/lib/auth";
 
 import styles from "./Navbar.module.css";
 
@@ -11,11 +10,27 @@ type NavbarProps = {
   // Server-rendered login control, passed in from the layout (this is a
   // client component, so it can't render the async AccountNav itself).
   accountSlot?: ReactNode;
+  // Server-rendered, auth-gated nav links (the layout wraps them in <Internal>).
+  // Rendered inside the collapsible menu; empty for signed-out / non-internal
+  // visitors, in which case `.navLinks:empty` (CSS) hides the menu entirely.
+  navSlot?: ReactNode;
 };
 
-export function Navbar({ accountSlot }: NavbarProps) {
+export function Navbar({ accountSlot, navSlot }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+
+  // Close the menu when a navigation changes the route (covers clicks on the
+  // gated links in navSlot, which are server-rendered and can't carry an
+  // onClick). Adjusting state during render — rather than in an effect — keeps
+  // it in sync without an extra paint. See react.dev "You Might Not Need an
+  // Effect".
+  const [menuPathname, setMenuPathname] = useState(pathname);
+  if (pathname !== menuPathname) {
+    setMenuPathname(pathname);
+    setIsMenuOpen(false);
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -43,17 +58,6 @@ export function Navbar({ accountSlot }: NavbarProps) {
     };
   }, [isMenuOpen]);
 
-  const [perm, setPerm] = useState<{ isLoggedIn: boolean }>({
-    isLoggedIn: false,
-  });
-  useEffect(() => {
-    async function fetchAuth() {
-      const result = await checkUserAuth();
-      setPerm(result);
-    }
-    fetchAuth();
-  }, []);
-
   return (
     <nav className={styles.navbar} ref={navRef}>
       <div className={styles.container}>
@@ -74,29 +78,9 @@ export function Navbar({ accountSlot }: NavbarProps) {
           <span></span>
           <span></span>
         </button>
-        {perm.isLoggedIn && (
-          <div
-            className={`${styles.navLinks} ${isMenuOpen ? styles.open : ""}`}
-          >
-            <Link href="/" className={styles.homeLink} onClick={closeMenu}>
-              ホーム
-            </Link>
-            <Link
-              href="/add-equipment"
-              className={styles.addEquipmentLink}
-              onClick={closeMenu}
-            >
-              備品追加
-            </Link>
-            <Link
-              href="/deductions"
-              className={styles.borrowingsLink}
-              onClick={closeMenu}
-            >
-              減点管理
-            </Link>
-          </div>
-        )}
+        <div className={`${styles.navLinks} ${isMenuOpen ? styles.open : ""}`}>
+          {navSlot}
+        </div>
       </div>
     </nav>
   );

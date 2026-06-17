@@ -1,0 +1,5 @@
+{
+  "title": "build(deps-dev): bump @types/node from 25.9.2 to 25.9.3",
+  "description": "パッケージのバージョンを上げました。これによるページの変更はありません。",
+  "credits": ["@dependabot[bot]"]
+}

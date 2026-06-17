@@ -1,9 +1,11 @@
-import { redirect } from "next/navigation";
+import { forbidden } from "next/navigation";
 
+import { AuthGuard } from "@/components/AuthGuard";
 import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
+import { Internal } from "@/components/Internal";
 import { getDeductionsById } from "@/db/queries/deductions";
-import { checkUserAuth } from "@/lib/auth";
+import { getViewer } from "@/lib/authorize";
 
 import styles from "./base.module.css";
 
@@ -12,11 +14,14 @@ type Props = {
 };
 
 export default async function Page({ searchParams }: Props) {
-  const perm = await checkUserAuth();
-  if (!perm.isLoggedIn) {
-    redirect("/");
-  }
+  return (
+    <AuthGuard>
+      <DeductionDetail searchParams={searchParams} />
+    </AuthGuard>
+  );
+}
 
+async function DeductionDetail({ searchParams }: Props) {
   const { id } = await searchParams;
   const deductionId = Number(id);
 
@@ -28,6 +33,13 @@ export default async function Page({ searchParams }: Props) {
 
   if (deduction === undefined) {
     return <p>エラー: 無効なID</p>;
+  }
+
+  // A non-admin may only see their own class's deduction — don't reveal another
+  // class's record via /history?id=N.
+  const viewer = await getViewer();
+  if (!viewer?.isAdmin && deduction.className !== viewer?.className) {
+    forbidden();
   }
 
   return (
@@ -46,9 +58,11 @@ export default async function Page({ searchParams }: Props) {
         </h2>
         <BackButton />
       </div>
-      <div className={styles.buttonRow}>
-        <DeleteDeductionButton deductionId={deduction.id} />
-      </div>
+      <Internal role="Sousakuten">
+        <div className={styles.buttonRow}>
+          <DeleteDeductionButton deductionId={deduction.id} />
+        </div>
+      </Internal>
     </>
   );
 }

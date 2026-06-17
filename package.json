@@ -15,6 +15,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.9",
     "drizzle-orm": "^0.45.2",
     "next": "^16.2.7",
     "postgres": "^3.4.9",
@@ -29,11 +30,11 @@
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.10",
     "eslint": "^10",
-    "eslint-config-next": "^16.2.7",
+    "eslint-config-next": "^16.2.9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-unused-imports": "^4.0.0",
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "tailwindcss": "^4",
     "typescript": "^6"
   }

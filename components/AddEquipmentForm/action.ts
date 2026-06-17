@@ -12,9 +12,11 @@ import {
   updateEquipment,
 } from "@/db/queries/equipments";
 import { Borrowings, Equipments } from "@/db/schema";
+import { isAdmin, requireAdmin } from "@/lib/authorize";
 import { db } from "@/lib/db";
 
 export async function createEquipmentAction(formData: FormData) {
+  await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
 
@@ -47,6 +49,7 @@ export async function createEquipmentAction(formData: FormData) {
 }
 
 export async function updateEquipmentAction(formData: FormData) {
+  await requireAdmin();
   const equipmentId = Number(formData.get("equipmentId"));
   const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
@@ -109,6 +112,9 @@ export async function updateEquipmentAction(formData: FormData) {
 export async function deleteEquipmentAction(
   equipmentId: number,
 ): Promise<{ success: boolean; error?: string }> {
+  if (!(await isAdmin())) {
+    return { success: false, error: "この操作には創作展委員の権限が必要です" };
+  }
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
     return { success: false, error: "備品IDが不正です" };
   }
