@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
-
+import { AuthGuard } from "@/components/AuthGuard";
 import { DeductionUI } from "@/components/DeductionUI";
-import { checkUserAuth } from "@/lib/auth";
 type Props = {
   searchParams?: Promise<{
     section?: string;
@@ -12,13 +10,8 @@ type Props = {
 };
 
 export default async function Deductions({ searchParams }: Props) {
-  const perm = await checkUserAuth();
-  if (!perm.isLoggedIn) {
-    redirect("/");
-  }
-
   return (
-    <>
+    <AuthGuard>
       <div style={{ width: "100%", marginBottom: "24px" }}>
         <h1 className="text-4xl font-bold text-center">
           創作展 減点処理サイト
@@ -28,6 +21,6 @@ export default async function Deductions({ searchParams }: Props) {
         </h2>
       </div>
       <DeductionUI searchParams={searchParams} />
-    </>
+    </AuthGuard>
   );
 }
