@@ -1,10 +1,8 @@
-import { redirect } from "next/navigation";
-
 import { AddEquipmentForm } from "@/components/AddEquipmentForm";
 import { getAvailableImages } from "@/components/AddEquipmentForm/action";
+import { AuthGuard } from "@/components/AuthGuard";
 import { DeleteEquipmentButton } from "@/components/DeleteEquipmentButton";
 import { getEquipmentById } from "@/db/queries/equipments";
-import { checkUserAuth } from "@/lib/auth";
 
 import styles from "../../add-equipment/page.module.css";
 
@@ -13,11 +11,14 @@ type Props = {
 };
 
 export default async function EditEquipmentPage({ searchParams }: Props) {
-  const perm = await checkUserAuth();
-  if (!perm.isLoggedIn) {
-    redirect("/");
-  }
+  return (
+    <AuthGuard>
+      <EditEquipmentContent searchParams={searchParams} />
+    </AuthGuard>
+  );
+}
 
+async function EditEquipmentContent({ searchParams }: Props) {
   const resolvedParams = await searchParams;
   const id = Number(resolvedParams.id);
 

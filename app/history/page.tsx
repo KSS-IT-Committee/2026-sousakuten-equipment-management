@@ -1,9 +1,7 @@
-import { redirect } from "next/navigation";
-
+import { AuthGuard } from "@/components/AuthGuard";
 import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
 import { getDeductionsById } from "@/db/queries/deductions";
-import { checkUserAuth } from "@/lib/auth";
 
 import styles from "./base.module.css";
 
@@ -12,11 +10,14 @@ type Props = {
 };
 
 export default async function Page({ searchParams }: Props) {
-  const perm = await checkUserAuth();
-  if (!perm.isLoggedIn) {
-    redirect("/");
-  }
+  return (
+    <AuthGuard>
+      <DeductionDetail searchParams={searchParams} />
+    </AuthGuard>
+  );
+}
 
+async function DeductionDetail({ searchParams }: Props) {
   const { id } = await searchParams;
   const deductionId = Number(id);
 
