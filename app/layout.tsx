@@ -1,13 +1,16 @@
 import "./globals.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 
 import { AccountNav } from "@/components/AccountNav";
 import { Footer } from "@/components/Footer";
+import { Internal } from "@/components/Internal";
 import { Navbar } from "@/components/Navbar";
+import { NavMenuLinks } from "@/components/Navbar/NavMenuLinks";
+import { NoScriptAlert } from "@/components/NoScriptAlert";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +21,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// Google Analytics 4 measurement ID for this app's GA property.
+const GA_MEASUREMENT_ID = "G-DGM95SGSRQ";
 
 export const metadata: Metadata = {
   title: "創作展 貸出備品管理サイト",
@@ -52,34 +58,28 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
-      {/* Google tag (gtag.js) — skipped on PR preview deployments.
-          IS_PR_PREVIEW is injected at runtime by the deploy infra and read
-          here server-side, so it must NOT be NEXT_PUBLIC_ (those inline at
-          build time). */}
-      {process.env.IS_PR_PREVIEW !== "true" && (
-        <>
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-DGM95SGSRQ"
-            strategy="afterInteractive"
-          ></Script>
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-DGM95SGSRQ');
-  `}
-          </Script>
-        </>
-      )}
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar accountSlot={<AccountNav />} />
+          <NoScriptAlert />
+          <Navbar
+            accountSlot={<AccountNav />}
+            navSlot={
+              <Internal>
+                <NavMenuLinks />
+              </Internal>
+            }
+          />
           <main>{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
+      {/* Google tag (gtag.js) via @next/third-parties — the official Next.js
+          integration. Skipped on PR preview deployments: IS_PR_PREVIEW is
+          injected at runtime by the deploy infra and read here server-side, so
+          it must NOT be NEXT_PUBLIC_ (those inline at build time). */}
+      {GA_MEASUREMENT_ID && process.env.IS_PR_PREVIEW !== "true" && (
+        <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+      )}
     </html>
   );
 }
