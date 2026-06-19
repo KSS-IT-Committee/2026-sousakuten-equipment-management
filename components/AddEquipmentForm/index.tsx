@@ -32,8 +32,8 @@ export function AddEquipmentForm({
   const [error, setError] = useState<string>("");
 
   const [imagePreview, setImagePreview] = useState<string>(
-    typeof initialValues?.picture === "string" ? initialValues.picture : ""
-  );  
+    typeof initialValues?.picture === "string" ? initialValues.picture : "",
+  );
   const [isImageDeleted, setIsImageDeleted] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +60,9 @@ export function AddEquipmentForm({
     setImagePreview("");
     setIsImageDeleted(true);
     if (formRef.current) {
-      const fileInput = formRef.current.querySelector('input[type="file"]') as HTMLInputElement;
+      const fileInput = formRef.current.querySelector(
+        'input[type="file"]',
+      ) as HTMLInputElement;
       if (fileInput) fileInput.value = "";
     }
   };
@@ -72,8 +74,11 @@ export function AddEquipmentForm({
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
-        formData.set("existingPicture", isImageDeleted ? "" : (initialValues.picture ?? ""));
-        
+        formData.set(
+          "existingPicture",
+          isImageDeleted ? "" : (initialValues.picture ?? ""),
+        );
+
         await updateEquipmentAction(formData);
       } else {
         await createEquipmentAction(formData);
@@ -88,9 +93,9 @@ export function AddEquipmentForm({
     }
   };
 
-  const isValidPreview = 
-    imagePreview && 
-    typeof imagePreview === "string" && 
+  const isValidPreview =
+    imagePreview &&
+    typeof imagePreview === "string" &&
     !imagePreview.startsWith("[object");
 
   return (
