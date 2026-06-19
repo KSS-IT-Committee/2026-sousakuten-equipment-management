@@ -6,6 +6,7 @@ import { useState } from "react";
 
 // import  deleteEquipmentAction
 import { deleteEquipmentAction } from "@/components/AddEquipmentForm/action";
+
 import styles from "./DeleteEquipmentButton.module.css";
 
 type DeleteEquipmentButtonProps = {

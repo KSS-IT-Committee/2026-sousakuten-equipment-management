@@ -27,6 +27,8 @@ export async function createEquipmentAction(formData: FormData) {
   const pictureFile = formData.get("picture") as File;
 
   const picturePath = await saveImage(pictureFile);
+
+  console.log("Added Equipment:", { name, quantity, picturePath });
 }
 
 export async function updateEquipmentAction(formData: FormData) {
@@ -36,11 +38,13 @@ export async function updateEquipmentAction(formData: FormData) {
   const pictureFile = formData.get("picture") as File;
   const existingPicture = formData.get("existingPicture") as string;
 
-  let picturePath: string | null = existingPicture;
+  let picturePath: string | null = existingPicture || null;
 
   if (pictureFile && pictureFile.size > 0) {
     picturePath = await saveImage(pictureFile);
   }
+
+  console.log("Updated Equipment:", { id, name, quantity, picturePath });
 }
 
 export async function deleteEquipmentAction(equipmentId: number) {
@@ -48,6 +52,8 @@ export async function deleteEquipmentAction(equipmentId: number) {
     if (!equipmentId) {
       return { success: false, error: "有効な備品IDが指定されていません" };
     }
+
+    console.log("Deleted Equipment ID:", equipmentId);
 
     return { success: true };
   } catch (error) {
