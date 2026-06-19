@@ -42,3 +42,19 @@ export async function updateEquipmentAction(formData: FormData) {
     picturePath = await saveImage(pictureFile);
   }
 }
+
+export async function deleteEquipmentAction(equipmentId: number) {
+  try {
+    if (!equipmentId) {
+      return { success: false, error: "有効な備品IDが指定されていません" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("削除エラー:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "削除処理に失敗しました",
+    };
+  }
+}
