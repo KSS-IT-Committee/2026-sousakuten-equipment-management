@@ -1,3 +1,4 @@
+// AddEquipmentForm.tsx
 "use client";
 
 import Image from "next/image";
@@ -31,23 +32,37 @@ export function AddEquipmentForm({
   const [error, setError] = useState<string>("");
 
   const [imagePreview, setImagePreview] = useState<string>(
-    initialValues?.picture ?? "",
-  );
+    typeof initialValues?.picture === "string" ? initialValues.picture : ""
+  );  
+  const [isImageDeleted, setIsImageDeleted] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      setError("画像サイズは2MB以下にしてください。");
+    if (file.size > 4 * 1024 * 1024) {
+      setError("画像サイズは4MB以下にしてください。");
       return;
     }
 
+    setIsImageDeleted(false);
+
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImagePreview(reader.result as string);
+      if (typeof reader.result === "string") {
+        setImagePreview(reader.result);
+      }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview("");
+    setIsImageDeleted(true);
+    if (formRef.current) {
+      const fileInput = formRef.current.querySelector('input[type="file"]') as HTMLInputElement;
+      if (fileInput) fileInput.value = "";
+    }
   };
 
   const handleSubmit = async (formData: FormData) => {
@@ -57,6 +72,8 @@ export function AddEquipmentForm({
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
+        formData.set("existingPicture", isImageDeleted ? "" : (initialValues.picture ?? ""));
+        
         await updateEquipmentAction(formData);
       } else {
         await createEquipmentAction(formData);
@@ -70,6 +87,11 @@ export function AddEquipmentForm({
       setLoading(false);
     }
   };
+
+  const isValidPreview = 
+    imagePreview && 
+    typeof imagePreview === "string" && 
+    !imagePreview.startsWith("[object");
 
   return (
     <form ref={formRef} action={handleSubmit} className={styles.form}>
@@ -121,7 +143,7 @@ export function AddEquipmentForm({
           className={styles.fileInput}
         />
 
-        {imagePreview ? (
+        {isValidPreview ? (
           <div
             className={styles.previewContainer}
             style={{ marginTop: "15px" }}
@@ -147,11 +169,12 @@ export function AddEquipmentForm({
                 alt="Equipment Preview"
                 fill
                 style={{ objectFit: "cover" }}
+                unoptimized
               />
             </div>
             <button
               type="button"
-              onClick={() => setImagePreview("")}
+              onClick={handleRemoveImage}
               style={{
                 marginTop: "5px",
                 fontSize: "12px",
