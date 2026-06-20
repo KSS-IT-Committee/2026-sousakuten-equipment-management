@@ -12,9 +12,14 @@
   margin: 10px 5px;
 }
 
+:global(.dark) .backButton {
+  background-color: #1a1a1a;
+  color: #eee;
+  border-color: #2f2f2f;
+}
+
 .backButton:hover {
-  background-color: #3543dc;
-  color: white;
+  background-color: #252525;
 }
 
 .triggerArea {

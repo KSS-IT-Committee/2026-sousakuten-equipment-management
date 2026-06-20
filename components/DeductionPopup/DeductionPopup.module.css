@@ -19,6 +19,10 @@
   color: #eee;
 }
 
+:global(.dark) .confirmationPopup h2 {
+  color: #eee;
+}
+
 .inputarea {
   display: flex;
   flex-direction: column;
@@ -89,8 +93,17 @@
   transition: all 0.2s ease;
 }
 
+:global(.dark) .button {
+  background-color: #1a1a1a;
+  color: white;
+}
+
 .button:hover {
   background-color: #af2929;
+}
+
+:global(.dark) .button:hover {
+  background-color: #252525;
 }
 
 .closeButton {
@@ -190,7 +203,7 @@
   color: white;
   cursor: pointer;
   border: solid;
-  border-radius: 6px;
+  border-radius: 16px;
   font-size: 14px;
   border-width: 0px;
   box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
@@ -223,6 +236,12 @@
   position: relative;
   animation: slide-in 0.3s ease-out;
 }
+
+:global(.dark) .confirmationPopup {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
 .cancelButton {
   padding: 14px 20px;
   margin: 5px;
@@ -231,7 +250,7 @@
   color: white;
   cursor: pointer;
   border: solid;
-  border-radius: 6px;
+  border-radius: 16px;
   font-size: 14px;
   border-width: 0px;
   box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);

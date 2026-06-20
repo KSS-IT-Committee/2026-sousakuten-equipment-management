@@ -54,8 +54,17 @@
   transition: all 0.2s ease;
 }
 
+:global(.dark) .deleteButton {
+  background-color: #1a1a1a;
+  color: white;
+}
+
 .deleteButton:hover {
   background-color: #af2929;
+}
+
+:global(.dark) .deleteButton:hover {
+  background-color: #252525;
 }
 
 .confirmButton {
