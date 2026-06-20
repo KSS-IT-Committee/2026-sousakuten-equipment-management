@@ -19,6 +19,11 @@
 }
 
 .backButton:hover {
+  background-color: #3543dc;
+  color: white;
+}
+
+:global(.dark) .backButton:hover {
   background-color: #252525;
 }
 
