@@ -1,66 +1,219 @@
 // action.ts
 "use server";
 
+import { eq } from "drizzle-orm";
 import fs from "fs/promises";
+import { revalidatePath } from "next/cache";
 import path from "path";
 
-async function saveImage(file: File): Promise<string | null> {
+import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
+import {
+  countEquipmentsByPicture,
+  createEquipment,
+  getEquipmentById,
+  updateEquipment,
+} from "@/db/queries/equipments";
+import { Borrowings, Equipments } from "@/db/schema";
+import { isAdmin, requireAdmin } from "@/lib/authorize";
+import { db } from "@/lib/db";
+
+const IMAGE_URL_PREFIX = "/equipment-images/";
+
+function uploadDir(): string {
+  return path.join(process.cwd(), "public", "equipment-images");
+}
+
+async function saveImage(file: File | null): Promise<string | null> {
   if (!file || file.size === 0 || file.name === "undefined") return null;
 
-  const uploadDir = path.join(process.cwd(), "public", "equipment-images");
+  const dir = uploadDir();
+  await fs.mkdir(dir, { recursive: true });
 
-  await fs.mkdir(uploadDir, { recursive: true });
-
-  const uniqueFilename = `${Date.now()}-${file.name}`;
-  const filePath = path.join(uploadDir, uniqueFilename);
+  // basename() strips any path components in the supplied name so the upload
+  // can never escape the images directory; the timestamp keeps names unique.
+  const safeName = path.basename(file.name).replace(/[^a-zA-Z0-9._-]/g, "_");
+  const uniqueFilename = `${Date.now()}-${safeName}`;
+  const filePath = path.join(dir, uniqueFilename);
 
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   await fs.writeFile(filePath, buffer);
 
-  return `/equipment-images/${uniqueFilename}`;
+  return `${IMAGE_URL_PREFIX}${uniqueFilename}`;
+}
+
+/**
+ * Delete an uploaded image file from disk, but only when it is one of ours and
+ * no equipment row references it anymore. This is what makes image cleanup safe:
+ * a path still shared by another equipment is left untouched, so we never delete
+ * an image out from under a record that is still using it.
+ */
+async function deleteImageIfUnreferenced(
+  picturePath: string | null,
+): Promise<void> {
+  // Only manage files we host under /equipment-images/. Leave base64 data URIs,
+  // external URLs, or any other value alone.
+  if (!picturePath || !picturePath.startsWith(IMAGE_URL_PREFIX)) return;
+
+  // Still referenced elsewhere? Keep the file.
+  const refCount = await countEquipmentsByPicture(picturePath);
+  if (refCount > 0) return;
+
+  const dir = path.resolve(uploadDir());
+  // basename() drops any directory parts, so the result can only ever resolve
+  // to a file directly inside the images directory — no traversal possible.
+  const filePath = path.resolve(dir, path.basename(picturePath));
+  if (path.dirname(filePath) !== dir) return;
+
+  try {
+    await fs.unlink(filePath);
+  } catch (err) {
+    // An already-missing file is fine; surface anything else without failing
+    // the request the user just completed.
+    if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
+      console.error("画像ファイルの削除に失敗しました:", err);
+    }
+  }
 }
 
 export async function createEquipmentAction(formData: FormData) {
-  const name = formData.get("name") as string;
+  await requireAdmin();
+
+  const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
-  const pictureFile = formData.get("picture") as File;
+  const pictureFile = formData.get("picture") as File | null;
 
-  const picturePath = await saveImage(pictureFile);
+  if (!name) {
+    throw new Error("error: equipment name is required");
+  }
 
-  console.log("Added Equipment:", { name, quantity, picturePath });
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    throw new Error("error: quantity must be a positive integer");
+  }
+
+  const picture = await saveImage(pictureFile);
+
+  const result = await createEquipment({ name, quantity, picture });
+
+  revalidatePath("/equipment");
+  revalidatePath("/");
+  return result;
 }
 
 export async function updateEquipmentAction(formData: FormData) {
-  const id = Number(formData.get("equipmentId"));
-  const name = formData.get("name") as string;
+  await requireAdmin();
+
+  const equipmentId = Number(formData.get("equipmentId"));
+  const name = String(formData.get("name") ?? "").trim();
   const quantity = Number(formData.get("quantity"));
-  const pictureFile = formData.get("picture") as File;
-  const existingPicture = formData.get("existingPicture") as string;
+  const pictureFile = formData.get("picture") as File | null;
+  const existingPicture = String(formData.get("existingPicture") ?? "");
 
-  let picturePath: string | null = existingPicture || null;
-
-  if (pictureFile && pictureFile.size > 0) {
-    picturePath = await saveImage(pictureFile);
+  if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
+    throw new Error("error: equipment ID is invalid");
   }
 
-  console.log("Updated Equipment:", { id, name, quantity, picturePath });
+  const existingEquipment = await getEquipmentById(equipmentId);
+  if (!existingEquipment) {
+    throw new Error("error: equipment not found");
+  }
+
+  if (!name) {
+    throw new Error("error: equipment name is required");
+  }
+
+  if (!Number.isInteger(quantity) || quantity <= 0) {
+    throw new Error("error: quantity must be a positive integer");
+  }
+
+  const activeBorrowings = await getActiveBorrowingsByEquipmentId(equipmentId);
+  if (quantity < activeBorrowings.length) {
+    throw new Error(
+      `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
+    );
+  }
+
+  // The picture stored before this edit, used to decide on file cleanup.
+  const oldPicture = existingEquipment.picture;
+
+  // Resolve the new picture: a freshly uploaded file wins; otherwise keep what
+  // the form carried back (the existing path, or "" when the user removed it).
+  let newPicture: string | null;
+  if (pictureFile && pictureFile.size > 0) {
+    newPicture = await saveImage(pictureFile);
+  } else {
+    newPicture = existingPicture.length > 0 ? existingPicture : null;
+  }
+
+  const result = await updateEquipment(equipmentId, {
+    name,
+    quantity,
+    picture: newPicture,
+  });
+
+  // Only clean up when the picture actually changed (replaced or cleared). When
+  // the image is left untouched, oldPicture === newPicture and nothing is
+  // deleted — this is the fix for the image disappearing on an unrelated edit.
+  if (oldPicture && oldPicture !== newPicture) {
+    await deleteImageIfUnreferenced(oldPicture);
+  }
+
+  revalidatePath("/equipment");
+  revalidatePath("/");
+  return result;
 }
 
-export async function deleteEquipmentAction(equipmentId: number) {
+export async function deleteEquipmentAction(
+  equipmentId: number,
+): Promise<{ success: boolean; error?: string }> {
+  if (!(await isAdmin())) {
+    return { success: false, error: "この操作には創作展委員の権限が必要です" };
+  }
+  if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
+    return { success: false, error: "備品IDが不正です" };
+  }
+
+  let deletedPicture: string | null = null;
+
   try {
-    if (!equipmentId) {
-      return { success: false, error: "有効な備品IDが指定されていません" };
-    }
+    await db.transaction(async (tx) => {
+      const [existingEquipment] = await tx
+        .select()
+        .from(Equipments)
+        .where(eq(Equipments.id, equipmentId))
+        .for("update");
 
-    console.log("Deleted Equipment ID:", equipmentId);
+      if (!existingEquipment) {
+        throw new Error("備品が見つかりませんでした");
+      }
 
+      const borrowings = await tx
+        .select({ id: Borrowings.id })
+        .from(Borrowings)
+        .where(eq(Borrowings.equipmentId, equipmentId));
+
+      if (borrowings.length > 0) {
+        throw new Error("貸出履歴がある備品は削除できません");
+      }
+
+      deletedPicture = existingEquipment.picture;
+      await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
+    });
+
+    // Remove the image only after the row is gone, so the reference check sees
+    // the post-delete state.
+    await deleteImageIfUnreferenced(deletedPicture);
+
+    revalidatePath("/equipment");
+    revalidatePath("/");
     return { success: true };
-  } catch (error) {
-    console.error("削除エラー:", error);
+  } catch (err) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "削除処理に失敗しました",
+      error:
+        err instanceof Error
+          ? err.message
+          : "データベース処理中にエラーが発生しました",
     };
   }
 }
