@@ -28,6 +28,15 @@
   animation: slide-in 0.3s ease-out;
 }
 
+:global(.dark) .confirmationBox {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+:global(.dark) .confirmationBox h2 {
+  color: #eee;
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;
@@ -54,8 +63,18 @@
   transition: all 0.2s ease;
 }
 
+:global(.dark) .deleteButton {
+  box-shadow: rgba(0, 0, 0, 0.2);
+  background-color: #1a1a1a;
+  color: white;
+}
+
 .deleteButton:hover {
   background-color: #af2929;
+}
+
+:global(.dark) .deleteButton:hover {
+  background-color: #252525;
 }
 
 .confirmButton {

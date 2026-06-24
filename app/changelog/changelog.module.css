@@ -11,6 +11,10 @@
   margin-bottom: 8px;
 }
 
+:global(.dark) .title {
+  color: #fff;
+}
+
 .subtitle {
   color: color-mix(in oklch, var(--foreground) 60%, transparent);
   margin-bottom: 40px;
@@ -52,6 +56,10 @@
   font-size: 1.15rem;
   font-weight: 600;
   margin: 0 0 6px;
+}
+
+:global(.dark) .entryTitle {
+  color: #fff;
 }
 
 .description {

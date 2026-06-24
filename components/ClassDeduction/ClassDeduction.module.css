@@ -29,8 +29,18 @@
 
   justify-items: center;
 }
+
+:global(.dark) .deduction {
+  background-color: #1a1a1a;
+  border-color: #333;
+}
+
 .deductionsample h2 {
   font-size: 15px;
+}
+
+:global(.dark) .deductionsample h2 {
+  color: #eee;
 }
 
 .line {
@@ -46,6 +56,12 @@
   box-shadow: 0 8px 24px rgba(37, 56, 168, 0.08);
 }
 
+:global(.dark) .emptyState {
+  background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
+  border-color: #333;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+}
+
 .emptyStateTitle {
   margin-bottom: 8px;
   font-size: 20px;
@@ -53,9 +69,17 @@
   color: #2430ab;
 }
 
+:global(.dark) .emptyStateTitle {
+  color: #7a8cff;
+}
+
 .emptyStateBody {
   font-size: 15px;
   color: #44506b;
+}
+
+:global(.dark) .emptyStateBody {
+  color: #aaa;
 }
 
 .deduction h3,

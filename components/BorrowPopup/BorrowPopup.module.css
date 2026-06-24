@@ -26,6 +26,11 @@
   text-align: center;
 }
 
+:global(.dark) .popupContent {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;
@@ -55,10 +60,18 @@
   margin: 0;
 }
 
+:global(.dark) .popupTitle {
+  color: #fff;
+}
+
 .popupSubtitle {
   margin: 0;
   color: #666;
   font-size: 14px;
+}
+
+:global(.dark) .popupSubtitle {
+  color: #ccc;
 }
 
 .closeButton {
@@ -121,10 +134,19 @@
   border: 1px solid #e6e9f0;
 }
 
+:global(.dark) .summaryBox {
+  background-color: #333;
+  border-color: #555;
+}
+
 .summaryLabel {
   margin: 0;
   font-size: 12px;
   color: #6b7280;
+}
+
+:global(.dark) .summaryLabel {
+  color: #aaa;
 }
 
 .summaryValue {
@@ -132,6 +154,10 @@
   font-size: 16px;
   font-weight: 600;
   color: #1f2937;
+}
+
+:global(.dark) .summaryValue {
+  color: #fff;
 }
 
 .notice {

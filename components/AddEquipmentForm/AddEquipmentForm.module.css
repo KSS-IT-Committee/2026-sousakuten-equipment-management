@@ -7,6 +7,10 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+:global(.dark) .form {
+  background-color: #333;
+}
+
 .formGroup {
   margin-bottom: 1.5rem;
 }
@@ -16,6 +20,10 @@
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: #333;
+}
+
+:global(.dark) .label {
+  color: #fff;
 }
 
 .required {
