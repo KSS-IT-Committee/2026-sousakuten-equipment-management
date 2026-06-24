@@ -31,9 +31,9 @@ export function AddEquipmentForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
-  const [imagePreview, setImagePreview] = useState<string>(
-    typeof initialValues?.picture === "string" ? initialValues.picture : "",
-  );
+  const initialPreview =
+    typeof initialValues?.picture === "string" ? initialValues.picture : "";
+  const [imagePreview, setImagePreview] = useState<string>(initialPreview);
   const [isImageDeleted, setIsImageDeleted] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +42,8 @@ export function AddEquipmentForm({
 
     if (file.size > 4 * 1024 * 1024) {
       setError("画像サイズは4MB以下にしてください。");
+      e.target.value = "";
+      setImagePreview(initialPreview);
       return;
     }
 
