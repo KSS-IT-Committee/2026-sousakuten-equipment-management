@@ -84,7 +84,7 @@ export async function DeductionCellsByClasses({
           </div>
           <hr className={styles.line} />
           <div className={styles.deductionContainer}>
-            {sortedDeductions.map((deduction) => (
+            {sortedDeductions.map((deduction, index) => (
               <Link
                 href={`/history?id=${deduction.id}`}
                 key={deduction.id}
@@ -101,6 +101,9 @@ export async function DeductionCellsByClasses({
                   <p>{deduction.points}</p>
                   <p className={styles.content}>{deduction.content}</p>
                 </div>
+                {index !== deductions.length - 1 && (
+                  <hr className={styles.sectionline} />
+                )}
               </Link>
             ))}
           </div>
