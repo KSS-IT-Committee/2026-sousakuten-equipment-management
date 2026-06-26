@@ -85,7 +85,6 @@ export async function DeductionCellsByClasses({
           <hr className={styles.line} />
           <div className={styles.deductionContainer}>
             {sortedDeductions.map((deduction, index) => (
-            {sortedDeductions.map((deduction, index) => (
               <div key={deduction.id}>
                 <Link
                   href={`/history?id=${deduction.id}`}
