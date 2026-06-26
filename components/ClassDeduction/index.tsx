@@ -85,26 +85,29 @@ export async function DeductionCellsByClasses({
           <hr className={styles.line} />
           <div className={styles.deductionContainer}>
             {sortedDeductions.map((deduction, index) => (
-              <Link
-                href={`/history?id=${deduction.id}`}
-                key={deduction.id}
-                className={styles.linkArea}
-              >
-                <div className={styles.deduction}>
-                  <h3>{deduction.className}</h3>
-                  <p>ID: {deduction.id}</p>
-                  <p>
-                    {deduction.occurredAt.toLocaleDateString("ja-JP", {
-                      timeZone: "Asia/Tokyo",
-                    })}
-                  </p>
-                  <p>{deduction.points}</p>
-                  <p className={styles.content}>{deduction.content}</p>
-                </div>
-                {index !== deductions.length - 1 && (
+            {sortedDeductions.map((deduction, index) => (
+              <div key={deduction.id}>
+                <Link
+                  href={`/history?id=${deduction.id}`}
+                  className={styles.linkArea}
+                >
+                  <div className={styles.deduction}>
+                    <h3>{deduction.className}</h3>
+                    <p>ID: {deduction.id}</p>
+                    <p>
+                      {deduction.occurredAt.toLocaleDateString("ja-JP", {
+                        timeZone: "Asia/Tokyo",
+                      })}
+                    </p>
+                    <p>{deduction.points}</p>
+                    <p className={styles.content}>{deduction.content}</p>
+                  </div>
+                </Link>
+                {index !== sortedDeductions.length - 1 && (
                   <hr className={styles.sectionline} />
                 )}
-              </Link>
+              </div>
+            ))}
             ))}
           </div>
         </div>
