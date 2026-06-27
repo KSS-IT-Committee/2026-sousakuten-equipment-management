@@ -12,6 +12,16 @@
   transition: all 0.3s ease;
 }
 
+:global(.dark) .window {
+  background-color: #1a1a1a;
+  border-color: #333;
+}
+
+:global(.dark) .window h1,
+:global(.dark) .window h2 {
+  color: #eee;
+}
+
 .buttonRow {
   display: flex;
   justify-content: flex-end;

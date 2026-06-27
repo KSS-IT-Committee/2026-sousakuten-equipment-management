@@ -15,6 +15,14 @@
   padding-bottom: 10px;
 }
 
+:global(.dark) .details h2 {
+  color: #eee;
+}
+
+:global(.dark) .confirmationPopup h2 {
+  color: #eee;
+}
+
 .inputarea {
   display: flex;
   flex-direction: column;
@@ -36,7 +44,7 @@
 
 .popup {
   background-color: white;
-  border-radius: 20px;
+  border-radius: 15px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   padding: 32px;
   max-width: 500px;
@@ -48,6 +56,11 @@
   overflow: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;
+}
+
+:global(.dark) .popup {
+  background-color: #1a1a1a;
+  color: #fff;
 }
 
 .popup::-webkit-scrollbar {
@@ -80,8 +93,17 @@
   transition: all 0.2s ease;
 }
 
+:global(.dark) .button {
+  background-color: #1a1a1a;
+  color: white;
+}
+
 .button:hover {
   background-color: #af2929;
+}
+
+:global(.dark) .button:hover {
+  background-color: #252525;
 }
 
 .closeButton {
@@ -106,20 +128,27 @@
 .select {
   padding: 5px 15px;
   border: 1px solid #ddd;
-  border-radius: 14px;
+  border-radius: 7px;
   font-size: 14px;
   background-color: white;
   cursor: pointer;
   transition: border-color 0.2s;
 }
 
+:global(.dark) .select,
+:global(.dark) .numberselect {
+  background-color: #1a1a1a;
+  color: #fff;
+  border-color: #333;
+}
+
 .numberselect {
   padding: 10px 15px;
   border: 1px solid #ddd;
-  border-radius: 14px;
+  border-radius: 7px;
   font-size: 14px;
   background-color: white;
-  cursor: pointer;
+  cursor: text;
   transition: border-color 0.2s;
 }
 
@@ -174,7 +203,7 @@
   color: white;
   cursor: pointer;
   border: solid;
-  border-radius: 6px;
+  border-radius: 16px;
   font-size: 14px;
   border-width: 0px;
   box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);
@@ -207,6 +236,12 @@
   position: relative;
   animation: slide-in 0.3s ease-out;
 }
+
+:global(.dark) .confirmationPopup {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
 .cancelButton {
   padding: 14px 20px;
   margin: 5px;
@@ -215,7 +250,7 @@
   color: white;
   cursor: pointer;
   border: solid;
-  border-radius: 6px;
+  border-radius: 16px;
   font-size: 14px;
   border-width: 0px;
   box-shadow: 0 2px 4px rgba(50, 40, 237, 0.2);

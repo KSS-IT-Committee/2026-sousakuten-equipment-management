@@ -1,0 +1,23 @@
+.pageSubtitle {
+  margin-top: 16px;
+  font-size: 24px;
+  text-align: center;
+  color: #000;
+}
+
+:global(.dark) .pageSubtitle {
+  color: #fff;
+}
+
+.pageTitle {
+  text-align: center;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  color: #1a1a1a;
+}
+
+:global(.dark) .pageTitle {
+  color: #fff;
+}

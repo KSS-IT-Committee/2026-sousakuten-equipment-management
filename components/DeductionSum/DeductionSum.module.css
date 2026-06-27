@@ -7,6 +7,10 @@
   padding: 0 16px;
 }
 
+:global(.dark) .title {
+  color: #fff;
+}
+
 .section {
   gap: 16px;
   background-color: white;
@@ -21,6 +25,11 @@
   min-width: 0;
   justify-self: stretch;
   text-align: center;
+}
+
+:global(.dark) .section {
+  background-color: #1a1a1a;
+  border-color: #333;
 }
 .section h2 {
   font-size: 40px;
