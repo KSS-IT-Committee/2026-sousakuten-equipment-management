@@ -72,12 +72,18 @@
   transition: all 0.2s ease;
 }
 
-.homeLink:hover {
+.homeLink:hover,
+.requestLink:hover,
+.addEquipmentLink:hover,
+.borrowingsLink:hover {
   background-color: #f7fafc;
   color: #2d3748;
 }
 
-:global(.dark) .homeLink:hover {
+:global(.dark) .homeLink:hover,
+:global(.dark) .requestLink:hover,
+:global(.dark) .addEquipmentLink:hover,
+:global(.dark) .borrowingsLink:hover {
   background-color: #1b1b1b;
 }
 
@@ -115,7 +121,8 @@
 }
 
 .addEquipmentLink,
-.borrowingsLink {
+.borrowingsLink,
+.requestLink {
   padding: 8px 16px;
   color: #4a5568;
   text-decoration: none;
@@ -127,7 +134,8 @@
 
 :global(.dark) .addEquipmentLink,
 :global(.dark) .borrowingsLink,
-:global(.dark) .homeLink {
+:global(.dark) .homeLink,
+:global(.dark) .requestLink {
   color: white;
 }
 
@@ -175,13 +183,17 @@
 
   .homeLink,
   .addEquipmentLink,
-  .borrowingsLink {
+  .borrowingsLink,
+  .requestLink {
     text-align: center;
     padding: 12px;
     border-radius: 8px;
   }
 
-  .homeLink {
-    background-color: #f7fafc;
+  :global(.dark) .homeLink:hover,
+  :global(.dark) .requestLink:hover,
+  :global(.dark) .addEquipmentLink:hover,
+  :global(.dark) .borrowingsLink:hover {
+    background-color: #1b1b1b4e;
   }
 }
