@@ -183,13 +183,17 @@
 
   .homeLink,
   .addEquipmentLink,
-  .borrowingsLink {
+  .borrowingsLink,
+  .requestLink {
     text-align: center;
     padding: 12px;
     border-radius: 8px;
   }
 
-  .homeLink {
-    background-color: #f7fafc;
+  :global(.dark) .homeLink:hover,
+  :global(.dark) .requestLink:hover,
+  :global(.dark) .addEquipmentLink:hover,
+  :global(.dark) .borrowingsLink:hover {
+    background-color: #1b1b1b4e;
   }
 }
