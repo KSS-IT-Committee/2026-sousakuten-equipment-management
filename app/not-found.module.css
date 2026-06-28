@@ -6,10 +6,11 @@
   justify-content: center;
   padding: 80px 24px;
   text-align: center;
-  color: #0a0a0a;
+  color: var(--text);
 }
 
 .code {
+  color: #d0d0d0;
   font-family: "Yu Mincho", serif;
   font-size: clamp(6rem, 20vw, 12rem);
   line-height: 1;
@@ -31,7 +32,7 @@
 .subtitle {
   font-family: "Yu Mincho", serif;
   font-size: clamp(1rem, 2.2vw, 1.15rem);
-  color: rgba(10, 10, 10, 0.75);
+  color: var(--text);
   line-height: 1.8;
   max-width: 640px;
   margin: 0 auto 20px;
@@ -87,7 +88,7 @@
   padding: 14px 40px;
   font-family: "Yu Mincho", serif;
   font-size: 1.1rem;
-  color: #0a0a0a;
+  color: var(--text);
   text-decoration: none;
   border: 1px solid rgba(10, 10, 10, 0.4);
   border-radius: 999px;
@@ -110,7 +111,7 @@
 
   .homeLink:hover {
     background: #ffffff;
-    color: #0a0a0a;
+    color: var(--text);
   }
 }
 
