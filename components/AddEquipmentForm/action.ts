@@ -16,27 +16,40 @@ import {
 import { Borrowings, Equipments } from "@/db/schema";
 import { isAdmin, requireAdmin } from "@/lib/authorize";
 import { db } from "@/lib/db";
-
-const IMAGE_URL_PREFIX = "/equipment-images/";
-
-function uploadDir(): string {
-  return path.join(process.cwd(), "public", "equipment-images");
-}
+import {
+  ALLOWED_IMAGE_LABEL,
+  detectImageType,
+  equipmentImagesDir,
+  IMAGE_URL_PREFIX,
+} from "@/lib/equipment-images";
 
 async function saveImage(file: File | null): Promise<string | null> {
   if (!file || file.size === 0 || file.name === "undefined") return null;
 
-  const dir = uploadDir();
-  await fs.mkdir(dir, { recursive: true });
-
-  // basename() strips any path components in the supplied name so the upload
-  // can never escape the images directory; the timestamp keeps names unique.
-  const safeName = path.basename(file.name).replace(/[^a-zA-Z0-9._-]/g, "_");
-  const uniqueFilename = `${Date.now()}-${safeName}`;
-  const filePath = path.join(dir, uniqueFilename);
-
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
+
+  // Validate by content (magic bytes), not by extension, so a disguised payload
+  // such as an SVG/HTML file can never be stored and later served same-origin.
+  const detected = detectImageType(buffer);
+  if (!detected) {
+    throw new Error(
+      `error: unsupported image type (${ALLOWED_IMAGE_LABEL} only)`,
+    );
+  }
+
+  const dir = equipmentImagesDir();
+  await fs.mkdir(dir, { recursive: true });
+
+  // Keep a sanitized stem from the original name for readability, but force the
+  // canonical extension from the detected type so the on-disk name always
+  // reflects real content; the timestamp keeps names unique. basename() strips
+  // any path components so the upload can never escape the images directory.
+  const sanitized = path.basename(file.name).replace(/[^a-zA-Z0-9._-]/g, "_");
+  const stem = sanitized.replace(/\.[^.]+$/, "") || "image";
+  const uniqueFilename = `${Date.now()}-${stem}${detected.ext}`;
+  const filePath = path.join(dir, uniqueFilename);
+
   await fs.writeFile(filePath, buffer);
 
   return `${IMAGE_URL_PREFIX}${uniqueFilename}`;
@@ -59,7 +72,7 @@ async function deleteImageIfUnreferenced(
   const refCount = await countEquipmentsByPicture(picturePath);
   if (refCount > 0) return;
 
-  const dir = path.resolve(uploadDir());
+  const dir = path.resolve(equipmentImagesDir());
   // basename() drops any directory parts, so the result can only ever resolve
   // to a file directly inside the images directory — no traversal possible.
   const filePath = path.resolve(dir, path.basename(picturePath));
