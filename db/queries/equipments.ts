@@ -1,7 +1,7 @@
-import { eq } from "drizzle-orm";
-
 import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
+import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm/sql";
 
 export async function getEquipments() {
   return await db
@@ -41,3 +41,13 @@ export async function updateEquipment(
 export async function deleteEquipmentById(id: number) {
   return await db.delete(Equipments).where(eq(Equipments.id, id));
 }
+
+export const getGlobalLastUpdatedAt = async () => {
+  const result = await db
+    .select({
+      lastUpdate: sql<Date | null>`max(${Equipments.updatedAt})`,
+    })
+    .from(Equipments);
+
+  return result[0]?.lastUpdate ?? null;
+};
