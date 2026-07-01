@@ -3,14 +3,8 @@ import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 
-import { AccountNav } from "@/components/AccountNav";
 import { Footer } from "@/components/Footer";
-import { Internal } from "@/components/Internal";
-import { Navbar } from "@/components/Navbar";
-import { NavMenuLinks } from "@/components/Navbar/NavMenuLinks";
-import { NavRequestLink } from "@/components/Navbar/NavRequestLink";
 import { NoScriptAlert } from "@/components/NoScriptAlert";
 
 const geistSans = Geist({
@@ -60,9 +54,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NoScriptAlert />
-          <Navbar
+        {/*<ThemeProvider attribute="class" defaultTheme="system" enableSystem>*/}
+        <NoScriptAlert />
+        {/*<Navbar
             accountSlot={<AccountNav />}
             navSlot={
               <>
@@ -72,10 +66,10 @@ export default function RootLayout({
                 <NavRequestLink />
               </>
             }
-          />
-          <main>{children}</main>
-          <Footer />
-        </ThemeProvider>
+          />*/}
+        <main>{children}</main>
+        <Footer />
+        {/*</ThemeProvider>*/}
       </body>
       {/* Google tag (gtag.js) via @next/third-parties — the official Next.js
           integration. Skipped on PR preview deployments: IS_PR_PREVIEW is
