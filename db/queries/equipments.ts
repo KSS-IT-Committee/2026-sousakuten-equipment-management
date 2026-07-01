@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm/sql";
 
 import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
@@ -24,7 +25,10 @@ export async function createEquipment(data: {
   quantity: number;
   picture?: string | null;
 }) {
-  return await db.insert(Equipments).values(data);
+  return await db.insert(Equipments).values({
+    ...data,
+    updatedAt: new Date(),
+  });
 }
 
 export async function updateEquipment(
@@ -35,9 +39,25 @@ export async function updateEquipment(
     picture?: string | null;
   },
 ) {
-  return await db.update(Equipments).set(data).where(eq(Equipments.id, id));
+  return await db
+    .update(Equipments)
+    .set({
+      ...data,
+      updatedAt: new Date(),
+    })
+    .where(eq(Equipments.id, id));
 }
 
 export async function deleteEquipmentById(id: number) {
   return await db.delete(Equipments).where(eq(Equipments.id, id));
 }
+
+export const getGlobalLastUpdatedAt = async () => {
+  const result = await db
+    .select({
+      lastUpdate: sql<Date | null>`max(${Equipments.updatedAt})`,
+    })
+    .from(Equipments);
+
+  return result[0]?.lastUpdate ?? null;
+};

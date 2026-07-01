@@ -1,6 +1,6 @@
 import { and, desc, eq, isNull } from "drizzle-orm";
 
-import { Borrowings, ClassName } from "@/db/schema";
+import { Borrowings, ClassName, Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
 
 export async function getBorrowings() {
@@ -56,10 +56,27 @@ export async function createBorrowing(data: {
   borrowedAt?: Date;
   returnedAt?: Date;
 }) {
+  await db
+    .update(Equipments)
+    .set({ updatedAt: new Date() })
+    .where(eq(Equipments.id, data.equipmentId));
   return await db.insert(Borrowings).values(data);
 }
 
 export async function returnBorrowing(id: number, returnedAt: Date) {
+  const borrowing = await db
+    .select({ equipmentId: Borrowings.equipmentId })
+    .from(Borrowings)
+    .where(eq(Borrowings.id, id))
+    .limit(1);
+
+  if (borrowing.length > 0) {
+    await db
+      .update(Equipments)
+      .set({ updatedAt: new Date() })
+      .where(eq(Equipments.id, borrowing[0].equipmentId));
+  }
+
   return await db
     .update(Borrowings)
     .set({ returnedAt: returnedAt })
