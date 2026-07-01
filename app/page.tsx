@@ -16,11 +16,25 @@ export default async function Home() {
       <div>
         <p className={styles.updatedAt}>
           最終更新日時:{" "}
-          {updatedDate
-            ? updatedDate.toLocaleString("ja-JP", {
-                timeZone: "Asia/Tokyo",
-              })
-            : "不明"}
+          {(() => {
+            if (!updatedDate || isNaN(new Date(updatedDate).getTime())) {
+              return "不明";
+            }
+
+            const date = new Date(updatedDate);
+
+            const jstDate = new Date(
+              date.toLocaleString("en-US", { timeZone: "Asia/Tokyo" }),
+            );
+            const pad = (num: number) => String(num).padStart(2, "0");
+
+            const month = pad(jstDate.getMonth() + 1);
+            const day = pad(jstDate.getDate());
+            const hour = pad(jstDate.getHours());
+            const minute = pad(jstDate.getMinutes());
+
+            return `${month}/${day} ${hour}:${minute} (JST)`;
+          })()}
         </p>
       </div>
       <div className={styles.equipmentList}>

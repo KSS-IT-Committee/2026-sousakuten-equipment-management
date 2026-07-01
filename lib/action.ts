@@ -14,6 +14,7 @@ export const returnBorrowingAction = async (
   returnedAt: Date,
 ) => {
   await requireAdmin();
+
   await db.transaction(async (tx) => {
     const [existing] = await tx
       .select()
@@ -26,14 +27,19 @@ export const returnBorrowingAction = async (
     }
 
     await tx
+      .update(Equipments)
+      .set({ updatedAt: new Date() })
+      .where(eq(Equipments.id, existing.equipmentId));
+
+    await tx
       .update(Borrowings)
-      .set({ returnedAt })
+      .set({ returnedAt: returnedAt })
       .where(eq(Borrowings.id, borrowingId));
   });
 
-  revalidatePath("/borrowings");
   revalidatePath("/equipment");
   revalidatePath("/");
+  revalidatePath("/borrowings");
 };
 
 export const borrowEquipmentAction = async (
@@ -72,6 +78,11 @@ export const borrowEquipmentAction = async (
     if (eqItem.quantity - active.length <= 0) {
       throw new Error("No equipment available to borrow");
     }
+
+    await tx
+      .update(Equipments)
+      .set({ updatedAt: new Date() })
+      .where(eq(Equipments.id, equipmentId));
 
     await tx.insert(Borrowings).values({
       equipmentId,
