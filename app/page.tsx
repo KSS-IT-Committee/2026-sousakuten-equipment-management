@@ -2,7 +2,6 @@ import styles from "@/app/base.module.css";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { getEquipments, getGlobalLastUpdatedAt } from "@/db/queries/equipments";
 
-
 export const dynamic = "force-dynamic";
 
 export default async function Home() {

@@ -1,7 +1,8 @@
-import { Equipments } from "@/db/schema";
-import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { sql } from "drizzle-orm/sql";
+
+import { Equipments } from "@/db/schema";
+import { db } from "@/lib/db";
 
 export async function getEquipments() {
   return await db
