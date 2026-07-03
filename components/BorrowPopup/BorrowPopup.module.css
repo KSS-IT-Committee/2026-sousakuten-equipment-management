@@ -189,6 +189,15 @@
   background-color: #0056b3;
 }
 
+.primaryButton:disabled {
+  background-color: #b8c7df;
+  cursor: not-allowed;
+}
+
+:global(.dark) .primaryButton:disabled {
+  background-color: #2e2e2e;
+}
+
 .secondaryButton {
   background-color: #f0f0f0;
   color: #333;
