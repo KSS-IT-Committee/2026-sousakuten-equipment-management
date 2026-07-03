@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 
 import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
@@ -40,4 +40,15 @@ export async function updateEquipment(
 
 export async function deleteEquipmentById(id: number) {
   return await db.delete(Equipments).where(eq(Equipments.id, id));
+}
+
+// How many equipment rows still point at this picture path. Used to decide
+// whether an uploaded image file can be removed from disk, so a path shared by
+// more than one equipment is never deleted out from under the others.
+export async function countEquipmentsByPicture(picture: string) {
+  const result = await db
+    .select({ value: count() })
+    .from(Equipments)
+    .where(eq(Equipments.picture, picture));
+  return result[0]?.value ?? 0;
 }

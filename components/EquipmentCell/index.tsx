@@ -12,15 +12,19 @@ export async function EquipmentCell({ id }: { id: number }) {
   const borrowings = await getActiveBorrowingsByEquipmentId(id);
 
   if (!equipment) {
-    return <div>備品が見つかりませんでした</div>;
+    return <div className={styles.errorCell}>備品が見つかりませんでした</div>;
   }
 
   const borrowedCount = borrowings.length;
-  const availableCount = equipment.quantity - borrowedCount;
-  const availabilityPercentage = Math.round(
-    (availableCount / equipment.quantity) * 100,
-  );
+  const availableCount = Math.max(0, equipment.quantity - borrowedCount);
+
+  const availabilityPercentage =
+    equipment.quantity > 0
+      ? Math.round((availableCount / equipment.quantity) * 100)
+      : 0;
+
   const imageSrc = equipment.picture;
+
   const progressStyle = {
     "--progress-width": `${availabilityPercentage}%`,
   } as CSSProperties;
@@ -32,21 +36,30 @@ export async function EquipmentCell({ id }: { id: number }) {
         ? styles.progressFillWarning
         : styles.progressFillUnavailable;
 
+  const isBase64 = imageSrc?.startsWith("data:image/");
+  const isPath = imageSrc?.startsWith("/");
+  const hasImage =
+    imageSrc && (isBase64 || isPath) && imageSrc !== "[object File]";
+
   return (
     <div className={styles.cell}>
       <Link href={`/equipment?id=${equipment.id}`} className={styles.linkArea}>
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={equipment.name}
-            width={100}
-            height={100}
-            className={styles.image}
-          />
-        ) : (
-          <div className={styles.imageFallback}>No Image</div>
-        )}
-        <h2>{equipment.name}</h2>
+        <div className={styles.imageWrapper}>
+          {hasImage ? (
+            <Image
+              src={imageSrc}
+              alt={equipment.name}
+              width={200}
+              height={200}
+              priority={id <= 4}
+              className={styles.image}
+              style={{ objectFit: "cover" }}
+            />
+          ) : (
+            <div className={styles.imageFallback}>No Image</div>
+          )}
+        </div>
+        <h2 className={styles.title}>{equipment.name}</h2>
       </Link>
 
       <div className={styles.quantitySection}>
@@ -65,7 +78,13 @@ export async function EquipmentCell({ id }: { id: number }) {
             {availableCount}/{equipment.quantity}
           </span>
         </div>
-        <div className={styles.progressBar}>
+        <div
+          className={styles.progressBar}
+          role="progressbar"
+          aria-valuenow={availabilityPercentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div
             className={`${styles.progressFill} ${progressFillClass}`}
             style={progressStyle}
