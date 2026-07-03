@@ -1,5 +1,4 @@
 import { AddEquipmentForm } from "@/components/AddEquipmentForm";
-import { getAvailableImages } from "@/components/AddEquipmentForm/action";
 import { AuthGuard } from "@/components/AuthGuard";
 import { DeleteEquipmentButton } from "@/components/DeleteEquipmentButton";
 import { getEquipmentById } from "@/db/queries/equipments";
@@ -27,7 +26,6 @@ async function EditEquipmentContent({ searchParams }: Props) {
   }
 
   const equipment = await getEquipmentById(id);
-  const images = await getAvailableImages();
 
   if (!equipment) {
     return <p>エラー: 備品が見つかりませんでした</p>;
@@ -43,7 +41,6 @@ async function EditEquipmentContent({ searchParams }: Props) {
           quantity: equipment.quantity,
           picture: equipment.picture,
         }}
-        availableImages={images}
       />
       <DeleteEquipmentButton
         equipmentId={equipment.id}
