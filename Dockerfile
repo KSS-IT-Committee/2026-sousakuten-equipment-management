@@ -24,6 +24,10 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+# Where user uploads (equipment images) are written and read. Points at the
+# persistent /app/files bind-mount below so uploads survive image swaps / per-PR
+# container recreation; without this they'd land in the ephemeral layer.
+ENV FILES_DIR=/app/files
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { sql } from "drizzle-orm/sql";
 
 import { Equipments } from "@/db/schema";
@@ -61,3 +61,13 @@ export const getGlobalLastUpdatedAt = async () => {
 
   return result[0]?.lastUpdate ?? null;
 };
+// How many equipment rows still point at this picture path. Used to decide
+// whether an uploaded image file can be removed from disk, so a path shared by
+// more than one equipment is never deleted out from under the others.
+export async function countEquipmentsByPicture(picture: string) {
+  const result = await db
+    .select({ value: count() })
+    .from(Equipments)
+    .where(eq(Equipments.picture, picture));
+  return result[0]?.value ?? 0;
+}
