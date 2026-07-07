@@ -1,5 +1,5 @@
 {
-  "title": "Improving behavior when items are out of stock",
-  "description": "TODO",
+  "title": "貸出不可能になったときの表示を改善",
+  "description": "貸出不可能になったときの表示を改善しました。",
   "credits": ["@Shirym-min"]
 }
