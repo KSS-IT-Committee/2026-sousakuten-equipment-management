@@ -47,6 +47,7 @@ export function BorrowingPopup({
       <button
         onClick={togglePopup}
         className={styles.popupButton + " " + styles.primaryButton}
+        disabled={availableCount <= 0}
       >
         貸出
       </button>

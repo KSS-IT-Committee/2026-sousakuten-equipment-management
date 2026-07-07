@@ -64,15 +64,16 @@ export async function EquipmentCell({ id }: { id: number }) {
 
       <div className={styles.quantitySection}>
         <div className={styles.quantityInfo}>
-          <span className={styles.quantityLabel}>利用可能:</span>
+          {availableCount <= 0 ? (
+            <span className={styles.quantityLabel}>
+              現在この備品は利用できません。
+            </span>
+          ) : (
+            <span className={styles.quantityLabel}>利用可能:</span>
+          )}
+
           <span
-            className={`${styles.quantityValue} ${
-              availableCount === 0
-                ? styles.unavailable
-                : availableCount <= equipment.quantity * 0.3
-                  ? styles.warning
-                  : styles.available
-            }`}
+            className={`${styles.quantityValue} ${availableCount <= 0 ? styles.unavailable : availableCount <= equipment.quantity * 0.3 ? styles.warning : styles.available}`}
           >
             {availableCount}/{equipment.quantity}
           </span>
