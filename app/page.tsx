@@ -17,12 +17,7 @@ export default async function Home() {
         <p className={styles.updatedAt}>
           最終更新日時:{" "}
           {(() => {
-            if (!updatedDate || isNaN(new Date(updatedDate).getTime())) {
-              return "不明";
-            }
-
             const date = new Date(updatedDate);
-
             const jstDate = new Date(
               date.toLocaleString("en-US", { timeZone: "Asia/Tokyo" }),
             );

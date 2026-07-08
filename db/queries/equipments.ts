@@ -55,11 +55,11 @@ export async function deleteEquipmentById(id: number) {
 export const getGlobalLastUpdatedAt = async () => {
   const result = await db
     .select({
-      lastUpdate: sql<Date | null>`max(${Equipments.updatedAt})`,
+      lastUpdate: sql<Date>`coalesce(max(${Equipments.updatedAt}), now())`,
     })
     .from(Equipments);
 
-  return result[0]?.lastUpdate ?? null;
+  return result[0]?.lastUpdate ?? new Date();
 };
 // How many equipment rows still point at this picture path. Used to decide
 // whether an uploaded image file can be removed from disk, so a path shared by
