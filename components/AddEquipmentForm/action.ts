@@ -205,10 +205,6 @@ export async function deleteEquipmentAction(
         .from(Borrowings)
         .where(eq(Borrowings.equipmentId, equipmentId));
 
-      if (borrowings.length > 0) {
-        throw new Error("貸出履歴がある備品は削除できません");
-      }
-
       deletedPicture = existingEquipment.picture;
       await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
     });
