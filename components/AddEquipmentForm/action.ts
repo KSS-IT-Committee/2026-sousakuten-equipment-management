@@ -8,19 +8,19 @@ import path from "path";
 
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import {
-    countEquipmentsByPicture,
-    createEquipment,
-    getEquipmentById,
-    updateEquipment,
+  countEquipmentsByPicture,
+  createEquipment,
+  getEquipmentById,
+  updateEquipment,
 } from "@/db/queries/equipments";
 import { Borrowings, Equipments } from "@/db/schema";
 import { isAdmin, requireAdmin } from "@/lib/authorize";
 import { db } from "@/lib/db";
 import {
-    ALLOWED_IMAGE_LABEL,
-    detectImageType,
-    equipmentImagesDir,
-    IMAGE_URL_PREFIX,
+  ALLOWED_IMAGE_LABEL,
+  detectImageType,
+  equipmentImagesDir,
+  IMAGE_URL_PREFIX,
 } from "@/lib/equipment-images";
 
 async function saveImage(file: File | null): Promise<string | null> {
