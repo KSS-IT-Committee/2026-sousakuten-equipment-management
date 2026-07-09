@@ -1,5 +1,5 @@
 {
-  "title": "Feat/loan history",
-  "description": "TODO",
+  "title": "備品の貸出履歴の表示",
+  "description": "これまでの貸出履歴が表示されるようになりました。",
   "credits": ["@K10-K10"]
 }
