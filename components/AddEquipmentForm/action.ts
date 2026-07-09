@@ -1,26 +1,26 @@
 // action.ts
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import path from "path";
 
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import {
-  countEquipmentsByPicture,
-  createEquipment,
-  getEquipmentById,
-  updateEquipment,
+    countEquipmentsByPicture,
+    createEquipment,
+    getEquipmentById,
+    updateEquipment,
 } from "@/db/queries/equipments";
 import { Borrowings, Equipments } from "@/db/schema";
 import { isAdmin, requireAdmin } from "@/lib/authorize";
 import { db } from "@/lib/db";
 import {
-  ALLOWED_IMAGE_LABEL,
-  detectImageType,
-  equipmentImagesDir,
-  IMAGE_URL_PREFIX,
+    ALLOWED_IMAGE_LABEL,
+    detectImageType,
+    equipmentImagesDir,
+    IMAGE_URL_PREFIX,
 } from "@/lib/equipment-images";
 
 async function saveImage(file: File | null): Promise<string | null> {
@@ -200,12 +200,25 @@ export async function deleteEquipmentAction(
         throw new Error("備品が見つかりませんでした");
       }
 
-      const borrowings = await tx
+      const activeBorrowings = await tx
         .select({ id: Borrowings.id })
         .from(Borrowings)
-        .where(eq(Borrowings.equipmentId, equipmentId));
+        .where(
+          and(
+            eq(Borrowings.equipmentId, equipmentId),
+            isNull(Borrowings.returnedAt),
+          ),
+        );
+      if (activeBorrowings.length > 0) {
+        throw new Error("貸出中の備品は削除できません");
+      }
 
       deletedPicture = existingEquipment.picture;
+
+      await tx
+        .delete(Borrowings)
+        .where(eq(Borrowings.equipmentId, equipmentId));
+
       await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
     });
 
