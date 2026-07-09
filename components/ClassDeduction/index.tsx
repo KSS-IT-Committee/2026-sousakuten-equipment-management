@@ -29,10 +29,12 @@ export async function DeductionCellsByClasses({
   classes,
   sortBy,
   sortOrder,
+  isAdmin,
 }: {
   classes: ClassName[];
   sortBy: DeductionSortKey;
   sortOrder: DeductionSortOrder;
+  isAdmin: boolean;
 }) {
   if (classes.length === 0) {
     return (
@@ -64,6 +66,19 @@ export async function DeductionCellsByClasses({
 
   return (
     <div className={styles.cells}>
+      {!isAdmin ? (
+        <div className={styles.sum}>
+          <p>
+            現在の{classes[0]}の減点合計は{" "}
+            {-1 *
+              deductions.reduce(
+                (sum, deduction) => sum + deduction.points,
+                0,
+              )}{" "}
+            点です。
+          </p>
+        </div>
+      ) : null}
       {!isthereAnyDeduction ? (
         <div className={styles.emptyState}>
           <p className={styles.emptyStateTitle}>
