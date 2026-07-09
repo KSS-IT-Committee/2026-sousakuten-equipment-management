@@ -48,9 +48,7 @@ export default async function Equipment({ searchParams }: Props) {
 
       <EquipmentCell id={id} />
       <BorrowingEquipList id={id} />
-      <h3>
-        貸出履歴
-      </h3>
+      <h3>貸出履歴</h3>
       <LoanHistory id={id} />
     </div>
   );

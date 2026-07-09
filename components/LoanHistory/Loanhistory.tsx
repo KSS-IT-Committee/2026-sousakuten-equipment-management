@@ -25,7 +25,10 @@ export async function LoanHistory({ id }: { id: number }) {
                 貸出日: {new Date(borrow.borrowedAt).toLocaleDateString()}
               </span>
               <span className={styles.date}>
-                返却日: {borrow.returnedAt ? new Date(borrow.returnedAt).toLocaleDateString() : "未返却"}
+                返却日:{" "}
+                {borrow.returnedAt
+                  ? new Date(borrow.returnedAt).toLocaleDateString()
+                  : "未返却"}
               </span>
             </div>
           </div>
