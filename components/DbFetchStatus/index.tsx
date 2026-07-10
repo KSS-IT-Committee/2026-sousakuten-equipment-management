@@ -3,7 +3,7 @@ import { getLastDbFetch } from "@/lib/db-last-fetched";
 import styles from "./DbFetchStatus.module.css";
 
 export function DbFetchStatus() {
-  const { at, kind } = getLastDbFetch();
+  const { at} = getLastDbFetch();
 
   return (
     <section className={styles.card} aria-label="DB取得状況">
