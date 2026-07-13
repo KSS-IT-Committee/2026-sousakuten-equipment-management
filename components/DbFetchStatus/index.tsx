@@ -6,7 +6,7 @@ export function DbFetchStatus() {
   const { at } = getLastDbFetch();
 
   return (
-    <section className={styles.card} aria-label="DB取得状況">
+    <section aria-label="DB取得状況">
       <div className={styles.label}>最終更新時刻</div>
       <div className={styles.value}>
         {at ? (
