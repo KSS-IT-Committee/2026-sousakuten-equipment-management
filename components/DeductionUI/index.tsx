@@ -6,11 +6,7 @@ import { CLASSES, type ClassName } from "@/db/schema";
 import { getViewer } from "@/lib/authorize";
 
 export type DeductionSortKey =
-  | "className"
-  | "id"
-  | "occurredAt"
-  | "points"
-  | "content";
+  "className" | "id" | "occurredAt" | "points" | "content";
 export type DeductionSortOrder = "asc" | "desc";
 
 const deductionSortKeys: DeductionSortKey[] = [
