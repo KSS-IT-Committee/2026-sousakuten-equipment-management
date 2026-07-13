@@ -2,15 +2,12 @@ import "./globals.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { Geist, Geist_Mono } from "next/font/google";
 
 import { AccountNav } from "@/components/AccountNav";
 import { Footer } from "@/components/Footer";
-import { Internal } from "@/components/Internal";
 import { Navbar } from "@/components/Navbar";
-import { NavMenuLinks } from "@/components/Navbar/NavMenuLinks";
-import { NavRequestLink } from "@/components/Navbar/NavRequestLink";
 import { NoScriptAlert } from "@/components/NoScriptAlert";
 
 const geistSans = Geist({
@@ -66,10 +63,6 @@ export default function RootLayout({
             accountSlot={<AccountNav />}
             navSlot={
               <>
-                <Internal>
-                  <NavMenuLinks />
-                </Internal>
-                <NavRequestLink />
               </>
             }
           />
