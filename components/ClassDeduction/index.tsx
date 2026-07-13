@@ -92,7 +92,9 @@ export async function DeductionCellsByClasses({
                 >
                   <div className={styles.deduction}>
                     <h3>{deduction.className}</h3>
-                    <p>ID: {deduction.id}</p>
+                    <div className={styles.idContainer}>
+                      <p className={styles.id}>ID: {deduction.id}</p>
+                    </div>
                     <p>
                       {deduction.occurredAt.toLocaleDateString("ja-JP", {
                         timeZone: "Asia/Tokyo",

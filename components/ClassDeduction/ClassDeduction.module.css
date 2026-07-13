@@ -1,7 +1,7 @@
 .deduction {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
+  grid-template-columns: 0.5fr 0.3fr 1fr 1fr 5fr;
   justify-items: center;
   padding: 13px 0;
   transition: all 0.45s ease;
@@ -34,7 +34,7 @@
   display: grid;
   margin-left: 10px;
   grid-template-rows: 1fr;
-  grid-template-columns: 0.5fr 0.5fr 1fr 1fr 5fr;
+  grid-template-columns: 0.5fr 0.3fr 1fr 1fr 5fr;
 
   justify-items: center;
 }
@@ -98,8 +98,17 @@
 }
 
 .deduction h3,
-.deduction p {
+.deduction p:not(.id) {
   font-size: 23px;
+}
+
+.id {
+  font-size: 18px;
+}
+
+.idContainer {
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
