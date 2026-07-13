@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Internal } from "@/components/Internal";
-
 import styles from "./base.module.css";
+
 
 const MAINTAINERS = ["Shirym-min", "K10-K10"];
 

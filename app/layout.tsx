@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { AccountNav } from "@/components/AccountNav";
+import { FloatingMenu } from "@/components/FloatingMenu";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { NoScriptAlert } from "@/components/NoScriptAlert";
@@ -59,15 +60,23 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NoScriptAlert />
-          <Navbar
-            accountSlot={<AccountNav />}
-            navSlot={
-              <>
-              </>
-            }
-          />
+          <Navbar accountSlot={<AccountNav />} navSlot={<></>} />
           <main>{children}</main>
           <Footer />
+          <FloatingMenu
+            items={[
+              { label: "ホーム", href: "/" },
+              {
+                label: "備品を追加",
+                href: "/add-equipment",
+                isInternal: true,
+                role: "Sousakuten",
+              },
+              { label: "減点管理", href: "/deductions", isInternal: true },
+              { label: "機能・修正のリクエスト", href: "/requests" },
+              { label: "更新履歴", href: "/changelog" },
+            ]}
+          />
         </ThemeProvider>
       </body>
       {/* Google tag (gtag.js) via @next/third-parties — the official Next.js
