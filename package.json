@@ -24,7 +24,7 @@
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
-    "@emnapi/core": "^1.11.1",
+    "@emnapi/core": "^1.11.2",
     "@emnapi/runtime": "^1.11.2",
     "@emnapi/wasi-threads": "^2.0.0",
     "@tailwindcss/postcss": "^4",

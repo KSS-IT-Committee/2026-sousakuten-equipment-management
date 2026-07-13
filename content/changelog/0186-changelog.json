@@ -1,0 +1,5 @@
+{
+  "title": "build(deps-dev): bump @emnapi/core from 1.11.1 to 1.11.2",
+  "description": "パッケージのバージョンを上げました。これによるページの変更はありません。",
+  "credits": ["@dependabot[bot]"]
+}
