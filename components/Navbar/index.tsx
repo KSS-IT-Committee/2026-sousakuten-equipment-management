@@ -63,7 +63,7 @@ export function Navbar({ accountSlot, navSlot }: NavbarProps) {
       <div className={styles.container}>
         <a href="https://top.2026.kss-it.com/" className={styles.home}>
           <Image
-            src="/theme/event-week.png"
+            src="/theme/event-week-transport.png"
             alt="創作展"
             height={420}
             width={930}
