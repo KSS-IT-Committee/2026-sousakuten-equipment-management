@@ -186,14 +186,14 @@ export async function deleteEquipmentAction(
     return { success: false, error: "備品IDが不正です" };
   }
 
-  let deletedPicture: string | null = null;
-
   try {
     await db.transaction(async (tx) => {
       const [existingEquipment] = await tx
         .select()
         .from(Equipments)
-        .where(eq(Equipments.id, equipmentId))
+        .where(
+          and(eq(Equipments.id, equipmentId), eq(Equipments.deleted, false)),
+        )
         .for("update");
 
       if (!existingEquipment) {
@@ -213,18 +213,11 @@ export async function deleteEquipmentAction(
         throw new Error("貸出中の備品は削除できません");
       }
 
-      deletedPicture = existingEquipment.picture;
-
       await tx
-        .delete(Borrowings)
-        .where(eq(Borrowings.equipmentId, equipmentId));
-
-      await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
+        .update(Equipments)
+        .set({ deleted: true })
+        .where(eq(Equipments.id, equipmentId));
     });
-
-    // Remove the image only after the row is gone, so the reference check sees
-    // the post-delete state.
-    await deleteImageIfUnreferenced(deletedPicture);
 
     revalidatePath("/equipment");
     revalidatePath("/");

@@ -52,7 +52,7 @@ export const borrowEquipmentAction = async (
     const [eqItem] = await tx
       .select()
       .from(Equipments)
-      .where(eq(Equipments.id, equipmentId))
+      .where(and(eq(Equipments.id, equipmentId), eq(Equipments.deleted, false)))
       .for("update");
 
     if (!eqItem) {
