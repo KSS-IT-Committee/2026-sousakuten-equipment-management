@@ -11,24 +11,26 @@ export async function LoanHistory({ id }: { id: number }) {
       {borrows.length === 0 ? (
         <p className={styles.emptyMessage}>履歴はありません</p>
       ) : (
-        borrows.map((borrow) => (
-          <div key={borrow.id} className={styles.listItem} role="listitem">
-            <div className={styles.infoGroup}>
-              <span className={styles.class}>
-                クラス: {getClassLabel(borrow.class)}
-              </span>
-              <span className={styles.date}>
-                貸出日: {new Date(borrow.borrowedAt).toLocaleDateString()}
-              </span>
-              <span className={styles.date}>
-                返却日:{" "}
-                {borrow.returnedAt
-                  ? new Date(borrow.returnedAt).toLocaleDateString()
-                  : "未返却"}
-              </span>
+        <div role="list">
+          {borrows.map((borrow) => (
+            <div key={borrow.id} className={styles.listItem} role="listitem">
+              <div className={styles.infoGroup}>
+                <span className={styles.class}>
+                  クラス: {getClassLabel(borrow.class)}
+                </span>
+                <span className={styles.date}>
+                  貸出日: {new Date(borrow.borrowedAt).toLocaleDateString()}
+                </span>
+                <span className={styles.date}>
+                  返却日:{" "}
+                  {borrow.returnedAt
+                    ? new Date(borrow.returnedAt).toLocaleDateString()
+                    : "未返却"}
+                </span>
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
