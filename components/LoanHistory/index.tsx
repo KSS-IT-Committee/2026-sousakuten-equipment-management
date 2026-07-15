@@ -20,7 +20,8 @@ export async function LoanHistory({ id }: { id: number }) {
                   クラス: {getClassLabel(borrow.class)}
                 </span>
                 <span className={styles.date}>
-                  貸出日: {new Date(borrow.borrowedAt).toLocaleDateString("ja-JP")}
+                  貸出日:{" "}
+                  {new Date(borrow.borrowedAt).toLocaleDateString("ja-JP")}
                 </span>
                 <span className={styles.date}>
                   返却日:{" "}
