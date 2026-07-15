@@ -6,6 +6,8 @@
 | --- | ----------- | -------- | --------------------------------------- | ------- |
 | 1   | Equipment 1 | 5        | /public/equipment-images/equipment1.jpg | false   |
 
+`deleted` marks an equipment row as soft-deleted. Deleted equipment stays in the database so existing borrowings keep the same `equipmentId`.
+
 ### Adding New Equipment
 
 To add new equipment, use the **Add Equipment** page accessible from `/add-equipment`. The form accepts:
@@ -21,8 +23,6 @@ The form validates input, displays a preview of the selected image before submis
 | id  | equipmentId | class | borrowedAt | returnedAt |
 | --- | ----------- | ----- | ---------- | ---------- |
 | 1   | 1           | 1A    | 2024-01-01 | 2024-01-10 |
-
-`deleted` marks an equipment row as soft-deleted. Deleted equipment stays in the database so existing borrowings keep the same `equipmentId`.
 
 ## 3. Deductions
 
