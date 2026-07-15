@@ -1,3 +1,14 @@
+.title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+:global(.dark) .title {
+  color: #fff;
+}
+
 .listItem {
   display: flex;
   justify-content: space-between;

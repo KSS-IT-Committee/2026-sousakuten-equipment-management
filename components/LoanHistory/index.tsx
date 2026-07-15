@@ -8,6 +8,7 @@ export async function LoanHistory({ id }: { id: number }) {
 
   return (
     <div>
+      <h3 className={styles.title}>貸出履歴</h3>
       {borrows.length === 0 ? (
         <p className={styles.emptyMessage}>履歴はありません</p>
       ) : (
