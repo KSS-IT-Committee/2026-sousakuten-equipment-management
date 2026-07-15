@@ -78,12 +78,8 @@
           "name": "borrowings_equipment_id_equipments_id_fk",
           "tableFrom": "borrowings",
           "tableTo": "equipments",
-          "columnsFrom": [
-            "equipment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["equipment_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -223,12 +219,8 @@
           "name": "announcement_classes_announcement_id_announcements_id_fk",
           "tableFrom": "announcement_classes",
           "tableTo": "announcements",
-          "columnsFrom": [
-            "announcement_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["announcement_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -238,10 +230,7 @@
         "announcement_classes_announcement_id_class_name_unique": {
           "name": "announcement_classes_announcement_id_class_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "announcement_id",
-            "class_name"
-          ]
+          "columns": ["announcement_id", "class_name"]
         }
       },
       "policies": {},
@@ -353,12 +342,8 @@
           "name": "sessions_username_users_username_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "username"
-          ],
-          "columnsTo": [
-            "username"
-          ],
+          "columnsFrom": ["username"],
+          "columnsTo": ["username"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -449,11 +434,7 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "IT",
-        "Sousakuten",
-        "Taiikusai"
-      ]
+      "values": ["IT", "Sousakuten", "Taiikusai"]
     }
   },
   "schemas": {},
