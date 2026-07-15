@@ -4,7 +4,7 @@ import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { Internal } from "@/components/Internal";
-import { LoanHistory } from "@/components/LoanHistory/Loanhistory";
+import { LoanHistory } from "@/components/LoanHistory";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
