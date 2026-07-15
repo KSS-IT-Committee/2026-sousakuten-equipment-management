@@ -1,6 +1,6 @@
 import "server-only";
 
-import { hasAccess } from "@/lib/access";
+import { hasAnyRole } from "@/lib/access";
 import { getCurrentUser } from "@/lib/session";
 import { classOf } from "@/lib/user-category";
 
@@ -12,7 +12,7 @@ const ADMIN_ROLE = "Sousakuten";
 export async function isAdmin(): Promise<boolean> {
   const user = await getCurrentUser();
   if (!user) return false;
-  return hasAccess(user, ADMIN_ROLE, undefined);
+  return hasAnyRole(user, ADMIN_ROLE);
 }
 
 /**
@@ -42,7 +42,7 @@ export async function getViewer(): Promise<Viewer | null> {
   if (!user) return null;
   return {
     username: user.username,
-    isAdmin: hasAccess(user, ADMIN_ROLE, undefined),
+    isAdmin: hasAnyRole(user, ADMIN_ROLE),
     className: classOf(user.username),
   };
 }

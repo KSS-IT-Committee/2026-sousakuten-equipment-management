@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Internal } from "@/components/Internal";
+import { INTERNAL_ROLES } from "@/lib/access";
 
 import styles from "./base.module.css";
 
@@ -34,7 +35,7 @@ export default function RequestPage() {
       <p className={styles.lead}>
         このサイトへの新機能の追加や修正を提案することができます。
       </p>
-      <Internal>
+      <Internal role={INTERNAL_ROLES}>
         <h2 className={styles.sectionTitle}>委員に直接伝える</h2>
         <p className={styles.description}>
           委員に直接伝えていただければ、委員会で話し合いのうえ、機能の追加や修正を実装します。

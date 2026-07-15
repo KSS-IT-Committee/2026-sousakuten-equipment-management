@@ -12,6 +12,7 @@ import { Navbar } from "@/components/Navbar";
 import { NavMenuLinks } from "@/components/Navbar/NavMenuLinks";
 import { NavRequestLink } from "@/components/Navbar/NavRequestLink";
 import { NoScriptAlert } from "@/components/NoScriptAlert";
+import { INTERNAL_ROLES } from "@/lib/access";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,7 +67,7 @@ export default function RootLayout({
             accountSlot={<AccountNav />}
             navSlot={
               <>
-                <Internal>
+                <Internal role={INTERNAL_ROLES}>
                   <NavMenuLinks />
                 </Internal>
                 <NavRequestLink />
