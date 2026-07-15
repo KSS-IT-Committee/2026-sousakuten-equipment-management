@@ -36,6 +36,13 @@
       "when": 1784025600000,
       "tag": "0004_soft_delete_equipment",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1784097626345,
+      "tag": "0005_spooky_thanos",
+      "breakpoints": true
     }
   ]
 }
