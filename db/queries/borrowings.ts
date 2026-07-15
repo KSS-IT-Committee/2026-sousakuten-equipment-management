@@ -59,7 +59,8 @@ export async function getInActiveBorrowingsByEquipmentId(equipmentId: number) {
         eq(Borrowings.equipmentId, equipmentId),
         isNotNull(Borrowings.returnedAt),
       ),
-    );
+    )
+    .orderBy(desc(Borrowings.borrowedAt));
 }
 
 export async function createBorrowing(data: {

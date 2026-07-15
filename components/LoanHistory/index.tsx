@@ -6,16 +6,12 @@ import styles from "./LoanHistory.module.css";
 export async function LoanHistory({ id }: { id: number }) {
   const borrows = await getInActiveBorrowingsByEquipmentId(id);
 
-  const sortedBorrows = [...borrows].sort((a, b) => {
-    return new Date(b.borrowedAt).getTime() - new Date(a.borrowedAt).getTime();
-  });
-
   return (
     <div>
-      {sortedBorrows.length === 0 ? (
+      {borrows.length === 0 ? (
         <p className={styles.emptyMessage}>履歴はありません</p>
       ) : (
-        sortedBorrows.map((borrow) => (
+        borrows.map((borrow) => (
           <div key={borrow.id} className={styles.listItem} role="listitem">
             <div className={styles.infoGroup}>
               <span className={styles.class}>
