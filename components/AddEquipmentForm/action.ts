@@ -1,7 +1,7 @@
 // action.ts
 "use server";
 
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, type InferSelectModel,isNull } from "drizzle-orm";
 import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import path from "path";
@@ -20,6 +20,8 @@ import {
   equipmentImagesDir,
   IMAGE_URL_PREFIX,
 } from "@/lib/equipment-images";
+
+type Equipment = InferSelectModel<typeof Equipments>;
 
 async function saveImage(file: File | null): Promise<string | null> {
   if (!file || file.size === 0 || file.name === "undefined") return null;
@@ -88,11 +90,12 @@ async function deleteImageIfUnreferenced(
 }
 
 type UpdateEquipmentResult = Awaited<ReturnType<typeof updateEquipment>>;
+type CreateEquipmentResult = Awaited<ReturnType<typeof createEquipment>>;
 
 export async function createEquipmentAction(
   formData: FormData,
 ): Promise<
-  | { success: true; data: UpdateEquipmentResult }
+  | { success: true; data: CreateEquipmentResult }
   | { success: false; error: string }
 > {
   try {
@@ -128,8 +131,7 @@ export async function createEquipmentAction(
 export async function updateEquipmentAction(
   formData: FormData,
 ): Promise<
-  | { success: true; data: UpdateEquipmentResult }
-  | { success: false; error: string }
+  { success: true; data: Equipment } | { success: false; error: string }
 > {
   let newPicture: string | null = null;
   let isNewImageSaved = false;
@@ -206,7 +208,13 @@ export async function updateEquipmentAction(
           picture: finalPicture,
         })
         .where(eq(Equipments.id, equipmentId))
-        .returning();
+        .returning({
+          id: Equipments.id,
+          name: Equipments.name,
+          quantity: Equipments.quantity,
+          picture: Equipments.picture,
+          deleted: Equipments.deleted,
+        });
 
       return { updatedEquipment, oldPicture, finalPicture };
     });
