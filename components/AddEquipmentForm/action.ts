@@ -87,6 +87,8 @@ async function deleteImageIfUnreferenced(
   }
 }
 
+type UpdateEquipmentResult = Awaited<ReturnType<typeof updateEquipment>>;
+
 export async function createEquipmentAction(formData: FormData) {
   try {
     await requireAdmin();
@@ -118,7 +120,10 @@ export async function createEquipmentAction(formData: FormData) {
 
 export async function updateEquipmentAction(
   formData: FormData,
-): Promise<{ success: true; data: any } | { success: false; error: string }> {
+): Promise<
+  | { success: true; data: UpdateEquipmentResult }
+  | { success: false; error: string }
+> {
   try {
     await requireAdmin();
 
