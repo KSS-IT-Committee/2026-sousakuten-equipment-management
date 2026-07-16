@@ -91,7 +91,10 @@ type UpdateEquipmentResult = Awaited<ReturnType<typeof updateEquipment>>;
 
 export async function createEquipmentAction(
   formData: FormData,
-): Promise<{ success: true; data: any } | { success: false; error: string }> {
+): Promise<
+  | { success: true; data: UpdateEquipmentResult }
+  | { success: false; error: string }
+> {
   try {
     await requireAdmin();
 
@@ -122,13 +125,12 @@ export async function createEquipmentAction(
   }
 }
 
-/**
- * 備品更新アクション
- * 💡 特徴：デッドロックフリー設計、ファイル書き込み・DB更新トランザクションの完全分離、エラーマスク回避
- */
 export async function updateEquipmentAction(
   formData: FormData,
-): Promise<{ success: true; data: any } | { success: false; error: string }> {
+): Promise<
+  | { success: true; data: UpdateEquipmentResult }
+  | { success: false; error: string }
+> {
   let newPicture: string | null = null;
   let isNewImageSaved = false;
 
