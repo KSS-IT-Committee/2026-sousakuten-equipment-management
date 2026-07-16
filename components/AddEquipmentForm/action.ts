@@ -159,11 +159,13 @@ export async function updateEquipmentAction(formData: FormData) {
     }
 
     const oldPicture = existingEquipment.picture;
-    let newPicture: string | null;
+    let newPicture: string | null = oldPicture;
+    const isImageDeleted = formData.get("isImageDeleted") === "true";
+
     if (pictureFile && pictureFile.size > 0) {
       newPicture = await saveImage(pictureFile);
-    } else {
-      newPicture = existingPicture.length > 0 ? existingPicture : null;
+    } else if (isImageDeleted) {
+      newPicture = null;
     }
 
     const [updatedEquipment] = await tx

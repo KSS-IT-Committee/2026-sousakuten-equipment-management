@@ -76,6 +76,7 @@ export function AddEquipmentForm({
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
+        formData.set("isImageDeleted", String(isImageDeleted));
         formData.set(
           "existingPicture",
           isImageDeleted ? "" : (initialValues.picture ?? ""),
