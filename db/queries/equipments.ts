@@ -1,4 +1,4 @@
-import { count, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 
 import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
@@ -7,6 +7,7 @@ export async function getEquipments() {
   return await db
     .select({ id: Equipments.id })
     .from(Equipments)
+    .where(eq(Equipments.deleted, false))
     .orderBy(Equipments.id);
 }
 
@@ -14,7 +15,7 @@ export async function getEquipmentById(id: number) {
   const result = await db
     .select()
     .from(Equipments)
-    .where(eq(Equipments.id, id))
+    .where(and(eq(Equipments.id, id), eq(Equipments.deleted, false)))
     .orderBy(Equipments.id);
   return result[0];
 }
@@ -35,11 +36,17 @@ export async function updateEquipment(
     picture?: string | null;
   },
 ) {
-  return await db.update(Equipments).set(data).where(eq(Equipments.id, id));
+  return await db
+    .update(Equipments)
+    .set(data)
+    .where(and(eq(Equipments.id, id), eq(Equipments.deleted, false)));
 }
 
 export async function deleteEquipmentById(id: number) {
-  return await db.delete(Equipments).where(eq(Equipments.id, id));
+  return await db
+    .update(Equipments)
+    .set({ deleted: true })
+    .where(and(eq(Equipments.id, id), eq(Equipments.deleted, false)));
 }
 
 // How many equipment rows still point at this picture path. Used to decide

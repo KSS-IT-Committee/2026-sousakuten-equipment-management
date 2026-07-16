@@ -2,9 +2,11 @@
 
 ## 1. Equipments
 
-| id  | name        | quantity | picture                                 |
-| --- | ----------- | -------- | --------------------------------------- |
-| 1   | Equipment 1 | 5        | /public/equipment-images/equipment1.jpg |
+| id  | name        | quantity | picture                                 | deleted |
+| --- | ----------- | -------- | --------------------------------------- | ------- |
+| 1   | Equipment 1 | 5        | /public/equipment-images/equipment1.jpg | false   |
+
+`deleted` marks an equipment row as soft-deleted. Deleted equipment stays in the database so existing borrowings keep the same `equipmentId`.
 
 ### Adding New Equipment
 

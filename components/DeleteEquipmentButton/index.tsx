@@ -92,9 +92,6 @@ export function DeleteEquipmentButton({
             <p className={styles.description}>
               削除対象: <strong>{equipmentName}</strong>
             </p>
-            <p className={styles.warning}>
-              なお、貸出履歴がある備品は削除できません。
-            </p>
             <label htmlFor="confirm-equipment-name" className={styles.label}>
               備品名を入力して削除を確定してください
             </label>
