@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import type {
   DeductionSortKey,
@@ -18,6 +19,17 @@ const sortOptions: { value: DeductionSortKey; label: string }[] = [
   { value: "content", label: "内容" },
 ];
 
+const classesByGrade = CLASSES.reduce<Record<string, ClassName[]>>(
+  (groups, className) => {
+    (groups[className[0]] ??= []).push(className);
+    return groups;
+  },
+  {},
+);
+
+const getSelectedClassesLabel = (classes: ClassName[]) =>
+  classes.length === CLASSES.length ? "全てのクラス" : classes.join(", ");
+
 export default function SelectButtons() {
   const router = useRouter();
   const pathname = usePathname();
@@ -27,45 +39,32 @@ export default function SelectButtons() {
     "occurredAt") as DeductionSortKey;
   const sortOrder = (searchParams.get("sortOrder") ??
     "desc") as DeductionSortOrder;
-  const rawSelectedClasses = searchParams.getAll("class");
-  const selectedClasses = rawSelectedClasses.filter(
-    (className): className is ClassName =>
+  const selectedClasses = searchParams
+    .getAll("class")
+    .filter((className): className is ClassName =>
       CLASSES.includes(className as ClassName),
-  );
+    );
   const hasClassFilter = selectedClasses.length > 0;
+  const currentClassesLabel = getSelectedClassesLabel(selectedClasses);
+  const [displayedClassesLabel, setDisplayedClassesLabel] =
+    useState(currentClassesLabel);
 
-  const groupedClasses = CLASSES.reduce(
-    (groups, className) => {
-      const grade = className[0];
-      if (!groups[grade]) {
-        groups[grade] = [];
-      }
-      groups[grade].push(className);
-      return groups;
-    },
-    {} as Record<string, ClassName[]>,
-  );
-
-  const updateParams = (key: string, value: string | null = null) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value === null || value === "") {
-      params.delete(key);
-    } else {
-      params.set(key, value);
+  useEffect(() => {
+    if (!currentClassesLabel) {
+      return;
     }
 
-    if ((key === "sortBy" || key === "sortOrder") && selected !== "1") {
-      params.set("section", "1");
-    }
-    router.push(`${pathname}?${params.toString()}`);
-  };
+    const timeout = window.setTimeout(() => {
+      setDisplayedClassesLabel(currentClassesLabel);
+    });
 
-  const updateParamsBulk = (
-    updates: Record<string, string | null | undefined>,
-  ) => {
+    return () => window.clearTimeout(timeout);
+  }, [currentClassesLabel]);
+
+  const updateParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
     for (const [key, value] of Object.entries(updates)) {
-      if (value === null || value === "" || value === undefined) {
+      if (!value) {
         params.delete(key);
       } else {
         params.set(key, value);
@@ -95,15 +94,10 @@ export default function SelectButtons() {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const selectAllClasses = () => {
-    updateClassFilters([...CLASSES]);
-  };
-
   const toggleClassFilter = (className: ClassName) => {
-    const currentClasses = hasClassFilter ? selectedClasses : [];
-    const nextClasses = currentClasses.includes(className)
-      ? currentClasses.filter((selectedClass) => selectedClass !== className)
-      : [...currentClasses, className];
+    const nextClasses = selectedClasses.includes(className)
+      ? selectedClasses.filter((selectedClass) => selectedClass !== className)
+      : [...selectedClasses, className];
 
     updateClassFilters(nextClasses);
   };
@@ -113,14 +107,14 @@ export default function SelectButtons() {
       <div className={styles.changeUIButtons}>
         {selectedClasses.length > 0 ? (
           <button
-            onClick={() => updateParamsBulk({ section: "1", class: null })}
+            onClick={() => updateParams({ section: "1", class: null })}
             className={styles.notactiveButton}
           >
             戻る
           </button>
         ) : (
           <button
-            onClick={() => updateParamsBulk({ class: null, section: "1" })}
+            onClick={() => updateParams({ class: null, section: "1" })}
             className={
               selected === "1" ? styles.activeButton : styles.notactiveButton
             }
@@ -130,7 +124,7 @@ export default function SelectButtons() {
         )}
 
         <button
-          onClick={() => updateParamsBulk({ class: null, section: "2" })}
+          onClick={() => updateParams({ class: null, section: "2" })}
           className={
             selected === "2" ? styles.activeButton : styles.notactiveButton
           }
@@ -138,6 +132,13 @@ export default function SelectButtons() {
           クラス別減点ポイント
         </button>
       </div>
+      <p
+        className={styles.selectedClasses}
+        data-visible={hasClassFilter}
+        aria-hidden={!hasClassFilter}
+      >
+        {displayedClassesLabel}
+      </p>
 
       <div className={styles.sortControls}>
         <label className={styles.sortLabel}>
@@ -145,7 +146,7 @@ export default function SelectButtons() {
           <select
             className={styles.sortSelect}
             value={sortBy}
-            onChange={(event) => updateParams("sortBy", event.target.value)}
+            onChange={(event) => updateParams({ sortBy: event.target.value })}
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -157,7 +158,9 @@ export default function SelectButtons() {
 
         <button
           onClick={() =>
-            updateParams("sortOrder", sortOrder === "asc" ? "desc" : "asc")
+            updateParams({
+              sortOrder: sortOrder === "asc" ? "desc" : "asc",
+            })
           }
           className={styles.sortOrderButton}
           type="button"
@@ -175,11 +178,11 @@ export default function SelectButtons() {
             type="button"
             className={styles.classCheckboxLabel}
             data-checked={!hasClassFilter ? "true" : "false"}
-            onClick={selectAllClasses}
+            onClick={() => updateClassFilters([...CLASSES])}
           >
             全てのクラス
           </button>
-          {Object.entries(groupedClasses).map(([grade, classes]) => (
+          {Object.entries(classesByGrade).map(([grade, classes]) => (
             <div key={grade} className={styles.classGroup}>
               <div className={styles.classGroupTitle}>{grade}年</div>
               <div className={styles.classCheckboxGrid}>

@@ -6,11 +6,7 @@ import { CLASSES, type ClassName } from "@/db/schema";
 import { getViewer } from "@/lib/authorize";
 
 export type DeductionSortKey =
-  | "className"
-  | "id"
-  | "occurredAt"
-  | "points"
-  | "content";
+  "className" | "id" | "occurredAt" | "points" | "content";
 export type DeductionSortOrder = "asc" | "desc";
 
 const deductionSortKeys: DeductionSortKey[] = [
@@ -59,6 +55,7 @@ export async function DeductionUI({ searchParams }: Props) {
         classes={[ownClass as ClassName]}
         sortBy={sortBy}
         sortOrder={sortOrder}
+        isAdmin={viewer?.isAdmin ?? false}
       />
     );
   }
@@ -86,6 +83,7 @@ export async function DeductionUI({ searchParams }: Props) {
             classes={classesToDisplay}
             sortBy={sortBy}
             sortOrder={sortOrder}
+            isAdmin={viewer.isAdmin}
           />
         ) : null}
         {section === 2 ? <DeductionSumsList /> : null}
