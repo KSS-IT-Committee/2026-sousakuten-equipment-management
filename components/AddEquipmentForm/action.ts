@@ -6,11 +6,9 @@ import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import path from "path";
 
-import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import {
   countEquipmentsByPicture,
   createEquipment,
-  getEquipmentById,
   updateEquipment,
 } from "@/db/queries/equipments";
 import { Borrowings, Equipments } from "@/db/schema";
@@ -126,11 +124,6 @@ export async function updateEquipmentAction(formData: FormData) {
     throw new Error("error: equipment ID is invalid");
   }
 
-  const existingEquipment = await getEquipmentById(equipmentId);
-  if (!existingEquipment) {
-    throw new Error("error: equipment not found");
-  }
-
   if (!name) {
     throw new Error("error: equipment name is required");
   }
@@ -139,37 +132,56 @@ export async function updateEquipmentAction(formData: FormData) {
     throw new Error("error: quantity must be a positive integer");
   }
 
-  const activeBorrowings = await getActiveBorrowingsByEquipmentId(equipmentId);
-  if (quantity < activeBorrowings.length) {
-    throw new Error(
-      `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
-    );
-  }
+  const result = await db.transaction(async (tx) => {
+    const [existingEquipment] = await tx
+      .select()
+      .from(Equipments)
+      .where(and(eq(Equipments.id, equipmentId), eq(Equipments.deleted, false)))
+      .for("update");
 
-  // The picture stored before this edit, used to decide on file cleanup.
-  const oldPicture = existingEquipment.picture;
+    if (!existingEquipment) {
+      throw new Error("error: equipment not found");
+    }
 
-  // Resolve the new picture: a freshly uploaded file wins; otherwise keep what
-  // the form carried back (the existing path, or "" when the user removed it).
-  let newPicture: string | null;
-  if (pictureFile && pictureFile.size > 0) {
-    newPicture = await saveImage(pictureFile);
-  } else {
-    newPicture = existingPicture.length > 0 ? existingPicture : null;
-  }
+    const activeBorrowings = await tx
+      .select({ id: Borrowings.id })
+      .from(Borrowings)
+      .where(
+        and(
+          eq(Borrowings.equipmentId, equipmentId),
+          isNull(Borrowings.returnedAt),
+        ),
+      );
 
-  const result = await updateEquipment(equipmentId, {
-    name,
-    quantity,
-    picture: newPicture,
+    if (quantity < activeBorrowings.length) {
+      throw new Error(
+        `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
+      );
+    }
+
+    const oldPicture = existingEquipment.picture;
+    let newPicture: string | null;
+    if (pictureFile && pictureFile.size > 0) {
+      newPicture = await saveImage(pictureFile);
+    } else {
+      newPicture = existingPicture.length > 0 ? existingPicture : null;
+    }
+
+    const updatedEquipment = await updateEquipment(equipmentId, {
+      name,
+      quantity,
+      picture: newPicture,
+    });
+
+    // Only clean up when the picture actually changed (replaced or cleared). When
+    // the image is left untouched, oldPicture === newPicture and nothing is
+    // deleted — this is the fix for the image disappearing on an unrelated edit.
+    if (oldPicture && oldPicture !== newPicture) {
+      await deleteImageIfUnreferenced(oldPicture);
+    }
+
+    return updatedEquipment;
   });
-
-  // Only clean up when the picture actually changed (replaced or cleared). When
-  // the image is left untouched, oldPicture === newPicture and nothing is
-  // deleted — this is the fix for the image disappearing on an unrelated edit.
-  if (oldPicture && oldPicture !== newPicture) {
-    await deleteImageIfUnreferenced(oldPicture);
-  }
 
   revalidatePath("/equipment");
   revalidatePath("/");
