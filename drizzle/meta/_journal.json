@@ -43,6 +43,13 @@
       "when": 1784097626345,
       "tag": "0005_spooky_thanos",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784183791872,
+      "tag": "0006_right_jack_murdock",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,7 @@ import BackButton from "@/components/BackButton";
 import DeleteDeductionButton from "@/components/DeleteDeductionButton";
 import { Internal } from "@/components/Internal";
 import { getDeductionsById } from "@/db/queries/deductions";
+import { INTERNAL_ROLES } from "@/lib/access";
 import { getViewer } from "@/lib/authorize";
 
 import styles from "./base.module.css";
@@ -15,7 +16,7 @@ type Props = {
 
 export default async function Page({ searchParams }: Props) {
   return (
-    <AuthGuard>
+    <AuthGuard role={INTERNAL_ROLES}>
       <DeductionDetail searchParams={searchParams} />
     </AuthGuard>
   );
