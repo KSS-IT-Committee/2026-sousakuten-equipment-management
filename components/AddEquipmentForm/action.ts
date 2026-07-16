@@ -131,63 +131,88 @@ export async function updateEquipmentAction(formData: FormData) {
     throw new Error("error: quantity must be a positive integer");
   }
 
-  const result = await db.transaction(async (tx) => {
-    const [existingEquipment] = await tx
-      .select()
-      .from(Equipments)
-      .where(and(eq(Equipments.id, equipmentId), eq(Equipments.deleted, false)))
-      .for("update");
+  let newPicture: string | null = null;
+  let isNewImageSaved = false;
 
-    if (!existingEquipment) {
-      throw new Error("error: equipment not found");
-    }
-
-    const activeBorrowings = await tx
-      .select({ id: Borrowings.id })
-      .from(Borrowings)
-      .where(
-        and(
-          eq(Borrowings.equipmentId, equipmentId),
-          isNull(Borrowings.returnedAt),
-        ),
-      );
-
-    if (quantity < activeBorrowings.length) {
-      throw new Error(
-        `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
-      );
-    }
-
-    const oldPicture = existingEquipment.picture;
-    let newPicture: string | null = oldPicture;
+  try {
     const isImageDeleted = formData.get("isImageDeleted") === "true";
 
     if (pictureFile && pictureFile.size > 0) {
       newPicture = await saveImage(pictureFile);
-    } else if (isImageDeleted) {
-      newPicture = null;
+      isNewImageSaved = true;
     }
 
-    const [updatedEquipment] = await tx
-      .update(Equipments)
-      .set({
-        name,
-        quantity,
-        picture: newPicture,
-      })
-      .where(eq(Equipments.id, equipmentId))
-      .returning();
+    const result = await db.transaction(async (tx) => {
+      const [existingEquipment] = await tx
+        .select()
+        .from(Equipments)
+        .where(
+          and(eq(Equipments.id, equipmentId), eq(Equipments.deleted, false)),
+        )
+        .for("update");
 
-    return { updatedEquipment, oldPicture, newPicture };
-  });
+      if (!existingEquipment) {
+        throw new Error("error: equipment not found");
+      }
 
-  if (result.oldPicture && result.oldPicture !== result.newPicture) {
-    await deleteImageIfUnreferenced(result.oldPicture);
+      const activeBorrowings = await tx
+        .select({ id: Borrowings.id })
+        .from(Borrowings)
+        .where(
+          and(
+            eq(Borrowings.equipmentId, equipmentId),
+            isNull(Borrowings.returnedAt),
+          ),
+        );
+
+      if (quantity < activeBorrowings.length) {
+        throw new Error(
+          `現在貸出中の数 (${activeBorrowings.length}件) を下回る数量には変更できません`,
+        );
+      }
+
+      const oldPicture = existingEquipment.picture;
+
+      let finalPicture = oldPicture;
+      if (isNewImageSaved) {
+        finalPicture = newPicture;
+      } else if (isImageDeleted) {
+        finalPicture = null;
+      }
+
+      const [updatedEquipment] = await tx
+        .update(Equipments)
+        .set({
+          name,
+          quantity,
+          picture: finalPicture,
+        })
+        .where(eq(Equipments.id, equipmentId))
+        .returning();
+
+      return { updatedEquipment, oldPicture, finalPicture };
+    });
+
+    if (result.oldPicture && result.oldPicture !== result.finalPicture) {
+      await deleteImageIfUnreferenced(result.oldPicture);
+    }
+
+    revalidatePath("/equipment");
+    revalidatePath("/");
+    return result.updatedEquipment;
+  } catch (err) {
+    if (isNewImageSaved && newPicture) {
+      try {
+        await deleteImageIfUnreferenced(newPicture);
+      } catch (cleanupErr) {
+        console.error(
+          "ロールバック時の新規ファイル削除に失敗しました:",
+          cleanupErr,
+        );
+      }
+    }
+    throw err;
   }
-
-  revalidatePath("/equipment");
-  revalidatePath("/");
-  return result.updatedEquipment;
 }
 
 export async function deleteEquipmentAction(
