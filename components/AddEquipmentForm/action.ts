@@ -89,7 +89,9 @@ async function deleteImageIfUnreferenced(
 
 type UpdateEquipmentResult = Awaited<ReturnType<typeof updateEquipment>>;
 
-export async function createEquipmentAction(formData: FormData) {
+export async function createEquipmentAction(
+  formData: FormData,
+): Promise<{ success: true; data: any } | { success: false; error: string }> {
   try {
     await requireAdmin();
 
@@ -98,32 +100,38 @@ export async function createEquipmentAction(formData: FormData) {
     const pictureFile = formData.get("picture") as File | null;
 
     if (!name) {
-      throw new Error("error: equipment name is required");
+      throw new Error("備品名は必須です");
     }
 
     if (!Number.isInteger(quantity) || quantity <= 0) {
-      throw new Error("error: quantity must be a positive integer");
+      throw new Error("数量は1以上の整数で入力してください");
     }
 
     const picture = await saveImage(pictureFile);
-
     const result = await createEquipment({ name, quantity, picture });
 
     revalidatePath("/equipment");
     revalidatePath("/");
-    return result;
+    return { success: true, data: result };
   } catch (err) {
-    console.error("備品作成中にエラーが発生しました:", err);
-    throw err;
+    return {
+      success: false,
+      error:
+        err instanceof Error ? err.message : "登録中にエラーが発生しました",
+    };
   }
 }
 
+/**
+ * 備品更新アクション
+ * 💡 特徴：デッドロックフリー設計、ファイル書き込み・DB更新トランザクションの完全分離、エラーマスク回避
+ */
 export async function updateEquipmentAction(
   formData: FormData,
-): Promise<
-  | { success: true; data: UpdateEquipmentResult }
-  | { success: false; error: string }
-> {
+): Promise<{ success: true; data: any } | { success: false; error: string }> {
+  let newPicture: string | null = null;
+  let isNewImageSaved = false;
+
   try {
     await requireAdmin();
 
@@ -131,7 +139,7 @@ export async function updateEquipmentAction(
     const name = String(formData.get("name") ?? "").trim();
     const quantity = Number(formData.get("quantity"));
     const pictureFile = formData.get("picture") as File | null;
-    const existingPicture = String(formData.get("existingPicture") ?? "");
+    const isImageDeleted = formData.get("isImageDeleted") === "true";
 
     if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
       throw new Error("備品IDが不正です");
@@ -143,6 +151,11 @@ export async function updateEquipmentAction(
 
     if (!Number.isInteger(quantity) || quantity <= 0) {
       throw new Error("数量は1以上の整数で入力してください");
+    }
+
+    if (pictureFile && pictureFile.size > 0) {
+      newPicture = await saveImage(pictureFile);
+      isNewImageSaved = true;
     }
 
     const result = await db.transaction(async (tx) => {
@@ -175,31 +188,46 @@ export async function updateEquipmentAction(
       }
 
       const oldPicture = existingEquipment.picture;
-      let newPicture: string | null;
-      if (pictureFile && pictureFile.size > 0) {
-        newPicture = await saveImage(pictureFile);
-      } else {
-        newPicture = existingPicture.length > 0 ? existingPicture : null;
+
+      let finalPicture = oldPicture;
+      if (isNewImageSaved) {
+        finalPicture = newPicture;
+      } else if (isImageDeleted) {
+        finalPicture = null;
       }
 
-      const updatedEquipment = await updateEquipment(equipmentId, {
-        name,
-        quantity,
-        picture: newPicture,
-      });
+      const [updatedEquipment] = await tx
+        .update(Equipments)
+        .set({
+          name,
+          quantity,
+          picture: finalPicture,
+        })
+        .where(eq(Equipments.id, equipmentId))
+        .returning();
 
-      if (oldPicture && oldPicture !== newPicture) {
-        await deleteImageIfUnreferenced(oldPicture);
-      }
-
-      return updatedEquipment;
+      return { updatedEquipment, oldPicture, finalPicture };
     });
+
+    if (result.oldPicture && result.oldPicture !== result.finalPicture) {
+      await deleteImageIfUnreferenced(result.oldPicture);
+    }
 
     revalidatePath("/equipment");
     revalidatePath("/");
-
-    return { success: true, data: result };
+    return { success: true, data: result.updatedEquipment };
   } catch (err) {
+    if (isNewImageSaved && newPicture) {
+      try {
+        await deleteImageIfUnreferenced(newPicture);
+      } catch (cleanupErr) {
+        console.error(
+          "ロールバック時の新規ファイルクリーンアップに失敗しました:",
+          cleanupErr,
+        );
+      }
+    }
+
     return {
       success: false,
       error:
