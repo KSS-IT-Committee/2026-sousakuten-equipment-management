@@ -81,7 +81,11 @@ export function AddEquipmentForm({
           isImageDeleted ? "" : (initialValues.picture ?? ""),
         );
 
-        await updateEquipmentAction(formData);
+        const result = await updateEquipmentAction(formData);
+        if (!result.success) {
+          alert(result.error);
+          return;
+        }
       } else {
         await createEquipmentAction(formData);
       }
