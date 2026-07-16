@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
@@ -61,9 +61,14 @@ export function Navbar({ accountSlot, navSlot }: NavbarProps) {
   return (
     <nav className={styles.navbar} ref={navRef}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo} onClick={closeMenu}>
-          創作展 貸出管理
-        </Link>
+        <a href="https://top.2026.kss-it.com/" className={styles.home}>
+          <Image
+            src="/theme/event-week.png"
+            alt="創作展"
+            height={420}
+            width={930}
+          />
+        </a>
 
         {accountSlot ? (
           <div className={styles.account}>{accountSlot}</div>

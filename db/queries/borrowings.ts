@@ -1,4 +1,4 @@
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 
 import { Borrowings, ClassName } from "@/db/schema";
 import { db } from "@/lib/db";
@@ -45,6 +45,19 @@ export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
       and(
         eq(Borrowings.equipmentId, equipmentId),
         isNull(Borrowings.returnedAt),
+      ),
+    )
+    .orderBy(desc(Borrowings.borrowedAt));
+}
+
+export async function getInActiveBorrowingsByEquipmentId(equipmentId: number) {
+  return await db
+    .select()
+    .from(Borrowings)
+    .where(
+      and(
+        eq(Borrowings.equipmentId, equipmentId),
+        isNotNull(Borrowings.returnedAt),
       ),
     )
     .orderBy(desc(Borrowings.borrowedAt));

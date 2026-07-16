@@ -1,6 +1,6 @@
 {
-  "id": "1af1cd3a-b335-4f2f-9d26-9df10f7a6860",
-  "prevId": "39036ac8-18b8-4c10-a72d-833a9a4549b5",
+  "id": "49557ea7-aa06-4776-af4f-fb371123951e",
+  "prevId": "e8dd911f-0aec-4826-845d-5c6ecefa0869",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -167,6 +167,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "deleted": {
+          "name": "deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {},

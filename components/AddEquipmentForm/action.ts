@@ -1,7 +1,7 @@
 // action.ts
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import path from "path";
@@ -186,36 +186,38 @@ export async function deleteEquipmentAction(
     return { success: false, error: "備品IDが不正です" };
   }
 
-  let deletedPicture: string | null = null;
-
   try {
     await db.transaction(async (tx) => {
       const [existingEquipment] = await tx
         .select()
         .from(Equipments)
-        .where(eq(Equipments.id, equipmentId))
+        .where(
+          and(eq(Equipments.id, equipmentId), eq(Equipments.deleted, false)),
+        )
         .for("update");
 
       if (!existingEquipment) {
         throw new Error("備品が見つかりませんでした");
       }
 
-      const borrowings = await tx
+      const activeBorrowings = await tx
         .select({ id: Borrowings.id })
         .from(Borrowings)
-        .where(eq(Borrowings.equipmentId, equipmentId));
-
-      if (borrowings.length > 0) {
-        throw new Error("貸出履歴がある備品は削除できません");
+        .where(
+          and(
+            eq(Borrowings.equipmentId, equipmentId),
+            isNull(Borrowings.returnedAt),
+          ),
+        );
+      if (activeBorrowings.length > 0) {
+        throw new Error("貸出中の備品は削除できません");
       }
 
-      deletedPicture = existingEquipment.picture;
-      await tx.delete(Equipments).where(eq(Equipments.id, equipmentId));
+      await tx
+        .update(Equipments)
+        .set({ deleted: true })
+        .where(eq(Equipments.id, equipmentId));
     });
-
-    // Remove the image only after the row is gone, so the reference check sees
-    // the post-delete state.
-    await deleteImageIfUnreferenced(deletedPicture);
 
     revalidatePath("/equipment");
     revalidatePath("/");

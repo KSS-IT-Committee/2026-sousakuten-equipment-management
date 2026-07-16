@@ -86,6 +86,7 @@ export const Equipments = pgTable(
     name: text("name").notNull(),
     quantity: integer("quantity").notNull(),
     picture: text("picture"),
+    deleted: boolean("deleted").notNull().default(false),
   },
   (table) => [check("quantity_positive", sql`${table.quantity} > 0`)],
 );
