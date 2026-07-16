@@ -1,5 +1,5 @@
 {
-  "title": "fix: error message",
-  "description": "TODO",
+  "title": "エラーメッセージの変更",
+  "description": "備品個数変更時のエラーメッセージを日本語に変更しました。",
   "credits": ["@K10-K10"]
 }
