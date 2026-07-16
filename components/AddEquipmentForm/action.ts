@@ -1,7 +1,7 @@
 // action.ts
 "use server";
 
-import { and, eq, type InferSelectModel,isNull } from "drizzle-orm";
+import { and, eq, type InferSelectModel, isNull } from "drizzle-orm";
 import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import path from "path";
@@ -98,6 +98,8 @@ export async function createEquipmentAction(
   | { success: true; data: CreateEquipmentResult }
   | { success: false; error: string }
 > {
+  let picture: string | null = null;
+
   try {
     await requireAdmin();
 
@@ -113,13 +115,32 @@ export async function createEquipmentAction(
       throw new Error("数量は1以上の整数で入力してください");
     }
 
-    const picture = await saveImage(pictureFile);
+    if (pictureFile && pictureFile.size > 0) {
+      picture = await saveImage(pictureFile);
+    }
+
     const result = await createEquipment({ name, quantity, picture });
 
-    revalidatePath("/equipment");
-    revalidatePath("/");
-    return { success: true, data: result };
+    try {
+      revalidatePath("/equipment");
+      revalidatePath("/");
+    } catch (revalidateErr) {
+      console.error("再検証に失敗しました:", revalidateErr);
+    }
+
+    return { success: true, data: result as CreateEquipmentResult };
   } catch (err) {
+    if (picture) {
+      try {
+        await deleteImageIfUnreferenced(picture);
+      } catch (cleanupErr) {
+        console.error(
+          "登録失敗時の画像クリーンアップに失敗しました:",
+          cleanupErr,
+        );
+      }
+    }
+
     return {
       success: false,
       error:
@@ -135,6 +156,11 @@ export async function updateEquipmentAction(
 > {
   let newPicture: string | null = null;
   let isNewImageSaved = false;
+  let transactionResult: {
+    updatedEquipment: Equipment;
+    oldPicture: string | null;
+    finalPicture: string | null;
+  } | null = null;
 
   try {
     await requireAdmin();
@@ -162,7 +188,7 @@ export async function updateEquipmentAction(
       isNewImageSaved = true;
     }
 
-    const result = await db.transaction(async (tx) => {
+    transactionResult = await db.transaction(async (tx) => {
       const [existingEquipment] = await tx
         .select()
         .from(Equipments)
@@ -208,24 +234,10 @@ export async function updateEquipmentAction(
           picture: finalPicture,
         })
         .where(eq(Equipments.id, equipmentId))
-        .returning({
-          id: Equipments.id,
-          name: Equipments.name,
-          quantity: Equipments.quantity,
-          picture: Equipments.picture,
-          deleted: Equipments.deleted,
-        });
+        .returning();
 
       return { updatedEquipment, oldPicture, finalPicture };
     });
-
-    if (result.oldPicture && result.oldPicture !== result.finalPicture) {
-      await deleteImageIfUnreferenced(result.oldPicture);
-    }
-
-    revalidatePath("/equipment");
-    revalidatePath("/");
-    return { success: true, data: result.updatedEquipment };
   } catch (err) {
     if (isNewImageSaved && newPicture) {
       try {
@@ -246,6 +258,29 @@ export async function updateEquipmentAction(
           : "備品の更新中に予期せぬエラーが発生しました",
     };
   }
+
+  if (transactionResult) {
+    const { oldPicture, finalPicture, updatedEquipment } = transactionResult;
+
+    if (oldPicture && oldPicture !== finalPicture) {
+      try {
+        await deleteImageIfUnreferenced(oldPicture);
+      } catch (delErr) {
+        console.error("古い画像の削除に失敗しました", delErr);
+      }
+    }
+
+    try {
+      revalidatePath("/equipment");
+      revalidatePath("/");
+    } catch (revalidateErr) {
+      console.error("再検証に失敗しました:", revalidateErr);
+    }
+
+    return { success: true, data: updatedEquipment };
+  }
+
+  return { success: false, error: "更新処理が完了しませんでした" };
 }
 
 export async function deleteEquipmentAction(
