@@ -4,6 +4,7 @@ import { BorrowingEquipList } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { Internal } from "@/components/Internal";
+import { LoanHistory } from "@/components/LoanHistory";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
@@ -47,6 +48,7 @@ export default async function Equipment({ searchParams }: Props) {
 
       <EquipmentCell id={id} />
       <BorrowingEquipList id={id} />
+      <LoanHistory id={id} />
     </div>
   );
 }
