@@ -41,8 +41,10 @@ export async function GET(
     // sandbox + a null default-src stops any embedded script from running in
     // our origin. Harmless for raster images (they load no subresources).
     "Content-Security-Policy": "default-src 'none'; sandbox",
-    // Uploaded filenames are unique (timestamp-prefixed) and never rewritten,
-    // so the bytes for a given name are immutable.
+    // Uploaded filenames embed a SHA-256 of the file content (see saveImage
+    // in components/AddEquipmentForm/action.ts), so a name can only ever be
+    // reused for identical bytes — the content behind a given URL can never
+    // change, even if a deleted name were ever reoccupied.
     "Cache-Control": "public, max-age=31536000, immutable",
   };
 
