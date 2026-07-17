@@ -73,19 +73,6 @@ export function Navbar({ accountSlot, navSlot }: NavbarProps) {
         {accountSlot ? (
           <div className={styles.account}>{accountSlot}</div>
         ) : null}
-
-        <button
-          className={`${styles.hamburger} ${isMenuOpen ? styles.open : ""}`}
-          onClick={toggleMenu}
-          aria-label="メニュー"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div className={`${styles.navLinks} ${isMenuOpen ? styles.open : ""}`}>
-          {navSlot}
-        </div>
       </div>
     </nav>
   );
