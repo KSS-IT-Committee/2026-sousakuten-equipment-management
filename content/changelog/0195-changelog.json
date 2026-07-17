@@ -1,5 +1,5 @@
 {
-  "title": "maintaining the uniqueness of file names",
-  "description": "TODO",
+  "title": "内部挙動の変更",
+  "description": "画像をアップロードする際に低確率で失敗する不具合を修正しました。",
   "credits": ["@rotarymars"]
 }
