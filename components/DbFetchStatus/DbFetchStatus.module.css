@@ -1,0 +1,28 @@
+.label {
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #555;
+}
+
+:global(.dark) .label {
+  color: #cfcfcf;
+}
+
+.value {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}
+
+:global(.dark) .value {
+  color: #f2f2f2;
+}
+
+.kind {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
