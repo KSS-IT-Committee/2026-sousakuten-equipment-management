@@ -1,5 +1,6 @@
 {
-  "title": "feat: new command fix",
-  "description": "TODO",
-  "credits": ["@K10-K10"]
+  "title": "package.jsonのscriptsにcheckを追加",
+  "description": "lint:fixとformatを一括でできるようになります。",
+  "credits": ["@hatuna-827", "@K10-K10"]
 }
+
