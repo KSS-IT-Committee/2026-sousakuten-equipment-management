@@ -38,18 +38,20 @@ export default function RequestPage() {
       <Internal role={INTERNAL_ROLES}>
         <h2 className={styles.sectionTitle}>委員に直接伝える</h2>
         <p className={styles.description}>
-          委員に直接伝えていただければ、委員会で話し合いのうえ、機能の追加や修正を実装します。
+          IT委員に直接お伝えください。内容を委員会で検討し、必要に応じて新機能の追加や修正を行います。
         </p>
       </Internal>
-      <h2 className={styles.sectionTitle}>GitHubにてIssueを作成する</h2>
+      <h2 className={styles.sectionTitle}>GitHub上でIssueを作成する</h2>
       <p className={styles.description}>
         <Link
           className={styles.link}
-          href={"https://github.com/KSS-IT-Committee/2026-event-week-top"}
+          href={
+            "https://github.com/KSS-IT-Committee/2026-sousakuten-equipment-management/issues/new"
+          }
         >
           このページのリポジトリ
         </Link>
-        にIssueを作成していただくと、話し合いの後、新機能や修正が実装されます。
+        にIssueを作成してください。内容を委員会で検討し、必要に応じて新機能の追加や修正を行います。
       </p>
       <h2 className={styles.sectionTitle}>委員会にメールを送る</h2>
       <p className={styles.description}>
@@ -57,9 +59,9 @@ export default function RequestPage() {
           className={styles.link}
           href={"mailto:koishikawa.itcommittee@gmail.com"}
         >
-          委員会のメールアドレス
+          委員会のメールアドレス(koishikawa.itcommittee@gmail.com)
         </Link>
-        宛にメールをお送りください。その際、どのページに関する提案か（このページであれば「行事週間トップページ」）を本文に記載してください。
+        宛にメールをお送りください。その際、どのページに関する提案か（このページであれば「創作展備品管理ページ」）を本文に記載してください。
       </p>
 
       <p className={styles.maintainersNote}>
