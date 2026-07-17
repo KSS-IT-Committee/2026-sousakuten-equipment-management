@@ -1,5 +1,5 @@
 {
   "title": "Deleted Hamburger menu",
-  "description": "TODO",
+  "description": "スマートフォンアクセス時にハンバーガーメニューが残っているバグを修正",
   "credits": ["@Shirym-min"]
 }
