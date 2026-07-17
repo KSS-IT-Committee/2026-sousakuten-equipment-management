@@ -2,8 +2,8 @@ import "./globals.css";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
 import { AccountNav } from "@/components/AccountNav";
 import { FloatingMenu } from "@/components/FloatingMenu";
