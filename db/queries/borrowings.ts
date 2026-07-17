@@ -2,9 +2,12 @@ import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 
 import { Borrowings, ClassName } from "@/db/schema";
 import { db } from "@/lib/db";
+import { recordDbFetch } from "@/lib/db-last-fetched";
 
 export async function getBorrowings() {
-  return await db.select().from(Borrowings).orderBy(Borrowings.id);
+  const result = await db.select().from(Borrowings).orderBy(Borrowings.id);
+  recordDbFetch("borrowings");
+  return result;
 }
 
 export async function getBorrowingById(id: number) {
@@ -12,33 +15,40 @@ export async function getBorrowingById(id: number) {
     .select()
     .from(Borrowings)
     .where(eq(Borrowings.id, id));
+  recordDbFetch("borrowings");
   return result[0];
 }
 
 export async function getBorrowingsByEquipmentId(equipmentId: number) {
-  return await db
+  const result = await db
     .select()
     .from(Borrowings)
     .where(eq(Borrowings.equipmentId, equipmentId));
+  recordDbFetch("borrowings");
+  return result;
 }
 
 export async function getBorrowingsByClass(classCode: ClassName) {
-  return await db
+  const result = await db
     .select()
     .from(Borrowings)
     .where(eq(Borrowings.class, classCode));
+  recordDbFetch("borrowings");
+  return result;
 }
 
 export async function getActiveBorrowings() {
-  return await db
+  const result = await db
     .select()
     .from(Borrowings)
     .where(isNull(Borrowings.returnedAt))
     .orderBy(desc(Borrowings.borrowedAt));
+  recordDbFetch("borrowings");
+  return result;
 }
 
 export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
-  return await db
+  const result = await db
     .select()
     .from(Borrowings)
     .where(
@@ -48,6 +58,8 @@ export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
       ),
     )
     .orderBy(desc(Borrowings.borrowedAt));
+  recordDbFetch("borrowings");
+  return result;
 }
 
 export async function getInActiveBorrowingsByEquipmentId(equipmentId: number) {
