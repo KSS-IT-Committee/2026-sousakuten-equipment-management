@@ -73,7 +73,7 @@ export default function RootLayout({
                 role: "Sousakuten",
               },
               { label: "減点管理", href: "/deductions", isInternal: true },
-              { label: "機能・修正のリクエスト", href: "/requests" },
+              { label: "ページ改善の提案", href: "/requests" },
               { label: "更新履歴", href: "/changelog" },
             ]}
           />
