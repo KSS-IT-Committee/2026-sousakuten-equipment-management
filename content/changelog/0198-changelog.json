@@ -1,5 +1,5 @@
 {
   "title": ".github/workflows: Migrate workflows to Blacksmith runners",
-  "description": "TODO",
+  "description": "CI のワークフローを Blacksmith のランナーに移行しました。これによるページの変更はありません。",
   "credits": ["@blacksmith-sh[bot]"]
 }
