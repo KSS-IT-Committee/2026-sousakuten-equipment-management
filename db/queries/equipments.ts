@@ -2,13 +2,16 @@ import { and, count, eq } from "drizzle-orm";
 
 import { Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
+import { recordDbFetch } from "@/lib/db-last-fetched";
 
 export async function getEquipments() {
-  return await db
+  const result = await db
     .select({ id: Equipments.id })
     .from(Equipments)
     .where(eq(Equipments.deleted, false))
     .orderBy(Equipments.id);
+  recordDbFetch("equipment");
+  return result;
 }
 
 export async function getEquipmentById(id: number) {
@@ -17,6 +20,7 @@ export async function getEquipmentById(id: number) {
     .from(Equipments)
     .where(and(eq(Equipments.id, id), eq(Equipments.deleted, false)))
     .orderBy(Equipments.id);
+  recordDbFetch("equipment");
   return result[0];
 }
 
