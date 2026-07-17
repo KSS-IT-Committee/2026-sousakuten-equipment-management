@@ -26,7 +26,7 @@ jobs:
   # Install and cache dependencies
   setup:
     name: Setup Dependencies
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Checkout
@@ -56,7 +56,7 @@ jobs:
   # Type checking
   typecheck:
     name: TypeScript Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: setup
 
     steps:
@@ -100,7 +100,7 @@ jobs:
   # Linting
   lint:
     name: ESLint
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: setup
 
     steps:
@@ -134,7 +134,7 @@ jobs:
   # Prettier check
   format:
     name: Prettier Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: setup
 
     steps:
@@ -164,7 +164,7 @@ jobs:
   # Build check
   build:
     name: Build Project
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: setup
 
     steps:
@@ -220,7 +220,7 @@ jobs:
   # Test suite (ready for when you add tests)
   test:
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: setup
     continue-on-error: true # Don't fail CI if no tests exist yet
 
@@ -266,7 +266,7 @@ jobs:
   # Security audit
   security:
     name: Security Audit
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: setup
     continue-on-error: true # Security issues shouldn't block PR, but should be visible
 
@@ -288,7 +288,7 @@ jobs:
   # Final status check
   ci-status:
     name: CI Status
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [typecheck, lint, format, build, test, security]
     if: always()
 

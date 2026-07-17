@@ -18,7 +18,7 @@ on:
 jobs:
   build:
     name: Build and Type Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Checkout code
@@ -84,7 +84,7 @@ jobs:
 
   lint:
     name: Lint Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Checkout code
@@ -123,7 +123,7 @@ jobs:
   # Summary job to require all checks to pass
   checks-summary:
     name: All Checks Passed
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     needs: [build, lint]
     if: always()
 
