@@ -37,7 +37,7 @@
     "eslint": "^10",
     "eslint-config-next": "^16.2.10",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-simple-import-sort": "^13.0.0",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unused-imports": "^4.0.0",
     "prettier": "^3.9.5",
     "tailwindcss": "^4",
