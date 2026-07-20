@@ -1,5 +1,5 @@
 {
-  "title": "Improved Top Page",
-  "description": "TODO",
+  "title": "トップページの挙動を改善",
+  "description": "トップページで備品がない場合に、備品がない旨のメッセージを表示するようにしました。また、ページの名前を「創作展 貸出備品・減点管理サイト」に変更しました。",
   "credits": ["@Shirym-min"]
 }
