@@ -25,8 +25,8 @@ const geistMono = Geist_Mono({
 const GA_MEASUREMENT_ID = "G-DGM95SGSRQ";
 
 export const metadata: Metadata = {
-  title: "創作展 貸出備品管理サイト",
-  description: "創作展中の備品貸出管理サイト",
+  title: "創作展 貸出備品・減点管理サイト",
+  description: "創作展中の備品貸出と減点管理サイト",
   robots: {
     index: false,
     follow: false,

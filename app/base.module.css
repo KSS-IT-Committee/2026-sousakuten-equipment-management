@@ -25,6 +25,13 @@
   color: #fff;
 }
 
+.noEquipment {
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
 @media (max-width: 768px) {
   .equipmentList {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
