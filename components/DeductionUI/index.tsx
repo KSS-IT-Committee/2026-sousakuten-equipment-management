@@ -55,7 +55,7 @@ export async function DeductionUI({ searchParams }: Props) {
         classes={[ownClass as ClassName]}
         sortBy={sortBy}
         sortOrder={sortOrder}
-        isAdmin={viewer?.canManageDeductions ?? false}
+        canManageDeductions={viewer?.canManageDeductions ?? false}
       />
     );
   }
@@ -83,7 +83,7 @@ export async function DeductionUI({ searchParams }: Props) {
             classes={classesToDisplay}
             sortBy={sortBy}
             sortOrder={sortOrder}
-            isAdmin={viewer.canManageDeductions}
+            canManageDeductions={viewer.canManageDeductions}
           />
         ) : null}
         {section === 2 ? <DeductionSumsList /> : null}

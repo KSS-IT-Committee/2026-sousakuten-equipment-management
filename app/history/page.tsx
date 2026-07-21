@@ -39,7 +39,10 @@ async function DeductionDetail({ searchParams }: Props) {
   // A non-admin may only see their own class's deduction — don't reveal another
   // class's record via /history?id=N.
   const viewer = await getViewer();
-  if (!viewer?.canManageDeductions && deduction.className !== viewer?.className) {
+  if (
+    !viewer?.canManageDeductions &&
+    deduction.className !== viewer?.className
+  ) {
     forbidden();
   }
 
@@ -59,7 +62,7 @@ async function DeductionDetail({ searchParams }: Props) {
         </h2>
         <BackButton />
       </div>
-      <Internal role="Sousakuten">
+      <Internal role="SousakutenMain">
         <div className={styles.buttonRow}>
           <DeleteDeductionButton deductionId={deduction.id} />
         </div>
