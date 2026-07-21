@@ -45,7 +45,7 @@ export async function DeductionUI({ searchParams }: Props) {
   // no all-class ranking, and the `class` query param is ignored. The data
   // query is pinned to their class so `/deductions?class=5A` can't reveal it.
   const viewer = await getViewer();
-  if (!viewer?.isAdmin) {
+  if (!viewer?.canManageDeductions) {
     const ownClass = viewer?.className ?? null;
     if (ownClass === null || !CLASSES.includes(ownClass as ClassName)) {
       return <p className="text-center mt-8">表示できる減点はありません。</p>;
@@ -55,7 +55,7 @@ export async function DeductionUI({ searchParams }: Props) {
         classes={[ownClass as ClassName]}
         sortBy={sortBy}
         sortOrder={sortOrder}
-        isAdmin={viewer?.isAdmin ?? false}
+        isAdmin={viewer?.canManageDeductions ?? false}
       />
     );
   }
@@ -83,7 +83,7 @@ export async function DeductionUI({ searchParams }: Props) {
             classes={classesToDisplay}
             sortBy={sortBy}
             sortOrder={sortOrder}
-            isAdmin={viewer.isAdmin}
+            isAdmin={viewer.canManageDeductions}
           />
         ) : null}
         {section === 2 ? <DeductionSumsList /> : null}
