@@ -16,7 +16,7 @@ type NavbarProps = {
   navSlot?: ReactNode;
 };
 
-export function Navbar({ accountSlot, navSlot }: NavbarProps) {
+export function Navbar({ accountSlot }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
@@ -31,14 +31,6 @@ export function Navbar({ accountSlot, navSlot }: NavbarProps) {
     setMenuPathname(pathname);
     setIsMenuOpen(false);
   }
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -73,19 +65,6 @@ export function Navbar({ accountSlot, navSlot }: NavbarProps) {
         {accountSlot ? (
           <div className={styles.account}>{accountSlot}</div>
         ) : null}
-
-        <button
-          className={`${styles.hamburger} ${isMenuOpen ? styles.open : ""}`}
-          onClick={toggleMenu}
-          aria-label="メニュー"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div className={`${styles.navLinks} ${isMenuOpen ? styles.open : ""}`}>
-          {navSlot}
-        </div>
       </div>
     </nav>
   );

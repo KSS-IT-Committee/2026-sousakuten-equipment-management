@@ -60,7 +60,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NoScriptAlert />
-          <Navbar accountSlot={<AccountNav />} navSlot={<></>} />
+          <Navbar accountSlot={<AccountNav />} />
           <main>{children}</main>
           <Footer />
           <FloatingMenu
