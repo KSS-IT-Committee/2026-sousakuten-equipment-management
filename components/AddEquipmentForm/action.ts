@@ -1,6 +1,7 @@
 // action.ts
 "use server";
 
+import { createHash } from "crypto";
 import { and, eq, isNull } from "drizzle-orm";
 import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
@@ -43,11 +44,17 @@ async function saveImage(file: File | null): Promise<string | null> {
 
   // Keep a sanitized stem from the original name for readability, but force the
   // canonical extension from the detected type so the on-disk name always
-  // reflects real content; the timestamp keeps names unique. basename() strips
-  // any path components so the upload can never escape the images directory.
+  // reflects real content. Embedding the SHA-256 of the bytes makes the name
+  // content-addressed: two uploads can only ever collide on a name when their
+  // bytes are identical, so a given URL always maps to one byte sequence.
+  // That — not mere improbability of a clash — is what lets the serving route
+  // (app/equipment-images/[name]/route.ts) mark these URLs immutable (#149).
+  // The timestamp only keeps directory listings chronological. basename()
+  // strips any path components so the upload can never escape the images dir.
   const sanitized = path.basename(file.name).replace(/[^a-zA-Z0-9._-]/g, "_");
   const stem = sanitized.replace(/\.[^.]+$/, "") || "image";
-  const uniqueFilename = `${Date.now()}-${stem}${detected.ext}`;
+  const contentHash = createHash("sha256").update(buffer).digest("hex");
+  const uniqueFilename = `${Date.now()}-${contentHash}-${stem}${detected.ext}`;
   const filePath = path.join(dir, uniqueFilename);
 
   await fs.writeFile(filePath, buffer);
