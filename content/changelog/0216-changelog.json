@@ -1,5 +1,5 @@
 {
-  "title": "erasing my-db dir (#182)",
-  "description": "TODO",
+  "title": "内部スクリプトの修正",
+  "description": "不要なスクリプトを削除しました。これによるページの変更はありません。",
   "credits": ["@rotarymars"]
 }
