@@ -69,21 +69,16 @@ export function AddEquipmentForm({
     }
   };
 
-  const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (loading) return;
-
-    if (formRef.current && !formRef.current.reportValidity()) {
-      return;
-    }
 
     setLoading(true);
     setError("");
 
     try {
-      if (!formRef.current) return;
-      const formData = new FormData(formRef.current);
+      const formData = new FormData(e.currentTarget);
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
@@ -111,7 +106,7 @@ export function AddEquipmentForm({
     !imagePreview.startsWith("[object");
 
   return (
-    <form ref={formRef} className={styles.form}>
+    <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
       {mode === "edit" && initialValues?.id ? (
         <input type="hidden" name="equipmentId" value={initialValues.id} />
       ) : null}
@@ -218,10 +213,9 @@ export function AddEquipmentForm({
 
       <div className={styles.buttonGroup}>
         <button
-          type="button"
+          type="submit"
           className={styles.submitButton}
           disabled={loading}
-          onClick={handleButtonClick}
         >
           {loading
             ? mode === "edit"
