@@ -22,6 +22,24 @@ type AddEquipmentFormProps = {
   initialValues?: EquipmentFormValues;
 };
 
+import { useFormStatus } from "react-dom";
+
+function SubmitButton({ mode }: { mode: EquipmentFormMode }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button type="submit" className={styles.submitButton} disabled={pending}>
+      {pending
+        ? mode === "edit"
+          ? "修正中..."
+          : "追加中..."
+        : mode === "edit"
+          ? "修正する"
+          : "機器を追加"}
+    </button>
+  );
+}
+
 export function AddEquipmentForm({
   mode = "create",
   initialValues,
@@ -212,19 +230,7 @@ export function AddEquipmentForm({
       )}
 
       <div className={styles.buttonGroup}>
-        <button
-          type="submit"
-          className={styles.submitButton}
-          disabled={loading}
-        >
-          {loading
-            ? mode === "edit"
-              ? "修正中..."
-              : "追加中..."
-            : mode === "edit"
-              ? "修正する"
-              : "機器を追加"}
-        </button>
+        <SubmitButton mode={mode} />
         <button
           type="button"
           className={styles.cancelButton}
