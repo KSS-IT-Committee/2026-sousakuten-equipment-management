@@ -22,24 +22,6 @@ type AddEquipmentFormProps = {
   initialValues?: EquipmentFormValues;
 };
 
-import { useFormStatus } from "react-dom";
-
-function SubmitButton({ mode }: { mode: EquipmentFormMode }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <button type="submit" className={styles.submitButton} disabled={pending}>
-      {pending
-        ? mode === "edit"
-          ? "修正中..."
-          : "追加中..."
-        : mode === "edit"
-          ? "修正する"
-          : "機器を追加"}
-    </button>
-  );
-}
-
 export function AddEquipmentForm({
   mode = "create",
   initialValues,
@@ -88,13 +70,17 @@ export function AddEquipmentForm({
     }
   };
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (isSubmitting.current) return;
     isSubmitting.current = true;
 
     try {
       setLoading(true);
       setError("");
+
+      const formData = new FormData(e.currentTarget);
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
@@ -124,7 +110,7 @@ export function AddEquipmentForm({
     !imagePreview.startsWith("[object");
 
   return (
-    <form ref={formRef} action={handleSubmit} className={styles.form}>
+    <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
       {mode === "edit" && initialValues?.id ? (
         <input type="hidden" name="equipmentId" value={initialValues.id} />
       ) : null}
@@ -230,7 +216,19 @@ export function AddEquipmentForm({
       )}
 
       <div className={styles.buttonGroup}>
-        <SubmitButton mode={mode} />
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={loading}
+        >
+          {loading
+            ? mode === "edit"
+              ? "修正中..."
+              : "追加中..."
+            : mode === "edit"
+              ? "修正する"
+              : "機器を追加"}
+        </button>
         <button
           type="button"
           className={styles.cancelButton}
