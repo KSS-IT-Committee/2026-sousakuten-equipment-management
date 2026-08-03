@@ -62,6 +62,16 @@ export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
   return result;
 }
 
+export async function getActiveBorrowingsByClass(classCode: ClassName) {
+  const result = await db
+    .select()
+    .from(Borrowings)
+    .where(and(eq(Borrowings.class, classCode), isNull(Borrowings.returnedAt)))
+    .orderBy(desc(Borrowings.borrowedAt));
+  recordDbFetch("borrowings");
+  return result;
+}
+
 export async function getInActiveBorrowingsByEquipmentId(equipmentId: number) {
   return await db
     .select()
