@@ -46,13 +46,13 @@ export async function BorrowingEquipListById({ id }: { id: number }) {
     </div>
   );
 }
-
 export async function BorrowingEquipListByClass({
   classCode,
 }: {
   classCode: ClassName;
 }) {
   const borrowings = await getActiveBorrowingsByClass(classCode);
+
   return (
     <div>
       <div className={styles.summaryWrapper}>
@@ -68,11 +68,15 @@ export async function BorrowingEquipListByClass({
           {borrowings.map((borrowing) => (
             <div key={borrowing.id} className={styles.listItem} role="listitem">
               <div className={styles.infoGroup}>
+                <span className={styles.name}>
+                  備品: {borrowing.equipmentName}
+                </span>
                 <span className={styles.class}>
                   クラス: {getClassLabel(borrowing.class)}
                 </span>
                 <span className={styles.date}>
-                  貸出日: {new Date(borrowing.borrowedAt).toLocaleDateString()}
+                  貸出日:{" "}
+                  {new Date(borrowing.borrowedAt).toLocaleDateString("ja-JP")}
                 </span>
               </div>
 

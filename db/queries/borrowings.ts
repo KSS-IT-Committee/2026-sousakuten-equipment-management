@@ -1,6 +1,6 @@
 import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 
-import { Borrowings, ClassName } from "@/db/schema";
+import { Borrowings, ClassName, Equipments } from "@/db/schema";
 import { db } from "@/lib/db";
 import { recordDbFetch } from "@/lib/db-last-fetched";
 
@@ -63,13 +63,18 @@ export async function getActiveBorrowingsByEquipmentId(equipmentId: number) {
 }
 
 export async function getActiveBorrowingsByClass(classCode: ClassName) {
-  const result = await db
-    .select()
+  return await db
+    .select({
+      id: Borrowings.id,
+      class: Borrowings.class,
+      borrowedAt: Borrowings.borrowedAt,
+      equipmentName: Equipments.name,
+    })
     .from(Borrowings)
-    .where(and(eq(Borrowings.class, classCode), isNull(Borrowings.returnedAt)))
-    .orderBy(desc(Borrowings.borrowedAt));
-  recordDbFetch("borrowings");
-  return result;
+    .innerJoin(Equipments, eq(Borrowings.equipmentId, Equipments.id))
+    .where(
+      and(eq(Borrowings.class, classCode), isNotNull(Borrowings.returnedAt)),
+    );
 }
 
 export async function getInActiveBorrowingsByEquipmentId(equipmentId: number) {
