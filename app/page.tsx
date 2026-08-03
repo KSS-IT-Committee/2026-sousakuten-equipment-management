@@ -1,21 +1,40 @@
 import styles from "@/app/base.module.css";
+import { BorrowingEquipListByClass } from "@/components/BorrowingEquipList";
 import { DbFetchStatus } from "@/components/DbFetchStatus";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { getEquipments } from "@/db/queries/equipments";
-
+import { ClassName } from "@/db/schema";
+import { getViewer } from "@/lib/authorize";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const equipments = await getEquipments();
+  const viewer = await getViewer();
+
+  if (!viewer?.canManageDeductions) {
+    return (
+      <p className="text-center mt-8">
+        このページを表示するにはログインが必要です。
+      </p>
+    );
+  }
 
   return (
     <>
       <div className={styles.pageTitleWrapper}>
         <h1 className={styles.pageTitle}>創作展 貸出備品・減点管理サイト</h1>
       </div>
+
+      <div className={styles.borrowingListWrapper}>
+        <h2 className={styles.borrowingListTitle}>現在の借出状況</h2>
+        <BorrowingEquipListByClass classCode={viewer.className as ClassName} />
+      </div>
+
       <DbFetchStatus />
+
       {equipments.length === 0 && (
         <div className={styles.noEquipment}>
+          {/* 3. SVG 属性をキャメルケースに修正 */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="100"
@@ -23,9 +42,9 @@ export default async function Home() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="1"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M12 22v-9" />
             <path d="M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z" />
@@ -39,6 +58,7 @@ export default async function Home() {
           </p>
         </div>
       )}
+
       <div className={styles.equipmentList}>
         {equipments.map((equipment) => (
           <EquipmentCell key={equipment.id} id={equipment.id} />
