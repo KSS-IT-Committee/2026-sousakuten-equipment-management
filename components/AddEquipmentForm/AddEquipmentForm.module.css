@@ -119,6 +119,7 @@
 .submitButton:disabled {
   background-color: #90caf9;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .cancelButton {
