@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@emnapi/core": "^1.11.2",
-    "@emnapi/runtime": "^1.11.2",
+    "@emnapi/runtime": "^1.11.3",
     "@emnapi/wasi-threads": "^2.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^26",
