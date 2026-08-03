@@ -11,11 +11,15 @@ export default async function Home() {
   const equipments = await getEquipments();
   const viewer = await getViewer();
 
-  if (!viewer?.canManageDeductions) {
+  if (!viewer?.className) {
     return (
-      <p className="text-center mt-8">
-        このページを表示するにはログインが必要です。
-      </p>
+      <div className={styles.noEquipment}>
+        <p className={styles.noDataMessage}>
+          クラス情報が取得できませんでした。
+          <br />
+          ログインし直すか、管理者にお問い合わせください。
+        </p>
+      </div>
     );
   }
 
