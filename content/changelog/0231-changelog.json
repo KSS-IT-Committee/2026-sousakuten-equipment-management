@@ -1,5 +1,5 @@
 {
-  "title": "update:add a guard for async",
-  "description": "TODO",
+  "title": "備品が複数追加される問題を修正",
+  "description": "ネットワークの遅延によって、同じ備品が複数個追加されてしまう問題を修正しました。",
   "credits": ["@K10-K10"]
 }
