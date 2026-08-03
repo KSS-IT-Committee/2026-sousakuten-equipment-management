@@ -76,7 +76,9 @@ export async function BorrowingEquipListByClass({
                 </span>
                 <span className={styles.date}>
                   貸出日:{" "}
-                  {new Date(borrowing.borrowedAt).toLocaleDateString("ja-JP")}
+                  {new Date(borrowing.borrowedAt).toLocaleDateString("ja-JP", {
+                    timeZone: "Asia/Tokyo",
+                  })}
                 </span>
               </div>
 

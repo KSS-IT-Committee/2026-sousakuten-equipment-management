@@ -12,23 +12,13 @@ export default async function Home() {
   const equipments = await getEquipments();
   const viewer = await getViewer();
 
-  if (!viewer) {
-    return (
-      <div className={styles.noEquipment}>
-        <p className={styles.noDataMessage}>
-          このページを表示するにはログインが必要です。
-        </p>
-      </div>
-    );
-  }
-
-  if (!viewer.canManageDeductions && !viewer.className) {
+  if (!viewer?.className) {
     return (
       <div className={styles.noEquipment}>
         <p className={styles.noDataMessage}>
           クラス情報が取得できませんでした。
           <br />
-          管理者にお問い合わせください。
+          ログインし直すか、管理者にお問い合わせください。
         </p>
       </div>
     );
@@ -42,15 +32,7 @@ export default async function Home() {
 
       <div className={styles.borrowingListWrapper}>
         <h2 className={styles.borrowingListTitle}>現在の借出状況</h2>
-        {viewer.canManageDeductions ? (
-          <BorrowingEquipListByClass
-            classCode={viewer.className as ClassName}
-          />
-        ) : (
-          <BorrowingEquipListByClass
-            classCode={viewer.className as ClassName}
-          />
-        )}
+        <BorrowingEquipListByClass classCode={viewer.className as ClassName} />
       </div>
 
       <DbFetchStatus />
