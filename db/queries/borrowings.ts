@@ -72,9 +72,7 @@ export async function getActiveBorrowingsByClass(classCode: ClassName) {
     })
     .from(Borrowings)
     .innerJoin(Equipments, eq(Borrowings.equipmentId, Equipments.id))
-    .where(
-      and(eq(Borrowings.class, classCode), isNotNull(Borrowings.returnedAt)),
-    );
+    .where(and(eq(Borrowings.class, classCode), isNull(Borrowings.returnedAt)));
 }
 
 export async function getInActiveBorrowingsByEquipmentId(equipmentId: number) {
