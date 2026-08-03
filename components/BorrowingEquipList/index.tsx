@@ -4,9 +4,9 @@ import {
   getActiveBorrowingsByClass,
   getActiveBorrowingsByEquipmentId,
 } from "@/db/queries/borrowings";
+import { ClassName } from "@/db/schema";
 import { getClassLabel } from "@/lib/class-number";
 
-import { ClassName } from "@/db/schema";
 import styles from "./BorrowingEquipList.module.css";
 
 export async function BorrowingEquipListById({ id }: { id: number }) {
