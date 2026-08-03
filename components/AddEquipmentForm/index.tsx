@@ -28,7 +28,6 @@ export function AddEquipmentForm({
 }: AddEquipmentFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
-  const isSubmitting = useRef(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
@@ -70,17 +69,21 @@ export function AddEquipmentForm({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (isSubmitting.current) return;
-    isSubmitting.current = true;
+    if (loading) return;
+
+    if (formRef.current && !formRef.current.reportValidity()) {
+      return;
+    }
+
+    setLoading(true);
+    setError("");
 
     try {
-      setLoading(true);
-      setError("");
-
-      const formData = new FormData(e.currentTarget);
+      if (!formRef.current) return;
+      const formData = new FormData(formRef.current);
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
@@ -98,9 +101,7 @@ export function AddEquipmentForm({
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
-    } finally {
       setLoading(false);
-      isSubmitting.current = false;
     }
   };
 
@@ -110,7 +111,7 @@ export function AddEquipmentForm({
     !imagePreview.startsWith("[object");
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
+    <form ref={formRef} className={styles.form}>
       {mode === "edit" && initialValues?.id ? (
         <input type="hidden" name="equipmentId" value={initialValues.id} />
       ) : null}
@@ -217,9 +218,10 @@ export function AddEquipmentForm({
 
       <div className={styles.buttonGroup}>
         <button
-          type="submit"
+          type="button"
           className={styles.submitButton}
           disabled={loading}
+          onClick={handleButtonClick}
         >
           {loading
             ? mode === "edit"
