@@ -28,6 +28,7 @@ export function AddEquipmentForm({
 }: AddEquipmentFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const isSubmitting = useRef(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
@@ -70,6 +71,9 @@ export function AddEquipmentForm({
   };
 
   const handleSubmit = async (formData: FormData) => {
+    if (isSubmitting.current) return;
+    isSubmitting.current = true;
+
     try {
       setLoading(true);
       setError("");
@@ -92,6 +96,7 @@ export function AddEquipmentForm({
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
       setLoading(false);
+      isSubmitting.current = false;
     }
   };
 
