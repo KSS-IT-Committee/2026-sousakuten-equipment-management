@@ -1,0 +1,5 @@
+{
+  "title": "build(deps-dev): bump @emnapi/wasi-threads from 2.0.0 to 2.0.1",
+  "description": "パッケージのバージョンを上げました。これによるページの変更はありません。",
+  "credits": ["@dependabot[bot]"]
+}
