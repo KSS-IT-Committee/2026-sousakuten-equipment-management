@@ -1,5 +1,5 @@
 {
-  "title": "updating schema",
-  "description": "TODO",
+  "title": "備品の識別番号を記録するように変更",
+  "description": "備品貸出時に識別番号を記録するように変更しました。",
   "credits": ["@rotarymars"]
 }
