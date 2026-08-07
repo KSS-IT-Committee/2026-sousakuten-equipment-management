@@ -37,6 +37,15 @@
   color: #333;
 }
 
+.name {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+:global(.dark) .name {
+  color: #fff;
+}
+
 .class {
   font-weight: 500;
   color: #007bff;
