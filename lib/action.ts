@@ -39,6 +39,7 @@ export const returnBorrowingAction = async (
 export const borrowEquipmentAction = async (
   equipmentId: number,
   classCode: ClassName,
+  equipmentIdentifier?: number,
 ) => {
   await requireAdmin();
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
@@ -76,6 +77,7 @@ export const borrowEquipmentAction = async (
     await tx.insert(Borrowings).values({
       equipmentId,
       class: classCode,
+      equipmentIdentifier: equipmentIdentifier,
     });
   });
 

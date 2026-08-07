@@ -23,6 +23,7 @@ export function BorrowingPopup({
     code: ClassName;
     label: string;
   } | null>(null);
+  const [itemIdentifier, setItemIdentifier] = useState<number | null>(null);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -80,6 +81,23 @@ export function BorrowingPopup({
             <div className={styles.popupBody}>
               <div className={styles.classBoxWrapper}>
                 <ClassBox onSelect={handleClassSelect} />
+              </div>
+
+              <div className={styles.itemIdentifierWrapper}>
+                <label htmlFor="item-identifier" className={styles.label}>
+                  備品識別番号 (任意):
+                </label>
+                <input
+                  type="number"
+                  id="item-identifier"
+                  value={itemIdentifier ?? ""}
+                  onChange={(e) =>
+                    setItemIdentifier(
+                      e.target.value ? parseInt(e.target.value) : null,
+                    )
+                  }
+                  className={styles.input}
+                />
               </div>
 
               <div className={styles.summaryBox}>

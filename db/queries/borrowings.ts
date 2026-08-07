@@ -80,6 +80,7 @@ export async function createBorrowing(data: {
   class: ClassName;
   borrowedAt?: Date;
   returnedAt?: Date;
+  equipmentIdentifier?: number;
 }) {
   return await db.insert(Borrowings).values(data);
 }
