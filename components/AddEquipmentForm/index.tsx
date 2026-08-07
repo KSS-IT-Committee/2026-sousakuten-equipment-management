@@ -69,10 +69,16 @@ export function AddEquipmentForm({
     }
   };
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (loading) return;
+
+    setLoading(true);
+    setError("");
+
     try {
-      setLoading(true);
-      setError("");
+      const formData = new FormData(e.currentTarget);
 
       if (mode === "edit" && initialValues?.id) {
         formData.set("equipmentId", String(initialValues.id));
@@ -90,7 +96,6 @@ export function AddEquipmentForm({
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
-    } finally {
       setLoading(false);
     }
   };
@@ -101,7 +106,7 @@ export function AddEquipmentForm({
     !imagePreview.startsWith("[object");
 
   return (
-    <form ref={formRef} action={handleSubmit} className={styles.form}>
+    <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
       {mode === "edit" && initialValues?.id ? (
         <input type="hidden" name="equipmentId" value={initialValues.id} />
       ) : null}

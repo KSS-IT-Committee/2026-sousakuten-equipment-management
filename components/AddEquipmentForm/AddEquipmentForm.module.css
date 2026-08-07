@@ -117,8 +117,10 @@
 }
 
 .submitButton:disabled {
-  background-color: #90caf9;
-  cursor: not-allowed;
+  background-color: #90caf9 !important;
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
 
 .cancelButton {
