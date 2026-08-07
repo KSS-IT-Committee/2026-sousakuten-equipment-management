@@ -216,6 +216,7 @@ export function AddEquipmentForm({
           type="submit"
           className={styles.submitButton}
           disabled={loading}
+          onClick={() => router.push("/")}
         >
           {loading
             ? mode === "edit"
