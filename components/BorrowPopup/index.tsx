@@ -42,7 +42,12 @@ export function BorrowingPopup({
     }
   };
 
-  const canBorrow = availableCount > 0 && selectedClass !== null;
+  const isIdentifierValid =
+    itemIdentifier === null ||
+    (Number.isInteger(itemIdentifier) && itemIdentifier >= 1);
+
+  const canBorrow =
+    availableCount > 0 && selectedClass !== null && isIdentifierValid;
 
   return (
     <div className={styles.triggerArea}>
@@ -90,15 +95,24 @@ export function BorrowingPopup({
                 </label>
                 <input
                   type="number"
+                  min={1}
+                  step={1}
                   id="item-identifier"
                   value={itemIdentifier ?? ""}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
                     setItemIdentifier(
-                      e.target.value ? parseInt(e.target.value) : null,
-                    )
-                  }
+                      e.target.value && !Number.isNaN(value) ? value : null,
+                    );
+                  }}
+                  aria-invalid={!isIdentifierValid}
                   className={styles.input}
                 />
+                {!isIdentifierValid && (
+                  <p className={styles.notice}>
+                    備品識別番号は1以上の整数で入力してください。
+                  </p>
+                )}
               </div>
 
               <div className={styles.summaryBox}>
