@@ -29,6 +29,10 @@ export async function LoanHistory({ id }: { id: number }) {
                     ? new Date(borrow.returnedAt).toLocaleDateString("ja-JP")
                     : "未返却"}
                 </span>
+                <span className={styles.date}>
+                  {/*I know what we should use a different style but for now..*/}
+                  識別番号: {borrow.equipmentIdentifier ?? "未記録"}
+                </span>
               </div>
             </div>
           ))}

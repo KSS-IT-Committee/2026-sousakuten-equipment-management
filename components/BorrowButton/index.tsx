@@ -8,12 +8,14 @@ import { borrowEquipmentAction } from "@/lib/action";
 export function BorrowButton({
   equipmentId,
   classCode,
+  equipmentIdentifier,
   disabled = false,
   onBorrow,
   className,
 }: {
   equipmentId: number;
   classCode: ClassName;
+  equipmentIdentifier?: number;
   disabled?: boolean;
   onBorrow?: () => void;
   className?: string;
@@ -28,7 +30,7 @@ export function BorrowButton({
     setLoading(true);
 
     try {
-      await borrowEquipmentAction(equipmentId, classCode);
+      await borrowEquipmentAction(equipmentId, classCode, equipmentIdentifier);
       if (onBorrow) {
         onBorrow();
       }

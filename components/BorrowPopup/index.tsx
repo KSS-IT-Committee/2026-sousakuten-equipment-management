@@ -23,6 +23,7 @@ export function BorrowingPopup({
     code: ClassName;
     label: string;
   } | null>(null);
+  const [itemIdentifier, setItemIdentifier] = useState<number | null>(null);
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -30,6 +31,7 @@ export function BorrowingPopup({
   const closePopup = () => {
     setIsOpen(false);
     setSelectedClass(null);
+    setItemIdentifier(null);
   };
 
   const handleClassSelect = (classCode: ClassName | null) => {
@@ -40,7 +42,12 @@ export function BorrowingPopup({
     }
   };
 
-  const canBorrow = availableCount > 0 && selectedClass !== null;
+  const isIdentifierValid =
+    itemIdentifier === null ||
+    (Number.isInteger(itemIdentifier) && itemIdentifier >= 1);
+
+  const canBorrow =
+    availableCount > 0 && selectedClass !== null && isIdentifierValid;
 
   return (
     <div className={styles.triggerArea}>
@@ -82,6 +89,32 @@ export function BorrowingPopup({
                 <ClassBox onSelect={handleClassSelect} />
               </div>
 
+              <div className={styles.itemIdentifierWrapper}>
+                <label htmlFor="item-identifier" className={styles.label}>
+                  備品識別番号 (任意):
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  step={1}
+                  id="item-identifier"
+                  value={itemIdentifier ?? ""}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    setItemIdentifier(
+                      e.target.value && !Number.isNaN(value) ? value : null,
+                    );
+                  }}
+                  aria-invalid={!isIdentifierValid}
+                  className={styles.input}
+                />
+                {!isIdentifierValid && (
+                  <p className={styles.notice}>
+                    備品識別番号は1以上の整数で入力してください。
+                  </p>
+                )}
+              </div>
+
               <div className={styles.summaryBox}>
                 <p className={styles.summaryLabel}>選択中のクラス</p>
                 <p className={styles.summaryValue}>
@@ -106,6 +139,7 @@ export function BorrowingPopup({
                 <BorrowButton
                   equipmentId={id}
                   classCode={selectedClass.code}
+                  equipmentIdentifier={itemIdentifier ?? undefined}
                   disabled={!canBorrow}
                   onBorrow={closePopup}
                   className={`${styles.borrowButton} ${styles.popupButton} ${styles.primaryButton}`}

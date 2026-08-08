@@ -39,6 +39,7 @@ export const returnBorrowingAction = async (
 export const borrowEquipmentAction = async (
   equipmentId: number,
   classCode: ClassName,
+  equipmentIdentifier?: number,
 ) => {
   await requireAdmin();
   if (!Number.isInteger(equipmentId) || equipmentId <= 0) {
@@ -46,6 +47,12 @@ export const borrowEquipmentAction = async (
   }
   if (!CLASS_CODES.includes(classCode as ClassCode)) {
     throw new Error("クラスコードが不正です");
+  }
+  if (
+    equipmentIdentifier !== undefined &&
+    (!Number.isInteger(equipmentIdentifier) || equipmentIdentifier < 0)
+  ) {
+    throw new Error("備品識別番号が不正です");
   }
 
   await db.transaction(async (tx) => {
@@ -76,6 +83,7 @@ export const borrowEquipmentAction = async (
     await tx.insert(Borrowings).values({
       equipmentId,
       class: classCode,
+      equipmentIdentifier: equipmentIdentifier,
     });
   });
 
