@@ -31,6 +31,7 @@ export function BorrowingPopup({
   const closePopup = () => {
     setIsOpen(false);
     setSelectedClass(null);
+    setItemIdentifier(null);
   };
 
   const handleClassSelect = (classCode: ClassName | null) => {
@@ -124,6 +125,7 @@ export function BorrowingPopup({
                 <BorrowButton
                   equipmentId={id}
                   classCode={selectedClass.code}
+                  equipmentIdentifier={itemIdentifier ?? undefined}
                   disabled={!canBorrow}
                   onBorrow={closePopup}
                   className={`${styles.borrowButton} ${styles.popupButton} ${styles.primaryButton}`}

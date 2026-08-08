@@ -48,6 +48,12 @@ export const borrowEquipmentAction = async (
   if (!CLASS_CODES.includes(classCode as ClassCode)) {
     throw new Error("クラスコードが不正です");
   }
+  if (
+    equipmentIdentifier !== undefined &&
+    (!Number.isInteger(equipmentIdentifier) || equipmentIdentifier < 0)
+  ) {
+    throw new Error("備品識別番号が不正です");
+  }
 
   await db.transaction(async (tx) => {
     const [eqItem] = await tx

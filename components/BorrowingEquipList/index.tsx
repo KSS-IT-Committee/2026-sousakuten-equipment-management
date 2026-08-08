@@ -31,7 +31,7 @@ export async function BorrowingEquipList({ id }: { id: number }) {
                 <span className={styles.date}>
                   {" "}
                   {/*I know what we should use a different style but for now..*/}
-                  識別番号: {borrowing.equipmentIdentifier || "未記録"}
+                  識別番号: {borrowing.equipmentIdentifier ?? "未記録"}
                 </span>
               </div>
 
