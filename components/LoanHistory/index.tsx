@@ -31,10 +31,7 @@ export async function LoanHistory({ id }: { id: number }) {
                 </span>
                 <span className={styles.date}>
                   {/*I know what we should use a different style but for now..*/}
-                  識別番号:{" "}
-                  {borrow.equipmentIdentifier
-                    ? borrow.equipmentIdentifier
-                    : "未記録"}
+                  識別番号: {borrow.equipmentIdentifier ?? "未記録"}
                 </span>
               </div>
             </div>
