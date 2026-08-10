@@ -25,6 +25,14 @@
   color: #fff;
 }
 
+.borrowingListTitle {
+  color: #1a1a1a;
+}
+
+:global(.dark) .borrowingListTitle {
+  color: #fff;
+}
+
 .noEquipment {
   text-align: center;
   font-size: 1.125rem;

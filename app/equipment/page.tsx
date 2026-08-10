@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BorrowingEquipList } from "@/components/BorrowingEquipList";
+import { BorrowingEquipListById } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { Internal } from "@/components/Internal";
@@ -47,7 +47,7 @@ export default async function Equipment({ searchParams }: Props) {
       </Internal>
 
       <EquipmentCell id={id} />
-      <BorrowingEquipList id={id} />
+      <BorrowingEquipListById id={id} />
       <LoanHistory id={id} />
     </div>
   );
