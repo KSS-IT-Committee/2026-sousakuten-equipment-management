@@ -22,6 +22,9 @@ export default async function Page({ searchParams }: Props) {
   );
 }
 
+// No Suspense boundary here on purpose: the awaits below are exactly what
+// decides the 403 (a viewer may not read another class's deduction), so they
+// have to run while the status line is still writable.
 async function DeductionDetail({ searchParams }: Props) {
   const { id } = await searchParams;
   const deductionId = Number(id);

@@ -1,14 +1,29 @@
+import { Suspense } from "react";
+
 import styles from "@/app/base.module.css";
 import { BorrowingEquipListByClass } from "@/components/BorrowingEquipList";
 import { DbFetchStatus } from "@/components/DbFetchStatus";
 import { EquipmentCell } from "@/components/EquipmentCell";
+import { PageLoading } from "@/components/PageLoading";
 import { getEquipments } from "@/db/queries/equipments";
 import { ClassName } from "@/db/schema";
 import { getViewer } from "@/lib/authorize";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+// The page itself is synchronous, so it becomes the static shell and the
+// loading UI streams immediately; the DB-backed body renders behind the
+// boundary. Nothing here interrupts with a status code — keep it that way, or
+// move the interrupt up into this shell.
+export default function Home() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+async function HomeContent() {
   const equipments = await getEquipments();
   const viewer = await getViewer();
 

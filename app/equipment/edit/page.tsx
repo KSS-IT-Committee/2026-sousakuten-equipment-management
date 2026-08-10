@@ -1,6 +1,9 @@
+import { Suspense } from "react";
+
 import { AddEquipmentForm } from "@/components/AddEquipmentForm";
 import { AuthGuard } from "@/components/AuthGuard";
 import { DeleteEquipmentButton } from "@/components/DeleteEquipmentButton";
+import { PageLoading } from "@/components/PageLoading";
 import { getEquipmentById } from "@/db/queries/equipments";
 
 import styles from "../../add-equipment/page.module.css";
@@ -9,10 +12,14 @@ type Props = {
   searchParams: Promise<{ id?: string }>;
 };
 
-export default async function EditEquipmentPage({ searchParams }: Props) {
+// AuthGuard stays in the static shell so its 401/403 is still a real status
+// code; the equipment lookup streams behind the boundary below it.
+export default function EditEquipmentPage({ searchParams }: Props) {
   return (
     <AuthGuard role="Sousakuten">
-      <EditEquipmentContent searchParams={searchParams} />
+      <Suspense fallback={<PageLoading />}>
+        <EditEquipmentContent searchParams={searchParams} />
+      </Suspense>
     </AuthGuard>
   );
 }

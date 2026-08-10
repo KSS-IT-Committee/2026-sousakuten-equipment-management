@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { BorrowingEquipListById } from "@/components/BorrowingEquipList";
 import { BorrowingPopup } from "@/components/BorrowPopup";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { Internal } from "@/components/Internal";
 import { LoanHistory } from "@/components/LoanHistory";
+import { PageLoading } from "@/components/PageLoading";
 import { getActiveBorrowingsByEquipmentId } from "@/db/queries/borrowings";
 import { getEquipmentById } from "@/db/queries/equipments";
 
@@ -14,7 +16,18 @@ type Props = {
   searchParams: Promise<{ id?: string }>;
 };
 
-export default async function Equipment({ searchParams }: Props) {
+// Synchronous shell, so the loading UI streams before the equipment lookup
+// resolves. The early returns below are plain JSX, not status interrupts — if one
+// ever becomes notFound(), it has to move up into this shell.
+export default function Equipment({ searchParams }: Props) {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <EquipmentContent searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function EquipmentContent({ searchParams }: Props) {
   const resolvedParams = await searchParams;
   const id = Number(resolvedParams.id);
   const isValidId = Number.isInteger(id) && id > 0;
