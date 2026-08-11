@@ -1,5 +1,5 @@
 {
-  "title": "fix to use executor to maintain consistency",
-  "description": "TODO",
+  "title": "内部コードの修正",
+  "description": "内部コードの修正を行いました。これによるページの変更はありません。",
   "credits": ["@rotarymars"]
 }
