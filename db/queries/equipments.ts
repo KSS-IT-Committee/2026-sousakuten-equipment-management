@@ -1,7 +1,7 @@
 import { and, count, eq } from "drizzle-orm";
 
 import { Equipments } from "@/db/schema";
-import { db } from "@/lib/db";
+import { db, type Executor } from "@/lib/db";
 import { recordDbFetch } from "@/lib/db-last-fetched";
 
 export async function getEquipments() {
@@ -24,12 +24,17 @@ export async function getEquipmentById(id: number) {
   return result[0];
 }
 
-export async function createEquipment(data: {
-  name: string;
-  quantity: number;
-  picture?: string | null;
-}) {
-  return await db.insert(Equipments).values(data);
+// The write helpers below accept an executor so a caller can compose several
+// writes into one atomic transaction; they default to the shared `db`.
+export async function createEquipment(
+  data: {
+    name: string;
+    quantity: number;
+    picture?: string | null;
+  },
+  executor: Executor = db,
+) {
+  return await executor.insert(Equipments).values(data);
 }
 
 export async function updateEquipment(
@@ -39,15 +44,16 @@ export async function updateEquipment(
     quantity: number;
     picture?: string | null;
   },
+  executor: Executor = db,
 ) {
-  return await db
+  return await executor
     .update(Equipments)
     .set(data)
     .where(and(eq(Equipments.id, id), eq(Equipments.deleted, false)));
 }
 
-export async function deleteEquipmentById(id: number) {
-  return await db
+export async function deleteEquipmentById(id: number, executor: Executor = db) {
+  return await executor
     .update(Equipments)
     .set({ deleted: true })
     .where(and(eq(Equipments.id, id), eq(Equipments.deleted, false)));
