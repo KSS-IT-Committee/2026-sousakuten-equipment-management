@@ -57,3 +57,12 @@ const CLASS_LABELS: Record<ClassCode, string> = {
 export function getClassLabel(classCode: string): string {
   return CLASS_LABELS[classCode as ClassCode] ?? classCode;
 }
+
+/**
+ * Narrows a username-derived class string (see lib/user-category.ts#classOf)
+ * to a real class code before it reaches a query. Without this a stray value
+ * only fails at the database as a class_name enum error.
+ */
+export function isClassCode(value: string | null): value is ClassCode {
+  return value !== null && (CLASS_CODES as readonly string[]).includes(value);
+}
