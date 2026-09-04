@@ -6,8 +6,8 @@ import { DbFetchStatus } from "@/components/DbFetchStatus";
 import { EquipmentCell } from "@/components/EquipmentCell";
 import { PageLoading } from "@/components/PageLoading";
 import { getEquipments } from "@/db/queries/equipments";
-import { ClassName } from "@/db/schema";
 import { getViewer } from "@/lib/authorize";
+import { isClassCode } from "@/lib/class-number";
 
 export const dynamic = "force-dynamic";
 
@@ -24,20 +24,14 @@ export default function Home() {
 }
 
 async function HomeContent() {
-  const equipments = await getEquipments();
-  const viewer = await getViewer();
-
-  if (!viewer?.className) {
-    return (
-      <div className={styles.noEquipment}>
-        <p className={styles.noDataMessage}>
-          クラス情報が取得できませんでした。
-          <br />
-          ログインし直すか、管理者にお問い合わせください。
-        </p>
-      </div>
-    );
-  }
+  const [equipments, viewer] = await Promise.all([
+    getEquipments(),
+    getViewer(),
+  ]);
+  // Staff, committee and logged-out visitors have no class of their own; they
+  // still get the full equipment catalog, just without the per-class list.
+  const ownClass =
+    viewer && isClassCode(viewer.className) ? viewer.className : null;
 
   return (
     <>
@@ -45,10 +39,12 @@ async function HomeContent() {
         <h1 className={styles.pageTitle}>創作展 貸出備品・減点管理サイト</h1>
       </div>
 
-      <div className={styles.borrowingListWrapper}>
-        <h2 className={styles.borrowingListTitle}>現在の借出状況</h2>
-        <BorrowingEquipListByClass classCode={viewer.className as ClassName} />
-      </div>
+      {ownClass !== null && (
+        <div className={styles.borrowingListWrapper}>
+          <h2 className={styles.borrowingListTitle}>現在の借出状況</h2>
+          <BorrowingEquipListByClass classCode={ownClass} />
+        </div>
+      )}
 
       <DbFetchStatus />
 

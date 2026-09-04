@@ -1,19 +1,24 @@
 import { eq, inArray } from "drizzle-orm";
 
 import { ClassName, Deductions } from "@/db/schema";
-import { db } from "@/lib/db";
+import { db, type Executor } from "@/lib/db";
 
 export async function getDeductions() {
   return await db.select().from(Deductions);
 }
 
-export async function createDeduction(data: {
-  className: ClassName;
-  content: string;
-  points: number;
-  occurredAt?: Date;
-}) {
-  return await db.insert(Deductions).values(data);
+// Accepts an executor so a caller can compose this write with others in one
+// transaction; defaults to the shared `db` for standalone use.
+export async function createDeduction(
+  data: {
+    className: ClassName;
+    content: string;
+    points: number;
+    occurredAt?: Date;
+  },
+  executor: Executor = db,
+) {
+  return await executor.insert(Deductions).values(data);
 }
 
 export async function getDeductionsById(id: number) {
@@ -38,6 +43,6 @@ export async function getDeductionsByClasses(classNames: ClassName[]) {
     .where(inArray(Deductions.className, classNames));
 }
 
-export async function deleteDeductionById(id: number) {
-  await db.delete(Deductions).where(eq(Deductions.id, id));
+export async function deleteDeductionById(id: number, executor: Executor = db) {
+  await executor.delete(Deductions).where(eq(Deductions.id, id));
 }
