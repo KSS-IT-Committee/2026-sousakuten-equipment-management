@@ -5,10 +5,9 @@ import { Suspense } from "react";
 import { Internal } from "@/components/Internal";
 import { PageLoading } from "@/components/PageLoading";
 import { INTERNAL_ROLES } from "@/lib/access";
+import { maintainerAvatarUrl, MAINTAINERS } from "@/lib/maintainers";
 
 import styles from "./base.module.css";
-
-const MAINTAINERS = ["Shirym-min", "K10-K10"];
 
 function MaintainerItem({ username }: { username: string }) {
   return (
@@ -18,7 +17,7 @@ function MaintainerItem({ username }: { username: string }) {
         href={`https://github.com/${username}`}
       >
         <Image
-          src={`https://github.com/${username}.png`}
+          src={maintainerAvatarUrl(username)}
           alt=""
           width={32}
           height={32}
