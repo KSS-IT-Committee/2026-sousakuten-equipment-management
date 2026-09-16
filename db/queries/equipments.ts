@@ -1,16 +1,40 @@
-import { and, count, eq } from "drizzle-orm";
+import { and, count, eq, isNull } from "drizzle-orm";
 
-import { Equipments } from "@/db/schema";
+import { Borrowings, Equipments } from "@/db/schema";
 import { db, type Executor } from "@/lib/db";
 import { recordDbFetch } from "@/lib/db-last-fetched";
 
-export async function getEquipments() {
+/**
+ * Every listable equipment plus how many of it are currently out on loan.
+ *
+ * The list page used to render one <EquipmentCell id=…/> per row and let each
+ * cell fetch its own equipment and borrowings, which cost 1+2N round trips for
+ * an N-item catalog. Counting the open borrowings in the same grouped join
+ * makes it one query regardless of N. The left join is what keeps equipment
+ * with zero active borrowings in the result.
+ */
+export async function getEquipmentsWithBorrowedCounts() {
   const result = await db
-    .select({ id: Equipments.id })
+    .select({
+      id: Equipments.id,
+      name: Equipments.name,
+      quantity: Equipments.quantity,
+      picture: Equipments.picture,
+      borrowedCount: count(Borrowings.id),
+    })
     .from(Equipments)
+    .leftJoin(
+      Borrowings,
+      and(
+        eq(Borrowings.equipmentId, Equipments.id),
+        isNull(Borrowings.returnedAt),
+      ),
+    )
     .where(eq(Equipments.deleted, false))
+    .groupBy(Equipments.id)
     .orderBy(Equipments.id);
   recordDbFetch("equipment");
+  recordDbFetch("borrowings");
   return result;
 }
 
