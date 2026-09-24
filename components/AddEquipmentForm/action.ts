@@ -63,7 +63,7 @@ async function saveImage(file: File | null): Promise<string | null> {
   const detected = detectImageType(buffer);
   if (!detected) {
     throw new EquipmentValidationError(
-      `対応していない画像形式です（${ALLOWED_IMAGE_LABEL}のみ）`,
+      `対応していない画像形式です（${ALLOWED_IMAGE_LABEL}のみ対応）`,
     );
   }
 
