@@ -3,9 +3,9 @@ import { Suspense } from "react";
 import styles from "@/app/base.module.css";
 import { BorrowingEquipListByClass } from "@/components/BorrowingEquipList";
 import { DbFetchStatus } from "@/components/DbFetchStatus";
-import { EquipmentCell } from "@/components/EquipmentCell";
+import { EquipmentCellView } from "@/components/EquipmentCell";
 import { PageLoading } from "@/components/PageLoading";
-import { getEquipments } from "@/db/queries/equipments";
+import { getEquipmentsWithBorrowedCounts } from "@/db/queries/equipments";
 import { getViewer } from "@/lib/authorize";
 import { isClassCode } from "@/lib/class-number";
 
@@ -25,7 +25,7 @@ export default function Home() {
 
 async function HomeContent() {
   const [equipments, viewer] = await Promise.all([
-    getEquipments(),
+    getEquipmentsWithBorrowedCounts(),
     getViewer(),
   ]);
   // Staff, committee and logged-out visitors have no class of their own; they
@@ -76,7 +76,11 @@ async function HomeContent() {
 
       <div className={styles.equipmentList}>
         {equipments.map((equipment) => (
-          <EquipmentCell key={equipment.id} id={equipment.id} />
+          <EquipmentCellView
+            key={equipment.id}
+            equipment={equipment}
+            borrowedCount={equipment.borrowedCount}
+          />
         ))}
       </div>
     </>

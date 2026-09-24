@@ -7,15 +7,28 @@ import { getEquipmentById } from "@/db/queries/equipments";
 
 import styles from "./EquipmentCell.module.css";
 
-export async function EquipmentCell({ id }: { id: number }) {
-  const equipment = await getEquipmentById(id);
-  const borrowings = await getActiveBorrowingsByEquipmentId(id);
+export type EquipmentCellData = {
+  id: number;
+  name: string;
+  quantity: number;
+  picture: string | null;
+};
 
-  if (!equipment) {
-    return <div className={styles.errorCell}>備品が見つかりませんでした</div>;
-  }
-
-  const borrowedCount = borrowings.length;
+/**
+ * Renders one equipment card from data the caller already has.
+ *
+ * The list page fetches every card's data in a single grouped query and maps
+ * over it, so keep this component free of its own queries — reintroducing a
+ * fetch here turns the list back into 1+2N round trips.
+ */
+export function EquipmentCellView({
+  equipment,
+  borrowedCount,
+}: {
+  equipment: EquipmentCellData;
+  borrowedCount: number;
+}) {
+  const id = equipment.id;
   const availableCount = Math.max(0, equipment.quantity - borrowedCount);
 
   const availabilityPercentage =
@@ -92,5 +105,27 @@ export async function EquipmentCell({ id }: { id: number }) {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Same card, for callers that have only an id (the single-equipment page).
+ * The list page must NOT use this — see EquipmentCellView.
+ */
+export async function EquipmentCell({ id }: { id: number }) {
+  const [equipment, borrowings] = await Promise.all([
+    getEquipmentById(id),
+    getActiveBorrowingsByEquipmentId(id),
+  ]);
+
+  if (!equipment) {
+    return <div className={styles.errorCell}>備品が見つかりませんでした</div>;
+  }
+
+  return (
+    <EquipmentCellView
+      equipment={equipment}
+      borrowedCount={borrowings.length}
+    />
   );
 }
