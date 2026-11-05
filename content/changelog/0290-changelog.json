@@ -1,5 +1,5 @@
 {
   "title": "Update Node.js to 44fce69",
-  "description": "TODO",
+  "description": "ランタイムのコンテナのバージョンを上げました。これによるページの変更はありません。",
   "credits": ["@renovate[bot]"]
 }
